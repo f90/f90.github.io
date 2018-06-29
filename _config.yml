@@ -130,7 +130,6 @@ author:
   weibo            :
   xing             :
   youtube          : # "https://youtube.com/c/MichaelRoseDesign"
-  googlescholar    : "https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ&hl=en"
 
 
 # Reading Files
@@ -210,14 +209,42 @@ plugins:
   - jekyll-gist
   - jekyll-feed
   - jemoji
+  - jekyll/scholar
 
 # mimic GitHub Pages with --safe
-whitelist:
-  - jekyll-paginate
-  - jekyll-sitemap
-  - jekyll-gist
-  - jekyll-feed
-  - jemoji
+#whitelist:
+#  - jekyll-paginate
+#  - jekyll-sitemap
+#  - jekyll-gist
+#  - jekyll-feed
+#  - jemoji
+
+# Jekyll scholar
+scholar:
+  style: apa #assets/bibliography/mycslfile.csl
+  locale: en
+
+  sort_by: year, month
+  order: descending
+
+  #source: assets/bibliography
+  bibliography: Research.bib
+  #bibliography_template: bibtemplate
+
+  bibtex_skip_fields: ['month_numeric', 'project', 'file']
+  bibtex_filters:
+    - superscript
+    - latex
+
+  replace_strings: true
+
+  #details_dir:    bibliography
+  #details_layout: bibtex.html
+  #details_link:   Details
+
+  repository: repository
+
+  query: "@*"
 
 
 # Archives
