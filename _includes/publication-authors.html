@@ -1,0 +1,7 @@
+<ul class="list-inline">
+{% for author in include.authors %}
+{% assign matched = site.people | where:"lastname", author.last | first %}
+{% unless matched %}{% assign slug = author.last | slugify %}{% assign matched = site.people | where:"slug", slug | first %}{% endunless %}
+<li class="list-inline-item">{% if matched %}<a href="{{ matched.url }}">{% endif %}{{ author.first }} {{ author.last }}{% if matched %}</a>{% endif %}</li>
+{% endfor %}
+</ul>

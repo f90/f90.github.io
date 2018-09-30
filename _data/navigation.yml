@@ -2,8 +2,8 @@
 main:
   #- title: "Quick-Start Guide"
   #  url: https://mmistakes.github.io/minimal-mistakes/docs/quick-start-guide/
-   - title: "Home" #Draws people in - short, attention-grabbing summaries of my best research, plus very short introduction of myself. Demo-heavy. Links to project pages. Continuosly updated "highlight reel".
-     url: /
+  # - title: "Home" #Draws people in - short, attention-grabbing summaries of my best research, plus very short introduction of myself. Demo-heavy. Links to project pages. Continuosly updated "highlight reel".
+  #   url: /
    - title: "Research" # Highlight most important research projects/areas
      url: /research/
    - title: "Publications" # Nice list of publications with links to papers, code, and blogs/project pages for further explanation
@@ -11,7 +11,7 @@ main:
    - title: "About" # More detail about my persona/CV
      url: /about/
    - title: "Blog"
-     url: /page-archive/
+     url: /
   # - title: "Sample Collections"
   #   url: /collection-archive/
   # - title: "Sitemap"

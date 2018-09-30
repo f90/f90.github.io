@@ -1,0 +1,40 @@
+# This file defines how particular supplementary file types should be rendered
+# on a publication page.
+
+# Fields:
+#   ext: the file extension (longest part)
+#   icon: fontawesome identifier names (see http://fontawesome.io/icons/)
+#   text: descriptive text for type of file
+#   include: set to true to use the *contents* of the file as the URL to link to
+- ext: pdf
+  icon: fa-file-pdf
+  text: "Authors' Preprint/Accepted Version"
+- ext: published.pdf
+  icon: fa-file-pdf
+  text: "Published Version"
+- ext: abstract.pdf
+  icon: fa-file-pdf
+  text: "Extended Abstract"
+- ext: extended.pdf
+  icon: fa-file-pdf
+  text: "Extended Version"
+- ext: techreport.pdf
+  icon: fa-file-pdf
+  text: "Technical Report"
+- ext: slides.pdf
+  icon: fa-file-pdf
+  text: "Slides"
+- ext: zip
+  icon: fa-file-archive
+  text: "File Archive (.zip)"
+- ext: tgz
+  icon: fa-file-archive
+  text: "File Archive (.tgz)"
+- ext: github.link
+  icon: fa-github
+  text: "Code Repository (GitHub)"
+  include: true
+- ext: repo.link
+  icon: fa-code-branch
+  text: "Code Repository"
+  include: true

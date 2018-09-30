@@ -1,0 +1,63 @@
+---
+layout: archive
+---
+<div>
+  <div>
+    <h5>Venue</h5>
+    <p>{% include publication-venue.html entry=page.entry %}</p>
+    <h5>Publication Year</h5>
+    <p>{{ page.entry.year }}</p>
+    {% if page.entry.keywords %}<h5>Keywords</h5>
+    <p>{{ page.entry.keywords }}</p>{% endif %}
+    {% if page.entry.doi or page.entry.isbn %}<h5>Identifiers</h5>
+    <ul>
+      {% if page.entry.doi %}<li>DOI: <a>doi:{{ page.entry.doi }}</a></li>{% endif %}
+      {% if page.entry.isbn %}<li>ISBN: {{ page.entry.isbn }}</li>{% endif %}
+    </ul>{% endif %}
+  </div>
+</div>
+
+<h3>Authors</h3>
+{% include publication-authors.html authors=page.entry.author_array %}
+
+{% if page.entry.abstract %}
+<h3>Abstract</h3>
+<p>
+{{ page.entry.abstract }}
+</p>
+{% endif %}
+
+{% if page.entry.doi or page.links.size > 0 %}
+<h3>Source Materials</h3>
+<ul class="fa-ul">
+  {% comment %} Iterate all known types in the defined order {% endcomment %}
+  {% assign types = site.data.publication_file_types %}
+  {% for type in types %}
+  {% if page.links[type.ext] %}
+  {% capture link %}
+  {% if type.include %}
+    {% assign file = page.links[type.ext] | split: "/" | last %}{% include_relative {{file}} %}
+  {% else %}
+    {{ page.links[type.ext] }}
+  {% endif %}
+  {% endcapture %}
+  <li><a href="{{ link }}"> <i class="fa fa-li {{ type.icon }}"></i>{{ type.text }} </a></li>
+  {% endif %}
+  {% endfor %}
+
+  {% comment %} Iterate all files and pick unknown file types {% endcomment %}
+  {% assign known_types = types | map: "ext" %}
+  {% for link in page.links %}
+  {% unless known_types contains link[0] %}
+  <li><a href="{{ link[1] }}"><i class="fa fa-li fa-file-o"></i>
+      {{ link[0] }} File</a></li>
+  {% endunless %}
+  {% endfor %}
+
+  {% if page.entry.doi %}<li><a href="http://dx.doi.org/{{ page.entry.doi }}"><i class="fas fa-li fa-external-link-square-alt"></i>
+      Published Edition</a></li>{% endif %}
+
+  <li><a download="{{page.entry.key}}.bib" href="data:application/x-bibtex,{{ page.entry.bibtex | uri_escape }}">
+      <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>
+</ul>
+{% endif %}

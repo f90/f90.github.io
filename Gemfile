@@ -3,3 +3,5 @@ gemspec
 gem "github-pages", group: :jekyll_plugins
 gem "unicode"
 gem "jekyll-scholar" , group: :jekyll_plugins
+gem 'bootstrap-sass'
+gem 'sass-rails'

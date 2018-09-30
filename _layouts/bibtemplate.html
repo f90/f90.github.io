@@ -1,0 +1,45 @@
+---
+---
+
+<div>
+<b>{{entry.title}}</b> <span style="font-size:15px"> ({{entry.year}}) </span>
+<br>
+{% if entry.booktitle %}
+  {{entry.booktitle}}
+  <br>
+{% endif %}
+{% if entry.journal %}
+{{entry.journal}}
+{% endif %}
+<i>{{entry.author}}</i>
+</div>
+
+<!--
+{% if entry.doi %}
+    <a href="{{ entry.doi | prepend: 'http://doi.org/' }}"><input class="button1" type="button" value="doi" /></a>
+{% endif %}
+-->
+
+{% if links['published.pdf'] %}
+    <a href="{{ links['published.pdf'] }}"><input class="button0" type="button" value="PDF" /></a>
+{% endif %}
+
+{% if entry.preprint %}
+    <a href="{{ entry.preprint }}"><input class="button0" type="button" value="Preprint" /></a>
+{% endif %}
+
+<!--
+{% if entry.url %}
+    <a href="{{ entry.url }}"><input class="button" type="button" value="link" /></a>
+{% endif %}
+-->
+
+{% if entry.code %}
+    <a href="{{ entry.code }}"><input class="button0" type="button" value="Code" /></a>
+{% endif %}
+
+{% if entry.url %}
+    <a href="{{ entry.url }}"><input class="button0" type="button" value="Link" /></a>
+{% endif %}
+
+<a download="{{entry.key}}.bib" href="data:application/x-bibtex,{{entry.bibtex | uri_escape }}"><input class="button0" type="button" value="Bibtex" /></a>

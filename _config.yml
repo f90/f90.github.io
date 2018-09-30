@@ -229,7 +229,7 @@ scholar:
 
   #source: assets/bibliography
   bibliography: Research.bib
-  #bibliography_template: bibtemplate
+  bibliography_template: bibtemplate
 
   bibtex_skip_fields: ['month_numeric', 'project', 'file']
   bibtex_filters:
@@ -238,9 +238,9 @@ scholar:
 
   replace_strings: true
 
-  #details_dir:    bibliography
-  #details_layout: bibtex.html
-  #details_link:   Details
+  details_dir:    repository
+  details_layout: bibtex.html
+  details_link:   Details
 
   repository: repository
 

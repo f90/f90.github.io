@@ -1,0 +1,8 @@
+ {% if include.entry.journal %}
+	{{ include.entry.journal }},
+	vol. {{ include.entry.volume }}{% if include.entry.number %}({{ include.entry.number }}){% endif %}{% if include.entry.pages %}, pp. {{ include.entry.pages }}{% endif %}
+	{% elsif include.entry.booktitle %}
+		{{ include.entry.booktitle }}{% if include.entry.pages %}, pp. {{ include.entry.pages }}{% endif %}
+			{% elsif include.entry.school %}
+				{% if include.entry.phdthesis %}Ph.D. Thesis, {% endif %}{{ include.entry.school }}
+{% endif %}
