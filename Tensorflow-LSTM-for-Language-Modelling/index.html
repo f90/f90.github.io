@@ -1,0 +1,955 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Tensorflow Lstm For Language Modelling - Dans World</title>
+<meta name="description" content="In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="Tensorflow Lstm For Language Modelling">
+<meta property="og:url" content="http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling/">
+
+
+  <meta property="og:description" content="In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2016-11-12T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Daniel Stoller</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Researcher in Machine Learning and Music Information Retrieval.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">London, UK</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:business@dstoller.net">
+            <meta itemprop="email" content="business@dstoller.net" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/daniel-stoller" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/f90" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+        <li>
+    <a href="https://orcid.org/0000-0002-8615-4144" itemprop="sameAs">
+      <i class="ai ai-orcid-square ai-fw"></i> ORCID
+    </a>
+  </li>
+
+  <li>
+    <a href="https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ" itemprop="sameAs">
+      <i class="ai ai-google-scholar-square ai-fw"></i> Google Scholar
+    </a>
+</li>
+
+  <li>
+    <a href="https://qmul.academia.edu/DanielStoller" itemprop="sameAs">
+      <i class="ai ai-academia-square ai-fw"></i> Academia.edu
+    </a>
+</li>
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Tensorflow Lstm For Language Modelling">
+    <meta itemprop="description" content="In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.">
+    <meta itemprop="datePublished" content="November 12, 2016">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Tensorflow Lstm For Language Modelling
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  18 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.</p>
+
+<h2 id="the-code">The code</h2>
+
+<p>The code is available <a href="https://github.com/f90/Tensorflow-Char-LSTM/tree/master">here</a>, and the lyrics database can be created by running the crawler I developed <a href="https://github.com/f90/lyrics-crawler">here</a>.</p>
+
+<h2 id="want-to-see-what-lyrics-my-model-composes-click-here">Want to see what lyrics my model composes? <a href="#example-output">Click here!</a></h2>
+
+<p>It is implemented in Tensorflow, which has been rapidly evolving in the last few months. As a result, best practices for common tasks are changing as well. That is why I built my own code to make the best use out of <a href="https://www.tensorflow.org/versions/r0.12/how_tos/threading_and_queues/index.html">Queues</a>, and new functionality from the <a href="https://github.com/tensorflow/tensorflow/blob/master/tensorflow/g3doc/api_docs/python/contrib.training.md">training-contrib</a> package. In particular, implementing batch-training with variable-length sequences on an unrolled LSTM with truncated BPTT with maintaining the hidden state for each sequence is greatly simplified and optimised. Without further ado, let’s get started!</p>
+
+<h1 id="input-pipeline">Input pipeline</h1>
+
+<p>First, we are going to load the dataset. I adapted this a bit to my case, but it should be easy for you to change it to your liking:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data, vocab = Dataset.readLyrics(data_settings["input_csv"], data_settings["input_vocab"])
+trainIndices, testIndices = Dataset.createPartition(data, train_settings["trainPerc"])
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">Dataset</code> is a helper file that manages dataset-related operations. Here I assume <code class="highlighter-rouge">data</code> has the form of a list of entries, each again a list with two entries: The first entry denotes the artist and the second the lyrics content. The first entry is used to prevent having the same artist in both training and test set. <code class="highlighter-rouge">trainIndices</code> and <code class="highlighter-rouge">testIndices</code> are lists of indices refer to the rows in <code class="highlighter-rouge">data</code> that correspond to the training and test set, respectively. The settings variables are just dictionaries that yield user-defined settings. <code class="highlighter-rouge">vocab</code> is a special Vocabulary object that translates characters into integer indices and vice versa, and we will get to know its functionality better along the way. For creating the batches to train on, we will use <code class="highlighter-rouge">batch_sequences_with_states</code>, as it is very convenient to use. It requires a key, the sequence length, and input and output for a SINGLE sequence in symbolic form. We create these properties here as placeholders, to later feed them with our own input thread. This design makes input processing very fast and ensures it does not reduce overall training speed: Model training and input processing are running simultaneously in different threads.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keyInput = tf.placeholder(tf.string) # To identify each sequence
+lengthInput = tf.placeholder(tf.int32) # Length of sequence
+seqInput = tf.placeholder(tf.int32, shape=[None]) # Input sequence
+seqOutput = tf.placeholder(tf.int32, shape=[None]) # Output sequence
+</code></pre></div></div>
+
+<p>Then we create a <code class="highlighter-rouge">RandomShuffleQueue</code> and the enqueue and dequeue operations, which means sequences will be randomly selected from the queue to form batches during training. This presents an effective compromise between completely random sample selection, which is often slow for large datasets as data has to be pulled from very different memory locations, and completely sequential reading. Using the dictionaries ensures compatibility with the Tensorflow sequence format:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>q = tf.RandomShuffleQueue(input_settings["queue_capacity"], input_settings["min_queue_capacity"],
+                      [tf.string, tf.int32, tf.int32, tf.int32])
+enqueue_op = q.enqueue([keyInput, lengthInput, seqInput, seqOutput])
+
+with tf.device("/cpu:0"):
+    key, contextT, sequenceIn, sequenceOut = q.dequeue()
+    context = {"length" : tf.reshape(contextT, [])}
+    sequences = {"inputs" : tf.reshape(sequenceIn, [contextT]),
+                "outputs" : tf.reshape(sequenceOut, [contextT])}
+</code></pre></div></div>
+
+<p>Instead of using the built-in CSV or TFRecord Readers to enqueue samples, I created my own method that can read directly from the <code class="highlighter-rouge">data</code> in the RAM. It endlessly loops over the samples given by <code class="highlighter-rouge">indices</code> and adds them to the queue. It can easily be adapted to read arbitrary files/parts of datasets and perform further preprocessing:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
+def load_and_enqueue(indices):
+    run = True
+    key = 0 # Unique key for every sample, even over multiple epochs (otherwise the queue could be filled up with two same-key examples)
+    while run:
+        for index in indices:
+            current_seq = data[index][1]
+            try:
+                sess.run(enqueue_op, feed_dict={keyInput: str(key),
+                                          lengthInput: len(current_seq)-1,
+                                        seqInput: current_seq[:-1],
+                                        seqOutput: current_seq[1:]},
+                                options=tf.RunOptions(timeout_in_ms=60000))
+            except tf.errors.DeadlineExceededError as e:
+                print("Timeout while waiting to enqueue into input queue! Stopping input queue thread!")
+                run = False
+                break
+            key += 1
+        print "Finished enqueueing all " + str(len(indices)) + " samples!"
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">load_and_enqueue</code> will be started as a separate Thread later. Two important things to note here. One is the <code class="highlighter-rouge">key</code> which is different even for the same samples to avoid errors when incidentally queueing the same samples into the queue, which causes the keys to clash. The other is the timeout, which is the only way I found to be able to stop the training by closing the queue and then catching the resulting <code class="highlighter-rouge">DeadlineExceededError</code>. Lastly, the input and output is delayed by one step to force the model to predict the upcoming character.</p>
+
+<h1 id="the-lstm-model">The LSTM model</h1>
+
+<p>Our model is an LSTM with a variable number of layers and configurable dropout, whose hidden states will be maintained separately for each sequence. I created a new class <code class="highlighter-rouge">LyricsPredictor</code> with an inference method that builds the computational graph. The beginning looks like this and sets up the RNN cells:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def inference(self, key, context, sequences, num_enqueue_threads):
+    # RNN cells and states
+    cells = list()
+    initial_states = dict()
+    for i in range(0, self.num_layers):
+        cell = tf.contrib.rnn.LSTMBlockCell(num_units=self.lstm_size) # Block LSTM version gives better performance #TODO Add linear projection option
+        cell = tf.nn.rnn_cell.DropoutWrapper(cell,input_keep_prob=1-self.input_dropout, output_keep_prob=1-self.output_dropout)
+        cells.append(cell)
+        initial_states["lstm_state_c_" + str(i)] = tf.zeros(cell.state_size[0], dtype=tf.float32)
+        initial_states["lstm_state_h_" + str(i)] = tf.zeros(cell.state_size[1], dtype=tf.float32)
+    cell = tf.nn.rnn_cell.MultiRNNCell(cells)
+    [...]
+</code></pre></div></div>
+
+<p>It receives the key, context, and content of a sequence, and how many threads should be used to fetch the <code class="highlighter-rouge">RandomShuffleQueue</code> to provide input to the model. I found that <code class="highlighter-rouge">LSTMBlockCell</code> works slightly faster than the normal <code class="highlighter-rouge">LSTMCell</code> class. Now comes the neat bit. We can use the following code to let Tensorflow form batches from these sequences after splitting them up into chunks according to the unroll length. These batches also come with a context that ensures the hidden state is carried over from the last chunk of a sequence to the next, sparing us from a lot of hassle trying to implement and optimise that on our own.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># BATCH INPUT
+self.batch = tf.contrib.training.batch_sequences_with_states(
+    input_key=key,
+    input_sequences=sequences,
+    input_context=context,
+    input_length=tf.cast(context["length"], tf.int32),
+    initial_states=initial_states,
+    num_unroll=self.num_unroll,
+    batch_size=self.batch_size,
+    num_threads=num_enqueue_threads,
+    capacity=self.batch_size * num_enqueue_threads * 2)
+inputs = self.batch.sequences["inputs"]
+targets = self.batch.sequences["outputs"]
+</code></pre></div></div>
+
+<p><code class="highlighter-rouge">inputs</code> and <code class="highlighter-rouge">targets</code> are part of the resulting batch and are formed during runtime. New sequences get pulled as soon as some in the batch are finished. In the following, the inputs are transformed from one-dimensional indices into one-hot vectors. Then, they are reshaped from an [batch_size,unroll_length,vocab_size] tensor to a list of [batch_size,vocab_size] tensors with length unroll_length, to conform with the RNN interface. Finally, we can use the state_saving_rnn with the state-saving batch we created beforehand, to get our outputs.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Convert input into one-hot representation (from single integers indicating character)
+print(self.vocab_size)
+embedding = tf.constant(np.eye(self.vocab_size), dtype=tf.float32)
+inputs = tf.nn.embedding_lookup(embedding, inputs)
+
+# Reshape inputs (and targets respectively) into list of length T (unrolling length), with each element being a Tensor of shape (batch_size, input_dimensionality)
+inputs_by_time = tf.split(1, self.num_unroll, inputs)
+inputs_by_time = [tf.squeeze(elem, squeeze_dims=1) for elem in inputs_by_time]
+targets_by_time = tf.split(1, self.num_unroll, targets)
+targets_by_time = [tf.squeeze(elem, squeeze_dims=1) for elem in targets_by_time] # num_unroll-list of (batch_size) tensors
+self.targets_by_time_packed = tf.pack(targets_by_time) # (num_unroll, batch_size)
+
+# Build RNN
+state_name = initial_states.keys()
+self.seq_lengths = self.batch.context["length"]
+(self.outputs, state) = tf.nn.state_saving_rnn(cell, inputs_by_time, state_saver=self.batch,
+                                          sequence_length=self.seq_lengths, state_name=state_name, scope='SSRNN')
+</code></pre></div></div>
+
+<p>Here we have to be careful: If we have N characters, a special end-of-sequence token at the end of every sequence is appended while loading the data so the network learns when to stop generating lyrics, and I do not use zero as an index for any character as we need the zero entry to mask the output later to correctly compute the loss. So here, <code class="highlighter-rouge">self.vocab_size</code> would be N+2. Finally, we put a softmax on top of the outputs by iterating through the list of length num_unroll in which each entry represents one timestep, and return logits and probabilities:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create softmax parameters, weights and bias, and apply to RNN outputs at each timestep
+with tf.variable_scope('softmax'):
+    softmax_w = tf.get_variable("softmax_w", [self.lstm_size, self.vocab_size])
+    softmax_b = tf.get_variable("softmax_b", [self.vocab_size])
+    logits = [tf.matmul(outputStep, softmax_w) + softmax_b for outputStep in self.outputs]
+
+    self.logit = tf.pack(logits)
+
+    self.probs = tf.nn.softmax(self.logit)
+tf.summary.histogram("probabilities", self.probs)
+return (self.logit, self.probs)
+</code></pre></div></div>
+
+<p>To train the model, we also need a loss function. Here we use the fact that we do not use the 0-index as a target, so we know that such an entry in the target list must come from the zero-padding and indicates that the sequence is already over. This is used in the following code to mask the loss by only considering non-zero targets. We also add L2 regularisation.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def loss(self, l2_regularisation):
+    with tf.name_scope('loss'):
+        # Compute mean cross entropy loss for each output.
+        self.cross_loss = tf.nn.sparse_softmax_cross_entropy_with_logits(self.logit, self.targets_by_time_packed) # (num_unroll, batchsize)
+
+        # Mask losses of outputs for positions t which are outside the length of the respective sequence, so they are not used for backprop
+        # Take signum =&gt; if target is non-zero (valid char), set mask to 1 (valid output), otherwise 0 (invalid output, no gradient/loss calculation)
+        mask = tf.sign(tf.abs(tf.cast(self.targets_by_time_packed, dtype=tf.float32))) # Unroll*Batch \in {0,1}
+        self.cross_loss = self.cross_loss * mask
+
+        output_num = tf.reduce_sum(mask)
+        sum_cross_loss = tf.reduce_sum(self.cross_loss)
+        mean_cross_loss = sum_cross_loss / output_num # Mean loss is sum over masked losses for each output, divided by total number of valid outputs
+
+        # L2
+        vars = tf.trainable_variables()
+        l2_loss = tf.contrib.layers.apply_regularization(tf.contrib.layers.l2_regularizer(l2_regularisation), weights_list=vars)
+
+        loss = mean_cross_loss + l2_loss
+        tf.summary.scalar('mean_batch_cross_entropy_loss', mean_cross_loss)
+        tf.summary.scalar('mean_batch_loss', loss)
+    return loss, mean_cross_loss, sum_cross_loss, output_num
+</code></pre></div></div>
+
+<h1 id="training-the-model">Training the model</h1>
+
+<p>Now that we set up the model, we need to train it!</p>
+
+<h2 id="set-up-symbolic-training-operations">Set up symbolic training operations</h2>
+
+<p>First we need the necessary symbolic operations. We set up a step counter and a learning rate variable that decays exponentially depending on the current step:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>global_step = tf.get_variable('global_step', [],
+                              initializer=tf.constant_initializer(0.0))
+# Learning rate
+initial_learning_rate = tf.constant(train_settings["learning_rate"])
+learning_rate = tf.train.exponential_decay(initial_learning_rate, global_step, train_settings["learning_rate_decay_epoch"], train_settings["learning_rate_decay_factor"])
+tf.summary.scalar("learning_rate", learning_rate
+</code></pre></div></div>
+
+<p>Then we calculate the gradients and prepare them for visualisation for Tensorboard, as you might run into the vanishing gradient problem for deeper RNNs:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Gradient calculation
+tvars = tf.trainable_variables()
+grads, _ = tf.clip_by_global_norm(tf.gradients(loss, tvars, aggregation_method=2), # Use experimental aggregation to reduce memory usage
+                                  5.0)
+
+# Visualise gradients
+vis_grads =  [0 if i == None else i for i in grads]
+for g in vis_grads:
+    tf.summary.histogram("gradients_" + str(g), g)
+</code></pre></div></div>
+
+<p>We have to replace None entries with 0 for visualisation. We choose a gradient descent method (ADAM in this case) and define the training operations.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>optimizer = tf.train.AdamOptimizer(learning_rate)
+
+train_op = optimizer.apply_gradients(zip(grads, tvars),
+                                    global_step=global_step)
+
+trainOps = [loss, train_op,
+          global_step, learning_rate]
+</code></pre></div></div>
+
+<p>Now we are ready to execute!</p>
+
+<h2 id="performing-training">Performing training</h2>
+
+<p>Start up a session and the QueueRunners associated with it. In our case, these are associated with the RNN input queue (NOT our own RandomShuffleQueue).</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start session
+sess = tf.Session()
+coord = tf.train.Coordinator()
+init_op = tf.global_variables_initializer()
+sess.run(init_op)
+tf_threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+</code></pre></div></div>
+
+<p>In case we crashed or want to import a (partly) trained model for other reasons such as fine-tuning, we check for previous model checkpoints to load the model parameters:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CHECKPOINTING
+#TODO save model directly after every epoch, so that we can safely refill the queues after loading a model (uniform sampling of dataset is still ensured)
+# Load pretrained model to continue training, if it exists
+latestCheckpoint = tf.train.latest_checkpoint(train_settings["checkpoint_dir"])
+if latestCheckpoint is not None:
+      restorer = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
+      restorer.restore(sess, latestCheckpoint)
+      print('Pre-trained model restored')
+
+saver = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
+</code></pre></div></div>
+
+<p>Now we start a thread to run our custom <code class="highlighter-rouge">load_and_enqueue</code> method from earlier which reads from <code class="highlighter-rouge">data</code> and enqueues the sequences into the <code class="highlighter-rouge">RandomShuffleQueue</code>. Preprocessing and data loading is better done on the CPU.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start a thread to enqueue data asynchronously to decouple data I/O from training
+with tf.device("/cpu:0"):
+    t = threading.Thread(target=load_and_enqueue, args=[trainIndices])
+    t.start()
+</code></pre></div></div>
+
+<p>We can set up some logging functions so we can nicely visualise statistics with Tensorboard:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># LOGGING
+# Add histograms for trainable variables.
+histograms = [tf.summary.histogram(var.op.name, var) for var in tf.trainable_variables()]
+summary_op = tf.summary.merge_all()
+# Create summary writer
+summary_writer = tf.summary.FileWriter(train_settings["log_dir"], sess.graph.as_graph_def(add_shapes=True)
+</code></pre></div></div>
+
+<p>Now the training loop runs the training and summary operations, and writes summaries and periodically also model checkpoints to save progress:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>loops = 0
+while loops &lt; train_settings["max_iterations"]:
+    loops += 1
+    [res_loss, _, res_global_step, res_learning_rate, summary] = sess.run(trainOps + [summary_op])
+    new_time = time.time()
+    print("Chars per second: " + str(float(model_settings["batch_size"] * model_settings["num_unroll"]) / (new_time - current_time)))
+    current_time = new_time
+    print("Loss: " + str(res_loss) + ", Learning rate: " + str(res_learning_rate) + ", Step: " + str(res_global_step))
+
+    # Write summaries for this step
+    summary_writer.add_summary(summary, global_step=int(res_global_step))
+    if res_global_step % train_settings["save_model_epoch_frequency"] == 0:
+        print("Saving model...")
+        saver.save(sess, train_settings["checkpoint_path"], global_step=int(res_global_step))
+</code></pre></div></div>
+
+<p>After the maximum desired number of iterations has been reached (or some other criterion), we stop:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Stop our custom input thread
+print("Stopping custom input thread")
+sess.run(q.close())  # Then close the input queue
+t.join(timeout=1)
+
+# Close session, clear computational graph
+sess.close()
+tf.reset_default_graph()
+</code></pre></div></div>
+
+<h1 id="testing">Testing</h1>
+
+<p>After training, we want to evaluate the performance on the test set. The code for this looks similar, so I will only show the differences here. We load the trained model:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CHECKPOINTING
+# Load pretrained model to test
+latestCheckpoint = tf.train.latest_checkpoint(train_settings["checkpoint_dir"])
+restorer = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
+restorer.restore(sess, latestCheckpoint)
+</code></pre></div></div>
+
+<p>In our custom input queue thread, we close the queue after enqueueing all test samples so the process is stopped after seeing each example exactly once:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
+def load_and_enqueue(indices):
+    for index in indices:
+        current_seq = data[index][1]
+        sess.run(enqueue_op, feed_dict={keyInput: str(index),
+                                      lengthInput: len(current_seq)-1,
+                                    seqInput: current_seq[:-1],
+                                    seqOutput: current_seq[1:]})
+    print "Finished enqueueing all " + str(len(indices)) + " samples!"
+    sess.run(q.close())
+</code></pre></div></div>
+
+<p>The test loop now uses the total cross-entropy returned from our model class along with the number of valid output positions to compute a bit-per-character metric:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inferenceOps = [loss, mean_cross_loss, sum_cross_loss, output_num]
+
+current_time = time.time()
+logprob_sum = 0.0
+character_sum = 0
+iteration = 0
+while True:
+    try:
+        [l, mcl, scl, nb, summary] = sess.run(inferenceOps + [summary_op])
+    except tf.errors.OutOfRangeError:
+        print("Finished testing!")
+        break
+
+    new_time = time.time()
+    print("Chars per second: " + str(
+        float(model_settings["batch_size"] * model_settings["num_unroll"]) / (new_time - current_time)))
+    current_time = new_time
+
+    logprob_sum += scl # Add up per-char log probabilities of predictive model: Sum_i=1^N (log_2 q(x_i)), which is equal to cross-entropy term for all chars
+    character_sum +=  nb # Add up how many characters were in the batch
+
+    print(l, mcl, scl)
+    summary_writer.add_summary(summary, global_step=int(iteration))
+    iteration += 1
+
+    print("Bit-per-character: " + str(logprob_sum / character_sum))
+</code></pre></div></div>
+
+<p>Note here that we catch an <code class="highlighter-rouge">OutOfRangeError</code> that is thrown as soon as our input queue is empty after the input thread finishes and closes it.</p>
+
+<h1 id="sampling">Sampling</h1>
+
+<p>Unfortunately, sampling as a use case is very different from the train and test setting:</p>
+
+<ul>
+  <li>We want to consider a single sequence, not a whole batch</li>
+  <li>The output of the RNN at the current time step is used as input for the next, which makes static unrolling inappropriate</li>
+  <li>We cannot in parallel evaluate multiple timesteps, but need to keep the hidden state after each input to feed back into the model (rendering the previously used state saver concepts cumbersome)</li>
+</ul>
+
+<p>Therefore, I did it the hard way and maintained the RNN states myself. This requires setting up placeholders for the states manually to be able to feed values in during sampling, and defining the initial zero states to use for the prediction of the first character:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Load vocab
+vocab = Vocabulary.load(data_settings["input_vocab"])
+
+# INPUT PIPELINE
+input = tf.placeholder(tf.int32, shape=[None], name="input") # Integers representing characters
+# Create state placeholders - 2 for each lstm cell.
+state_placeholders = list()
+initial_states = list()
+for i in range(0,model_settings["num_layers"]):
+    state_placeholders.append(tuple([tf.placeholder(tf.float32, shape=[1, model_settings["lstm_size"]], name="lstm_state_c_" + str(i)), # Batch size x State size
+                                tf.placeholder(tf.float32, shape=[1, model_settings["lstm_size"]], name="lstm_state_h_" + str(i))])) # Batch size x State size
+    initial_states.append(tuple([np.zeros(shape=[1, model_settings["lstm_size"]], dtype=np.float32),
+                          np.zeros(shape=[1, model_settings["lstm_size"]], dtype=np.float32)]))
+state_placeholders = tuple(state_placeholders)
+initial_states = tuple(initial_states)
+</code></pre></div></div>
+
+<p>The states are represented as tuples in tensorflow. The model itself also has to be adapted accordingly. We use a batch size and unroll length of 1, so we only predict exactly one character at a time, and feed in the input along with the state placeholders:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">#</span> <span class="k">MODEL</span>
+<span class="n">inference_settings</span> <span class="p">=</span> <span class="n">model_settings</span>
+<span class="n">inference_settings</span><span class="p">[</span><span class="s2">"batch_size"</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span> <span class="p">#</span> <span class="n">Only</span> <span class="n">sample</span> <span class="k">from</span> <span class="n">one</span> <span class="n">example</span> <span class="n">simultaneously</span>
+<span class="n">inference_settings</span><span class="p">[</span><span class="s2">"num_unroll"</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span> <span class="p">#</span> <span class="n">Only</span> <span class="n">sample</span> <span class="n">one</span> <span class="n">character</span> <span class="n">at</span> <span class="n">a</span> <span class="n">time</span>
+<span class="k">model</span> <span class="p">=</span> <span class="n">LyricsPredictor</span><span class="p">(</span><span class="n">inference_settings</span><span class="p">,</span> <span class="n">vocab</span><span class="p">.</span><span class="n">size</span> <span class="p">+</span> <span class="m">1</span><span class="p">)</span>  <span class="p">#</span> <span class="k">Include</span> <span class="n">EOS</span> <span class="n">token</span>
+<span class="n">probs</span><span class="p">,</span> <span class="n">state</span> <span class="p">=</span> <span class="k">model</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="n">state_placeholders</span><span class="p">)</span>
+</code></pre></div></div>
+
+<p>This time, we use the <code class="highlighter-rouge">sample</code> method from the <code class="highlighter-rouge">LyricsPredictor</code> class to build the required computational graph:</p>
+
+<p>def sample(self, input, current_state):
+    # RNN cells and states
+    cells = list()
+    for i in range(0, self.num_layers):
+        cell = tf.contrib.rnn.LSTMBlockCell(num_units=self.lstm_size) # Block LSTM version gives better performance #TODO Add linear projection option
+        cell = tf.nn.rnn_cell.DropoutWrapper(cell,1.0,1.0) # No dropout during sampling
+        cells.append(cell)
+    cell = tf.nn.rnn_cell.MultiRNNCell(cells)
+    self.initial_states = cell.zero_state(batch_size=1,dtype=tf.float32)</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Convert input into one-hot representation (from single integers indicating character)
+embedding = tf.constant(np.eye(self.vocab_size), dtype=tf.float32)
+input = tf.nn.embedding_lookup(embedding, input) # 1 x Vocab-size
+inputs\_by\_time = \[input\] # List of 1 x Vocab-size tensors (with just one tensor in it, because we just use sequence length 1
+
+self.outputs, state = tf.nn.rnn(cell, inputs\_by\_time, initial\_state=current\_state, scope='SSRNN')
+</code></pre></div></div>
+
+<p>Crucially, we set the scope when setting up the RNN to the same that was used when building the model during training and testing, so that when we load the checkpoint, the RNN variables are set up correctly. Afterwards, the softmax is applied as shown earlier. The function returns the probabilities and the resulting LSTM state after processing the input character, which we store in the following.</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inference = [probs, state]
+
+current_seq = "never" # This can be any alphanumeric text
+current_seq_ind = vocab.char2index(current_seq)
+
+# Warm up RNN with initial sequence
+s = initial_states
+for ind in current_seq_ind:
+    # Create feed dict for states
+    feed = dict()
+    for i in range(0, model_settings["num_layers"]):
+        for c in range(0, len(s[i])):
+            feed[state_placeholders[i][c]] = s[i][c]
+            feed[state_placeholders[i][c]] = s[i][c]
+
+    feed[input] = [ind] # Add new input symbol to feed
+    [p, s] = sess.run(inference, feed_dict=feed)
+</code></pre></div></div>
+
+<p>In the above code, we set an initial sequence (“never”) and prepare the LSTM to continue the lyrics (e.g. “never gonna give you up”) by feeding in one character after another and carrying over the states. These are nested tuples, organised according to layers, each with a cell and a hidden state (this is due to the LSTM structure). The hidden state now hopefully captures meaningful information about the input text <code class="highlighter-rouge">current_seq</code>, so we can take the current prediction probabilities and sample from them to generate the next character, feed it into the network, and repeat that process until we receive the special end token signalling that the LSTM is finished with the “creative process”:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Sample until we receive an end-of-lyrics token
+iteration = 0
+while iteration &lt; 100000: # Just a safety measure in case the model does not stop
+    # Now p contains probability of upcoming char, as estimated by model, and s the last RNN state
+    ind_sample = np.random.choice(range(0,vocab.size+1), p=np.squeeze(p))
+    if ind_sample == vocab.size: # EOS token
+        print("Model decided to stop generating!")
+        break
+
+    current_seq_ind.append(ind_sample)
+
+    # Create feed dict for states
+    feed = dict()
+    for i in range(0, model_settings["num_layers"]):
+        for c in range(0, len(s[i])):
+            feed[state_placeholders[i][c]] = s[i][c]
+            feed[state_placeholders[i][c]] = s[i][c]
+
+    feed[input] = [ind_sample]  # Add new input symbol to feed
+    [p, s] = sess.run(inference, feed_dict=feed)
+
+    iteration += 1
+</code></pre></div></div>
+
+<p>Finally, we convert the generated list of integer indices to their character representation, and print out the result:</p>
+
+<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c_sample = vocab.index2char(current_seq_ind)
+print("".join(c_sample))
+
+sess.close()
+</code></pre></div></div>
+
+<h2 id="example-output">Example output</h2>
+
+<p>And now starts the fun! Feel free to extend the model to your liking. Want to see what my own model generates? Here is the output of a 2-layer 512-hidden node LSTM with 0.2 output dropout trained for only two hours on Metrolyrics text, when told to start with “never”:</p>
+
+<blockquote>
+  <p>never yet in you but that letters know a stobalal in you on the brink so to the victory no matter what i might understand the sun where i am with all this phon people theyll get my knife off a girl that it thats forsaken just smiling still welcome to me<br />
+its a gangsta good times is like a fesire then im holding fantastine is on though we bring it out to who burn today well make all the lights in his face im here so bright<br />
+sos we do what we do we dont know where we harm<br />
+and every time we get you now dont need rewith nothing yeah you dont want a sip or just look at dont make it on the 5 dirty doubt then most name yeah dont know about it i know and you dont wanna play with her no no no<br />
+come on ah yeah yeah women make you bury tight around rising in stop up in the top looking out of the middle of the sea<br />
+youre not drunk and im not in real hard to hit you all around cover up tune whats not there how to make you cry so long your cut money rolling around and the storm ignite it youre peacent burn so fast blue no fading<br />
+two number on the home was we praying of happy for your respect a death a lip another day and style niggas keep that an internuted at leven but you was the way you fall and ive been ready at all ive never seen the girls i tried to drive i took a fool from the river instead i just draw your life when my head stays the fellas we dreams to all ill stay<br />
+and nobody should be there in here but when i hide all my echo and make you hold me up im going to get more to fall in your sea oh right through a night in your news one two treatnessboy shes passed out in the sky all the real friends are downs light to out here he was rightly word out im not driving in my eyes suddenly reminding me im being that dragong class i wish i was since yours your peace of<br />
+pour it like like a record beautiful man i do you on the kid punk its when im attack i know when im smiling taste so i find a little far</p>
+</blockquote>
+
+<p>As you can see, the model learned to structure its musings in paragraphs akin to real lyrics, and overall makes some good attempts at coming up with new sentences. Apparently this song is more of a Gangsta rap, as suggested by the words “knife”, “gangsta”, “niggas”, etc. Sentences only sometimes make proper sense, unfortunately. It sometimes comes up with semi-random new words, like “dragong” and “peacent”, because it has to learn spelling and vocabulary from scratch as opposed to word-level language models. It also did not learn meaningful long-term dependencies such as verse/chorus structures.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2016-11-12T00:00:00+00:00">November 12, 2016</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Tensorflow+Lstm+For+Language+Modelling%20http%3A%2F%2Flocalhost%3A4000%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/Snowfall-a-very-special-video-game-controller/" class="pagination--pager" title="Snowfall: A Very Special Video Game Controller
+">Previous</a>
+    
+    
+      <a href="/Spectrogram-input-normalisation-for-neural-networks/" class="pagination--pager" title="Spectrogram Input Normalisation For Neural Networks
+">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram Input Normalisation For Neural Networks
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.
+
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Snowfall-a-very-special-video-game-controller/" rel="permalink">Snowfall: A Very Special Video Game Controller
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Here is a short Youtube video explaining what this post it about. How did I do it? I will try to go through the main steps in the following.
+
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  
+
+
+
+  </body>
+</html>

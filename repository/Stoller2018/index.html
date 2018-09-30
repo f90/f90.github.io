@@ -1,0 +1,454 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Adversarial Semi-Supervised Audio Source Separation applied to Singing	Voice Extraction - Dans World</title>
+<meta name="description" content="Machine learning, music information retrieval, and other things">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="Adversarial Semi-Supervised Audio Source Separation applied to Singing	Voice Extraction">
+<meta property="og:url" content="http://localhost:4000/repository/Stoller2018/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/repository/Stoller2018/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--archive">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Daniel Stoller</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Researcher in Machine Learning and Music Information Retrieval.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">London, UK</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:business@dstoller.net">
+            <meta itemprop="email" content="business@dstoller.net" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/daniel-stoller" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/f90" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+        <li>
+    <a href="https://orcid.org/0000-0002-8615-4144" itemprop="sameAs">
+      <i class="ai ai-orcid-square ai-fw"></i> ORCID
+    </a>
+  </li>
+
+  <li>
+    <a href="https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ" itemprop="sameAs">
+      <i class="ai ai-google-scholar-square ai-fw"></i> Google Scholar
+    </a>
+</li>
+
+  <li>
+    <a href="https://qmul.academia.edu/DanielStoller" itemprop="sameAs">
+      <i class="ai ai-academia-square ai-fw"></i> Academia.edu
+    </a>
+</li>
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Adversarial Semi-Supervised Audio Source Separation applied to Singing
+	Voice Extraction</h1>
+    
+    <div>
+  <div>
+    <h5>Venue</h5>
+    <p> 
+		Proceedings of the IEEE International Conference on Acoustics, Speech,
+	and Signal Processing (ICASSP), pp. 2391–2395
+			
+</p>
+    <h5>Publication Year</h5>
+    <p>2018</p>
+    
+    
+  </div>
+</div>
+
+<h3>Authors</h3>
+<ul class="list-inline">
+
+
+
+<li class="list-inline-item">Daniel Stoller</li>
+
+
+
+<li class="list-inline-item">Sebastian Ewert</li>
+
+
+
+<li class="list-inline-item">Simon Dixon</li>
+
+</ul>
+
+
+
+<h3>Abstract</h3>
+<p>
+The state of the art in music source separation employs neural networks
+	trained in a supervised fashion on multi-track databases to estimate
+	the sources from a given mixture. With only few datasets available,
+	often extensive data augmentation is used to combat overfitting.
+	Mixing random tracks, however, can even reduce separation performance
+	as instruments in real music are strongly correlated. The key concept
+	in our approach is that source estimates of an optimal separator
+	should be indistinguishable from real source signals. Based on this
+	idea, we drive the separator towards outputs deemed as realistic
+	by discriminator networks that are trained to tell apart real from
+	separator samples. This way, we can also use unpaired source and
+	mixture recordings without the drawbacks of creating unrealistic
+	music mixtures. Our framework is widely applicable as it does not
+	assume a specific network architecture or number of sources. To our
+	knowledge, this is the first adoption of adversarial training for
+	music source separation. In a prototype experiment for singing voice
+	separation, separation performance increases with our approach compared
+	to purely supervised training.
+</p>
+
+
+
+<h3>Source Materials</h3>
+<ul class="fa-ul">
+  
+  
+  
+  
+  
+  
+  
+  <li><a href="
+  
+    /repository/Stoller2018.published.pdf
+  
+  "> <i class="fa fa-li fa-file-pdf"></i>Published Version </a></li>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+
+  
+
+  <li><a download="Stoller2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BStoller2018,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20title%20=%20%7BAdversarial%20Semi-Supervised%20Audio%20Source%20Separation%20applied%20to%20Singing%0A%20%20%09Voice%20Extraction%7D,%0A%20%20booktitle%20=%20%7BProceedings%20of%20the%20IEEE%20International%20Conference%20on%20Acoustics,%20Speech,%0A%20%20%09and%20Signal%20Processing%20(%7BICASSP%7D)%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20pages%20=%20%7B2391--2395%7D,%0A%20%20address%20=%20%7BCalgary,%20Canada%7D,%0A%20%20publisher%20=%20%7BIEEE%7D,%0A%20%20abstract%20=%20%7BThe%20state%20of%20the%20art%20in%20music%20source%20separation%20employs%20neural%20networks%0A%20%20%09trained%20in%20a%20supervised%20fashion%20on%20multi-track%20databases%20to%20estimate%0A%20%20%09the%20sources%20from%20a%20given%20mixture.%20With%20only%20few%20datasets%20available,%0A%20%20%09often%20extensive%20data%20augmentation%20is%20used%20to%20combat%20overfitting.%0A%20%20%09Mixing%20random%20tracks,%20however,%20can%20even%20reduce%20separation%20performance%0A%20%20%09as%20instruments%20in%20real%20music%20are%20strongly%20correlated.%20The%20key%20concept%0A%20%20%09in%20our%20approach%20is%20that%20source%20estimates%20of%20an%20optimal%20separator%0A%20%20%09should%20be%20indistinguishable%20from%20real%20source%20signals.%20Based%20on%20this%0A%20%20%09idea,%20we%20drive%20the%20separator%20towards%20outputs%20deemed%20as%20realistic%0A%20%20%09by%20discriminator%20networks%20that%20are%20trained%20to%20tell%20apart%20real%20from%0A%20%20%09separator%20samples.%20This%20way,%20we%20can%20also%20use%20unpaired%20source%20and%0A%20%20%09mixture%20recordings%20without%20the%20drawbacks%20of%20creating%20unrealistic%0A%20%20%09music%20mixtures.%20Our%20framework%20is%20widely%20applicable%20as%20it%20does%20not%0A%20%20%09assume%20a%20specific%20network%20architecture%20or%20number%20of%20sources.%20To%20our%0A%20%20%09knowledge,%20this%20is%20the%20first%20adoption%20of%20adversarial%20training%20for%0A%20%20%09music%20source%20separation.%20In%20a%20prototype%20experiment%20for%20singing%20voice%0A%20%20%09separation,%20separation%20performance%20increases%20with%20our%20approach%20compared%0A%20%20%09to%20purely%20supervised%20training.%7D,%0A%20%20preprint%20=%20%7Bhttps://arxiv.org/abs/1711.00048%7D%0A%7D%0A%7B%25endraw%25%7D">
+      <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>
+</ul>
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  </body>
+</html>

@@ -1,0 +1,661 @@
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2018-09-30T19:50:08+01:00</updated><id>http://localhost:4000/</id><title type="html">Dans World</title><subtitle>Machine learning, music information retrieval, and other things</subtitle><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><entry><title type="html">Spectrogram Input Normalisation For Neural Networks</title><link href="http://localhost:4000/Spectrogram-input-normalisation-for-neural-networks/" rel="alternate" type="text/html" title="Spectrogram Input Normalisation For Neural Networks" /><published>2017-11-29T00:00:00+00:00</published><updated>2017-11-29T00:00:00+00:00</updated><id>http://localhost:4000/Spectrogram-input-normalisation-for-neural-networks</id><content type="html" xml:base="http://localhost:4000/Spectrogram-input-normalisation-for-neural-networks/">&lt;p&gt;In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.&lt;/p&gt;
+
+&lt;h3 id=&quot;introduction-time-frequency-representations-magnitude-spectrogram&quot;&gt;Introduction: Time-frequency representations, magnitude spectrogram&lt;/h3&gt;
+
+&lt;p&gt;When using neural networks for audio tasks, it is often advantageous to input not the audio waveform directly into the network, but a two-dimensional representation describing the energy in the signal at a particular time and frequency. A popular time-frequency representation which we will also use here is obtained by the &lt;a href=&quot;https://en.wikipedia.org/wiki/Short-time_Fourier_transform&quot;&gt;short-time Fourier transform (STFT)&lt;/a&gt;, where the audio is split into overlapping time frames for which the FFT is computed. From an STFT, we obtain a &lt;strong&gt;spectrogram matrix&lt;/strong&gt; $\mathbf{S}$ with F rows (number of frequency bins) and T columns (number of time frames), where each entry is a complex number. We can take the radius and the polar angle of each complex number to decompose the spectrogram matrix into a &lt;strong&gt;magnitude matrix&lt;/strong&gt; $\mathbf{M}$ and a &lt;strong&gt;phase matrix&lt;/strong&gt; $\mathbf{P}$ so that for each entry we have&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;S_{i,j} = M_{i,j} * e^{i * P_{i,j}}&lt;/script&gt;
+
+&lt;p&gt;For many audio tasks, only the magnitudes $\mathbf{M}$ are used and the phases $ \mathbf{P}$ are discarded - when using overlapping windows, $ \mathbf{S}$ can be reconstructed from $ \mathbf{M}$ alone, and the phase tends to have a &lt;a href=&quot;http://deepsound.io/dcgan_spectrograms.html&quot;&gt;minor impact on sound quality&lt;/a&gt;. Here you can see the magnitude and phase for an example song, computed from an STFT with $ N=2048$ samples in each window, and a hop size of 512:&lt;/p&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrogram.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Magnitudes $ \mathbf{M}$ on logarithmic scale ($log(x+1)$) of an example song, with frequency on the vertical, and time frames on the horizontal axes.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/phasespectrogram.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Phase matrix $ \mathbf{P}$, each value being an angle in radians&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h3 id=&quot;determining-the-value-range-for-spectrogram-magnitudes&quot;&gt;Determining the value range for spectrogram magnitudes&lt;/h3&gt;
+
+&lt;p&gt;Neural networks tend to converge faster and more stably when the inputs are normally distributed with a mean close to zero and a bounded variance (e.g. 1) so that with the initial weights, the output is already close to the desired one. Similarly, to allow a neural network to output high-dimensional objects, using an output activation function in the last layer that constrains the output range of the network to the real data range can greatly help training and also prevent invalid network predictions. For example, pixels in images are often reduced to a [0,1] interval, and the network output is fed through a sigmoid nonlinearity whose output domain is (0,1).&lt;/p&gt;
+
+&lt;p&gt;For these reasons, we need to know the minimum and maximum possible magnitude value in our spectrograms. Since they measure the length of a 2D vector (polar coordinates, their minimum value is zero. For the maximum value of any magnitude, we take a look at how the complex Fourier coefficient for frequency k is computed in an N-point FFT, which ends up in the complex-valued spectrogram:&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;X_k = \sum_{i=0}^{N-1}{x_i \cdot [cos(\frac{2 \pi k n}{N}) - i \cdot sin(\frac{2 \pi k n}{N})]}&lt;/script&gt;
+
+&lt;p&gt;Since the complex part of the product is bounded by 1 in its magnitude, multiplication by the signal amplitude $x_i$ which is between -1 and 1 results in a complex number still bounded by 1 in magnitude. Taking the sum, the maximum for $X_k$ is thus N. When using a window, we multiply a $ w_i$ term to each element in the sum. In the worst case, we have a 1 in magnitude for each entry, so multiplying by each window element gives us the sum of all the window elements as maximum.&lt;/p&gt;
+
+&lt;p&gt;Therefore, &lt;strong&gt;the range of possible magnitudes resulting from an N-point STFT is&lt;/strong&gt;: $ [0, \sum_{i=0}^{N-1}{w_i}]$ With a Hanning window, this turns out to be exactly $\frac{N}{2}$. Now we know the value range of magnitudes and could therefore normalise them to a desired range, for example [0, 1]. If we want our model to output audio, we can use a sigmoid function as output activation function, and apply the inverse of this normalisation step, to accelerate learning and ensure that the network outputs are valid.&lt;/p&gt;
+
+&lt;h3 id=&quot;gaussianisation-to-make-spectral-magnitudes-normally-distributed&quot;&gt;Gaussianisation to make spectral magnitudes normally distributed&lt;/h3&gt;
+
+&lt;p&gt;However, the overall distribution of magnitude values is very non-Gaussian, since many entries in the spectrogram are close to zero, creating a very skewed (heavy-tailed) distribution which can impede learning:&lt;/p&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/spectrohistro.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Histogram of spectrogram values, frequency on vertical axis.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;As the plot shows, the magnitudes roughly follow a steep exponential distribution. I will show both an easy, and a more accurate and complex way to make this more normally distributed.&lt;/p&gt;
+
+&lt;h3 id=&quot;1-option-a-logarithmic-transformation&quot;&gt;1. Option: A logarithmic transformation&lt;/h3&gt;
+
+&lt;p&gt;For a roughly exponential distribution, an obvious idea would be to compute $\log(\mathbf{S})$, which is a simple and dataset-independent transformation, to stretch out the near-zero values. However, magnitudes can be zero, and log(0) is undefined! What about if we add a certain positive constant c and compute $\log(\mathbf{S} + c)$? The problem here is that the value of the number critically influences how much low magnitudes close to zero are expanded during transformation - low values of c such as 0.001 lead to great expansion, and vice versa. It is also not immediately clear how to set c to approximate a normal distribution closest. Despite these problems, the transformation at least compresses large values effectively and is used so often that many computing libraries such as Numpy offer the c=1 version with a shorthand called “&lt;a href=&quot;https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.log1p.html&quot;&gt;log1p&lt;/a&gt;”, and the inverse “&lt;a href=&quot;https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.expm1.html&quot;&gt;expm1&lt;/a&gt;” defined as $\exp{x} - 1$. For our example, we see that c=1 does not change the shape of distribution much at all, while $ c=10^{-7}$ gets us close to a normal distribution:&lt;/p&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrohisto.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Applying $log1p = \log(x+1)$ (c=1) to the magnitude values does not change the shape of the distribution much, but constrains the input values to a much smaller range, and enlarges differences between small values.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/loggspectrohisto.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Applying $\log(x + 10^{-7})$ ($c=10^{-7}$) to the magnitude values almost gives us a normally distributed variable, leaving only a small additional peak at around -8.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;p&gt;In general, we see that the closer c is to zero, the more small values are expanded. But how do we set this factor of expansion to make values as close to normally distributed as possible? This is where the Box-Cox transformation comes in!&lt;/p&gt;
+
+&lt;h3 id=&quot;2-option-transformation-with-box-cox&quot;&gt;2. Option: Transformation with Box-Cox&lt;/h3&gt;
+
+&lt;p&gt;A more advanced method for Gaussianisation is the &lt;a href=&quot;https://en.wikipedia.org/wiki/Power_transform#Box.E2.80.93Cox_transformation&quot;&gt;&lt;strong&gt;Box-Cox-Transformation&lt;/strong&gt;&lt;/a&gt;. It comes in two variants: With only one, or with two parameters. We will need the two-parameter version, as it can handle zero values which can occur in our spectrogram. With parameters $ \lambda_1$ and $ \lambda_2$ the Box-Cox transformation is defined as&lt;/p&gt;
+
+&lt;script type=&quot;math/tex; mode=display&quot;&gt;% &lt;![CDATA[
+y_i^{(\boldsymbol{\lambda})} = 
+\begin{cases} 
+  \dfrac{(y_i + \lambda_2)^{\lambda_1} - 1}{\lambda_1} &amp; \text{if } \lambda_1 \neq 0, \\
+  \ln{(y_i + \lambda_2)} &amp; \text{if } \lambda_1 = 0.
+\end{cases} %]]&gt;&lt;/script&gt;
+
+&lt;p&gt;Upon closer inspection, we can see similarities to our first option, the logarithmic transformation. $ \lambda_2$ serves the same purpose as the constant c: Making the values non-zero so we can apply further transformations. For $ \lambda_1 = 0$, Box-Cox is even equivalent to our first method and can be seen as an extension of it! The important difference is that &lt;strong&gt;the parameters are estimated from data&lt;/strong&gt; so that the resulting distribution is as close to normally distributed as possible, which is more accurate than a simple log transform with a predefined constant c. I have not come across an implementation that estimates both parameters, though. With the boxcox method from Scipy, we can only estimate $ \lambda_1$, so for our audio example we use $ \lambda_2 = 10^{-7}$ just like in our first method. The best parameter found is $ \lambda_1 = 0.043$, which is very close to zero and therefore a very similar transformation:&lt;/p&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxhisto.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Histogram of magnitude values after Box-Cox transformation with $\lambda_1 = 0.043, \lambda_2 = 10^{-7}$. The tails of the distribution are more symmetrical and the peak is more centered between them, but the additional peak remains.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;figure&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxspectro.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;figcaption&gt;Box-cox-transformed magnitude spectrogram. The structures in the higher frequency ranges are now more easily visible, while the fact that lower frequencies have higher energy is less emphasized.&lt;/figcaption&gt;
+&lt;/figure&gt;
+
+&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;Magnitude spectrograms are tricky to use as input or output of neural networks due to their very skewed, non-normal distribution of values, and because it is hard to find out their maximum value that is needed to scale the value range to a desired interval. The latter is especially important for neural networks that output magnitudes directly, whose training can work better with an output activation function that restricts the network output range to valid values.&lt;/p&gt;
+
+&lt;p&gt;The solution is input normalisation: &lt;strong&gt;First, transform the values&lt;/strong&gt; either with a simple $x \rightarrow \log(x+1)$ (first option) or a Box-Cox transformation (second option, more advanced), which should expand low values and compress high ones, &lt;strong&gt;making the distribution more Gaussian&lt;/strong&gt;. &lt;strong&gt;Then bring the transformed values into the desired interval&lt;/strong&gt;. For this we calculate which value 0 and the maximum magnitude are transformed into after applying our particular Gaussianisation, and use this to scale the values to the desired interval.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.</summary></entry><entry><title type="html">Tensorflow Lstm For Language Modelling</title><link href="http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling/" rel="alternate" type="text/html" title="Tensorflow Lstm For Language Modelling" /><published>2016-11-12T00:00:00+00:00</published><updated>2016-11-12T00:00:00+00:00</updated><id>http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling</id><content type="html" xml:base="http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling/">&lt;p&gt;In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.&lt;/p&gt;
+
+&lt;h2 id=&quot;the-code&quot;&gt;The code&lt;/h2&gt;
+
+&lt;p&gt;The code is available &lt;a href=&quot;https://github.com/f90/Tensorflow-Char-LSTM/tree/master&quot;&gt;here&lt;/a&gt;, and the lyrics database can be created by running the crawler I developed &lt;a href=&quot;https://github.com/f90/lyrics-crawler&quot;&gt;here&lt;/a&gt;.&lt;/p&gt;
+
+&lt;h2 id=&quot;want-to-see-what-lyrics-my-model-composes-click-here&quot;&gt;Want to see what lyrics my model composes? &lt;a href=&quot;#example-output&quot;&gt;Click here!&lt;/a&gt;&lt;/h2&gt;
+
+&lt;p&gt;It is implemented in Tensorflow, which has been rapidly evolving in the last few months. As a result, best practices for common tasks are changing as well. That is why I built my own code to make the best use out of &lt;a href=&quot;https://www.tensorflow.org/versions/r0.12/how_tos/threading_and_queues/index.html&quot;&gt;Queues&lt;/a&gt;, and new functionality from the &lt;a href=&quot;https://github.com/tensorflow/tensorflow/blob/master/tensorflow/g3doc/api_docs/python/contrib.training.md&quot;&gt;training-contrib&lt;/a&gt; package. In particular, implementing batch-training with variable-length sequences on an unrolled LSTM with truncated BPTT with maintaining the hidden state for each sequence is greatly simplified and optimised. Without further ado, let’s get started!&lt;/p&gt;
+
+&lt;h1 id=&quot;input-pipeline&quot;&gt;Input pipeline&lt;/h1&gt;
+
+&lt;p&gt;First, we are going to load the dataset. I adapted this a bit to my case, but it should be easy for you to change it to your liking:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;data, vocab = Dataset.readLyrics(data_settings[&quot;input_csv&quot;], data_settings[&quot;input_vocab&quot;])
+trainIndices, testIndices = Dataset.createPartition(data, train_settings[&quot;trainPerc&quot;])
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;Dataset&lt;/code&gt; is a helper file that manages dataset-related operations. Here I assume &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt; has the form of a list of entries, each again a list with two entries: The first entry denotes the artist and the second the lyrics content. The first entry is used to prevent having the same artist in both training and test set. &lt;code class=&quot;highlighter-rouge&quot;&gt;trainIndices&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;testIndices&lt;/code&gt; are lists of indices refer to the rows in &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt; that correspond to the training and test set, respectively. The settings variables are just dictionaries that yield user-defined settings. &lt;code class=&quot;highlighter-rouge&quot;&gt;vocab&lt;/code&gt; is a special Vocabulary object that translates characters into integer indices and vice versa, and we will get to know its functionality better along the way. For creating the batches to train on, we will use &lt;code class=&quot;highlighter-rouge&quot;&gt;batch_sequences_with_states&lt;/code&gt;, as it is very convenient to use. It requires a key, the sequence length, and input and output for a SINGLE sequence in symbolic form. We create these properties here as placeholders, to later feed them with our own input thread. This design makes input processing very fast and ensures it does not reduce overall training speed: Model training and input processing are running simultaneously in different threads.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;keyInput = tf.placeholder(tf.string) # To identify each sequence
+lengthInput = tf.placeholder(tf.int32) # Length of sequence
+seqInput = tf.placeholder(tf.int32, shape=[None]) # Input sequence
+seqOutput = tf.placeholder(tf.int32, shape=[None]) # Output sequence
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then we create a &lt;code class=&quot;highlighter-rouge&quot;&gt;RandomShuffleQueue&lt;/code&gt; and the enqueue and dequeue operations, which means sequences will be randomly selected from the queue to form batches during training. This presents an effective compromise between completely random sample selection, which is often slow for large datasets as data has to be pulled from very different memory locations, and completely sequential reading. Using the dictionaries ensures compatibility with the Tensorflow sequence format:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;q = tf.RandomShuffleQueue(input_settings[&quot;queue_capacity&quot;], input_settings[&quot;min_queue_capacity&quot;],
+                      [tf.string, tf.int32, tf.int32, tf.int32])
+enqueue_op = q.enqueue([keyInput, lengthInput, seqInput, seqOutput])
+
+with tf.device(&quot;/cpu:0&quot;):
+    key, contextT, sequenceIn, sequenceOut = q.dequeue()
+    context = {&quot;length&quot; : tf.reshape(contextT, [])}
+    sequences = {&quot;inputs&quot; : tf.reshape(sequenceIn, [contextT]),
+                &quot;outputs&quot; : tf.reshape(sequenceOut, [contextT])}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Instead of using the built-in CSV or TFRecord Readers to enqueue samples, I created my own method that can read directly from the &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt; in the RAM. It endlessly loops over the samples given by &lt;code class=&quot;highlighter-rouge&quot;&gt;indices&lt;/code&gt; and adds them to the queue. It can easily be adapted to read arbitrary files/parts of datasets and perform further preprocessing:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
+def load_and_enqueue(indices):
+    run = True
+    key = 0 # Unique key for every sample, even over multiple epochs (otherwise the queue could be filled up with two same-key examples)
+    while run:
+        for index in indices:
+            current_seq = data[index][1]
+            try:
+                sess.run(enqueue_op, feed_dict={keyInput: str(key),
+                                          lengthInput: len(current_seq)-1,
+                                        seqInput: current_seq[:-1],
+                                        seqOutput: current_seq[1:]},
+                                options=tf.RunOptions(timeout_in_ms=60000))
+            except tf.errors.DeadlineExceededError as e:
+                print(&quot;Timeout while waiting to enqueue into input queue! Stopping input queue thread!&quot;)
+                run = False
+                break
+            key += 1
+        print &quot;Finished enqueueing all &quot; + str(len(indices)) + &quot; samples!&quot;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;load_and_enqueue&lt;/code&gt; will be started as a separate Thread later. Two important things to note here. One is the &lt;code class=&quot;highlighter-rouge&quot;&gt;key&lt;/code&gt; which is different even for the same samples to avoid errors when incidentally queueing the same samples into the queue, which causes the keys to clash. The other is the timeout, which is the only way I found to be able to stop the training by closing the queue and then catching the resulting &lt;code class=&quot;highlighter-rouge&quot;&gt;DeadlineExceededError&lt;/code&gt;. Lastly, the input and output is delayed by one step to force the model to predict the upcoming character.&lt;/p&gt;
+
+&lt;h1 id=&quot;the-lstm-model&quot;&gt;The LSTM model&lt;/h1&gt;
+
+&lt;p&gt;Our model is an LSTM with a variable number of layers and configurable dropout, whose hidden states will be maintained separately for each sequence. I created a new class &lt;code class=&quot;highlighter-rouge&quot;&gt;LyricsPredictor&lt;/code&gt; with an inference method that builds the computational graph. The beginning looks like this and sets up the RNN cells:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def inference(self, key, context, sequences, num_enqueue_threads):
+    # RNN cells and states
+    cells = list()
+    initial_states = dict()
+    for i in range(0, self.num_layers):
+        cell = tf.contrib.rnn.LSTMBlockCell(num_units=self.lstm_size) # Block LSTM version gives better performance #TODO Add linear projection option
+        cell = tf.nn.rnn_cell.DropoutWrapper(cell,input_keep_prob=1-self.input_dropout, output_keep_prob=1-self.output_dropout)
+        cells.append(cell)
+        initial_states[&quot;lstm_state_c_&quot; + str(i)] = tf.zeros(cell.state_size[0], dtype=tf.float32)
+        initial_states[&quot;lstm_state_h_&quot; + str(i)] = tf.zeros(cell.state_size[1], dtype=tf.float32)
+    cell = tf.nn.rnn_cell.MultiRNNCell(cells)
+    [...]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;It receives the key, context, and content of a sequence, and how many threads should be used to fetch the &lt;code class=&quot;highlighter-rouge&quot;&gt;RandomShuffleQueue&lt;/code&gt; to provide input to the model. I found that &lt;code class=&quot;highlighter-rouge&quot;&gt;LSTMBlockCell&lt;/code&gt; works slightly faster than the normal &lt;code class=&quot;highlighter-rouge&quot;&gt;LSTMCell&lt;/code&gt; class. Now comes the neat bit. We can use the following code to let Tensorflow form batches from these sequences after splitting them up into chunks according to the unroll length. These batches also come with a context that ensures the hidden state is carried over from the last chunk of a sequence to the next, sparing us from a lot of hassle trying to implement and optimise that on our own.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# BATCH INPUT
+self.batch = tf.contrib.training.batch_sequences_with_states(
+    input_key=key,
+    input_sequences=sequences,
+    input_context=context,
+    input_length=tf.cast(context[&quot;length&quot;], tf.int32),
+    initial_states=initial_states,
+    num_unroll=self.num_unroll,
+    batch_size=self.batch_size,
+    num_threads=num_enqueue_threads,
+    capacity=self.batch_size * num_enqueue_threads * 2)
+inputs = self.batch.sequences[&quot;inputs&quot;]
+targets = self.batch.sequences[&quot;outputs&quot;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;&lt;code class=&quot;highlighter-rouge&quot;&gt;inputs&lt;/code&gt; and &lt;code class=&quot;highlighter-rouge&quot;&gt;targets&lt;/code&gt; are part of the resulting batch and are formed during runtime. New sequences get pulled as soon as some in the batch are finished. In the following, the inputs are transformed from one-dimensional indices into one-hot vectors. Then, they are reshaped from an [batch_size,unroll_length,vocab_size] tensor to a list of [batch_size,vocab_size] tensors with length unroll_length, to conform with the RNN interface. Finally, we can use the state_saving_rnn with the state-saving batch we created beforehand, to get our outputs.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Convert input into one-hot representation (from single integers indicating character)
+print(self.vocab_size)
+embedding = tf.constant(np.eye(self.vocab_size), dtype=tf.float32)
+inputs = tf.nn.embedding_lookup(embedding, inputs)
+
+# Reshape inputs (and targets respectively) into list of length T (unrolling length), with each element being a Tensor of shape (batch_size, input_dimensionality)
+inputs_by_time = tf.split(1, self.num_unroll, inputs)
+inputs_by_time = [tf.squeeze(elem, squeeze_dims=1) for elem in inputs_by_time]
+targets_by_time = tf.split(1, self.num_unroll, targets)
+targets_by_time = [tf.squeeze(elem, squeeze_dims=1) for elem in targets_by_time] # num_unroll-list of (batch_size) tensors
+self.targets_by_time_packed = tf.pack(targets_by_time) # (num_unroll, batch_size)
+
+# Build RNN
+state_name = initial_states.keys()
+self.seq_lengths = self.batch.context[&quot;length&quot;]
+(self.outputs, state) = tf.nn.state_saving_rnn(cell, inputs_by_time, state_saver=self.batch,
+                                          sequence_length=self.seq_lengths, state_name=state_name, scope='SSRNN')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Here we have to be careful: If we have N characters, a special end-of-sequence token at the end of every sequence is appended while loading the data so the network learns when to stop generating lyrics, and I do not use zero as an index for any character as we need the zero entry to mask the output later to correctly compute the loss. So here, &lt;code class=&quot;highlighter-rouge&quot;&gt;self.vocab_size&lt;/code&gt; would be N+2. Finally, we put a softmax on top of the outputs by iterating through the list of length num_unroll in which each entry represents one timestep, and return logits and probabilities:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Create softmax parameters, weights and bias, and apply to RNN outputs at each timestep
+with tf.variable_scope('softmax'):
+    softmax_w = tf.get_variable(&quot;softmax_w&quot;, [self.lstm_size, self.vocab_size])
+    softmax_b = tf.get_variable(&quot;softmax_b&quot;, [self.vocab_size])
+    logits = [tf.matmul(outputStep, softmax_w) + softmax_b for outputStep in self.outputs]
+
+    self.logit = tf.pack(logits)
+
+    self.probs = tf.nn.softmax(self.logit)
+tf.summary.histogram(&quot;probabilities&quot;, self.probs)
+return (self.logit, self.probs)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To train the model, we also need a loss function. Here we use the fact that we do not use the 0-index as a target, so we know that such an entry in the target list must come from the zero-padding and indicates that the sequence is already over. This is used in the following code to mask the loss by only considering non-zero targets. We also add L2 regularisation.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;def loss(self, l2_regularisation):
+    with tf.name_scope('loss'):
+        # Compute mean cross entropy loss for each output.
+        self.cross_loss = tf.nn.sparse_softmax_cross_entropy_with_logits(self.logit, self.targets_by_time_packed) # (num_unroll, batchsize)
+
+        # Mask losses of outputs for positions t which are outside the length of the respective sequence, so they are not used for backprop
+        # Take signum =&amp;gt; if target is non-zero (valid char), set mask to 1 (valid output), otherwise 0 (invalid output, no gradient/loss calculation)
+        mask = tf.sign(tf.abs(tf.cast(self.targets_by_time_packed, dtype=tf.float32))) # Unroll*Batch \in {0,1}
+        self.cross_loss = self.cross_loss * mask
+
+        output_num = tf.reduce_sum(mask)
+        sum_cross_loss = tf.reduce_sum(self.cross_loss)
+        mean_cross_loss = sum_cross_loss / output_num # Mean loss is sum over masked losses for each output, divided by total number of valid outputs
+
+        # L2
+        vars = tf.trainable_variables()
+        l2_loss = tf.contrib.layers.apply_regularization(tf.contrib.layers.l2_regularizer(l2_regularisation), weights_list=vars)
+
+        loss = mean_cross_loss + l2_loss
+        tf.summary.scalar('mean_batch_cross_entropy_loss', mean_cross_loss)
+        tf.summary.scalar('mean_batch_loss', loss)
+    return loss, mean_cross_loss, sum_cross_loss, output_num
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;training-the-model&quot;&gt;Training the model&lt;/h1&gt;
+
+&lt;p&gt;Now that we set up the model, we need to train it!&lt;/p&gt;
+
+&lt;h2 id=&quot;set-up-symbolic-training-operations&quot;&gt;Set up symbolic training operations&lt;/h2&gt;
+
+&lt;p&gt;First we need the necessary symbolic operations. We set up a step counter and a learning rate variable that decays exponentially depending on the current step:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;global_step = tf.get_variable('global_step', [],
+                              initializer=tf.constant_initializer(0.0))
+# Learning rate
+initial_learning_rate = tf.constant(train_settings[&quot;learning_rate&quot;])
+learning_rate = tf.train.exponential_decay(initial_learning_rate, global_step, train_settings[&quot;learning_rate_decay_epoch&quot;], train_settings[&quot;learning_rate_decay_factor&quot;])
+tf.summary.scalar(&quot;learning_rate&quot;, learning_rate
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Then we calculate the gradients and prepare them for visualisation for Tensorboard, as you might run into the vanishing gradient problem for deeper RNNs:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Gradient calculation
+tvars = tf.trainable_variables()
+grads, _ = tf.clip_by_global_norm(tf.gradients(loss, tvars, aggregation_method=2), # Use experimental aggregation to reduce memory usage
+                                  5.0)
+
+# Visualise gradients
+vis_grads =  [0 if i == None else i for i in grads]
+for g in vis_grads:
+    tf.summary.histogram(&quot;gradients_&quot; + str(g), g)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We have to replace None entries with 0 for visualisation. We choose a gradient descent method (ADAM in this case) and define the training operations.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;optimizer = tf.train.AdamOptimizer(learning_rate)
+
+train_op = optimizer.apply_gradients(zip(grads, tvars),
+                                    global_step=global_step)
+
+trainOps = [loss, train_op,
+          global_step, learning_rate]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we are ready to execute!&lt;/p&gt;
+
+&lt;h2 id=&quot;performing-training&quot;&gt;Performing training&lt;/h2&gt;
+
+&lt;p&gt;Start up a session and the QueueRunners associated with it. In our case, these are associated with the RNN input queue (NOT our own RandomShuffleQueue).&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Start session
+sess = tf.Session()
+coord = tf.train.Coordinator()
+init_op = tf.global_variables_initializer()
+sess.run(init_op)
+tf_threads = tf.train.start_queue_runners(sess=sess, coord=coord)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In case we crashed or want to import a (partly) trained model for other reasons such as fine-tuning, we check for previous model checkpoints to load the model parameters:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# CHECKPOINTING
+#TODO save model directly after every epoch, so that we can safely refill the queues after loading a model (uniform sampling of dataset is still ensured)
+# Load pretrained model to continue training, if it exists
+latestCheckpoint = tf.train.latest_checkpoint(train_settings[&quot;checkpoint_dir&quot;])
+if latestCheckpoint is not None:
+      restorer = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
+      restorer.restore(sess, latestCheckpoint)
+      print('Pre-trained model restored')
+
+saver = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now we start a thread to run our custom &lt;code class=&quot;highlighter-rouge&quot;&gt;load_and_enqueue&lt;/code&gt; method from earlier which reads from &lt;code class=&quot;highlighter-rouge&quot;&gt;data&lt;/code&gt; and enqueues the sequences into the &lt;code class=&quot;highlighter-rouge&quot;&gt;RandomShuffleQueue&lt;/code&gt;. Preprocessing and data loading is better done on the CPU.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Start a thread to enqueue data asynchronously to decouple data I/O from training
+with tf.device(&quot;/cpu:0&quot;):
+    t = threading.Thread(target=load_and_enqueue, args=[trainIndices])
+    t.start()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;We can set up some logging functions so we can nicely visualise statistics with Tensorboard:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# LOGGING
+# Add histograms for trainable variables.
+histograms = [tf.summary.histogram(var.op.name, var) for var in tf.trainable_variables()]
+summary_op = tf.summary.merge_all()
+# Create summary writer
+summary_writer = tf.summary.FileWriter(train_settings[&quot;log_dir&quot;], sess.graph.as_graph_def(add_shapes=True)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Now the training loop runs the training and summary operations, and writes summaries and periodically also model checkpoints to save progress:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;loops = 0
+while loops &amp;lt; train_settings[&quot;max_iterations&quot;]:
+    loops += 1
+    [res_loss, _, res_global_step, res_learning_rate, summary] = sess.run(trainOps + [summary_op])
+    new_time = time.time()
+    print(&quot;Chars per second: &quot; + str(float(model_settings[&quot;batch_size&quot;] * model_settings[&quot;num_unroll&quot;]) / (new_time - current_time)))
+    current_time = new_time
+    print(&quot;Loss: &quot; + str(res_loss) + &quot;, Learning rate: &quot; + str(res_learning_rate) + &quot;, Step: &quot; + str(res_global_step))
+
+    # Write summaries for this step
+    summary_writer.add_summary(summary, global_step=int(res_global_step))
+    if res_global_step % train_settings[&quot;save_model_epoch_frequency&quot;] == 0:
+        print(&quot;Saving model...&quot;)
+        saver.save(sess, train_settings[&quot;checkpoint_path&quot;], global_step=int(res_global_step))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;After the maximum desired number of iterations has been reached (or some other criterion), we stop:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Stop our custom input thread
+print(&quot;Stopping custom input thread&quot;)
+sess.run(q.close())  # Then close the input queue
+t.join(timeout=1)
+
+# Close session, clear computational graph
+sess.close()
+tf.reset_default_graph()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h1 id=&quot;testing&quot;&gt;Testing&lt;/h1&gt;
+
+&lt;p&gt;After training, we want to evaluate the performance on the test set. The code for this looks similar, so I will only show the differences here. We load the trained model:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# CHECKPOINTING
+# Load pretrained model to test
+latestCheckpoint = tf.train.latest_checkpoint(train_settings[&quot;checkpoint_dir&quot;])
+restorer = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
+restorer.restore(sess, latestCheckpoint)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In our custom input queue thread, we close the queue after enqueueing all test samples so the process is stopped after seeing each example exactly once:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
+def load_and_enqueue(indices):
+    for index in indices:
+        current_seq = data[index][1]
+        sess.run(enqueue_op, feed_dict={keyInput: str(index),
+                                      lengthInput: len(current_seq)-1,
+                                    seqInput: current_seq[:-1],
+                                    seqOutput: current_seq[1:]})
+    print &quot;Finished enqueueing all &quot; + str(len(indices)) + &quot; samples!&quot;
+    sess.run(q.close())
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The test loop now uses the total cross-entropy returned from our model class along with the number of valid output positions to compute a bit-per-character metric:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;inferenceOps = [loss, mean_cross_loss, sum_cross_loss, output_num]
+
+current_time = time.time()
+logprob_sum = 0.0
+character_sum = 0
+iteration = 0
+while True:
+    try:
+        [l, mcl, scl, nb, summary] = sess.run(inferenceOps + [summary_op])
+    except tf.errors.OutOfRangeError:
+        print(&quot;Finished testing!&quot;)
+        break
+
+    new_time = time.time()
+    print(&quot;Chars per second: &quot; + str(
+        float(model_settings[&quot;batch_size&quot;] * model_settings[&quot;num_unroll&quot;]) / (new_time - current_time)))
+    current_time = new_time
+
+    logprob_sum += scl # Add up per-char log probabilities of predictive model: Sum_i=1^N (log_2 q(x_i)), which is equal to cross-entropy term for all chars
+    character_sum +=  nb # Add up how many characters were in the batch
+
+    print(l, mcl, scl)
+    summary_writer.add_summary(summary, global_step=int(iteration))
+    iteration += 1
+
+    print(&quot;Bit-per-character: &quot; + str(logprob_sum / character_sum))
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Note here that we catch an &lt;code class=&quot;highlighter-rouge&quot;&gt;OutOfRangeError&lt;/code&gt; that is thrown as soon as our input queue is empty after the input thread finishes and closes it.&lt;/p&gt;
+
+&lt;h1 id=&quot;sampling&quot;&gt;Sampling&lt;/h1&gt;
+
+&lt;p&gt;Unfortunately, sampling as a use case is very different from the train and test setting:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;We want to consider a single sequence, not a whole batch&lt;/li&gt;
+  &lt;li&gt;The output of the RNN at the current time step is used as input for the next, which makes static unrolling inappropriate&lt;/li&gt;
+  &lt;li&gt;We cannot in parallel evaluate multiple timesteps, but need to keep the hidden state after each input to feed back into the model (rendering the previously used state saver concepts cumbersome)&lt;/li&gt;
+&lt;/ul&gt;
+
+&lt;p&gt;Therefore, I did it the hard way and maintained the RNN states myself. This requires setting up placeholders for the states manually to be able to feed values in during sampling, and defining the initial zero states to use for the prediction of the first character:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Load vocab
+vocab = Vocabulary.load(data_settings[&quot;input_vocab&quot;])
+
+# INPUT PIPELINE
+input = tf.placeholder(tf.int32, shape=[None], name=&quot;input&quot;) # Integers representing characters
+# Create state placeholders - 2 for each lstm cell.
+state_placeholders = list()
+initial_states = list()
+for i in range(0,model_settings[&quot;num_layers&quot;]):
+    state_placeholders.append(tuple([tf.placeholder(tf.float32, shape=[1, model_settings[&quot;lstm_size&quot;]], name=&quot;lstm_state_c_&quot; + str(i)), # Batch size x State size
+                                tf.placeholder(tf.float32, shape=[1, model_settings[&quot;lstm_size&quot;]], name=&quot;lstm_state_h_&quot; + str(i))])) # Batch size x State size
+    initial_states.append(tuple([np.zeros(shape=[1, model_settings[&quot;lstm_size&quot;]], dtype=np.float32),
+                          np.zeros(shape=[1, model_settings[&quot;lstm_size&quot;]], dtype=np.float32)]))
+state_placeholders = tuple(state_placeholders)
+initial_states = tuple(initial_states)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;The states are represented as tuples in tensorflow. The model itself also has to be adapted accordingly. We use a batch size and unroll length of 1, so we only predict exactly one character at a time, and feed in the input along with the state placeholders:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;&lt;span class=&quot;p&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;MODEL&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;inference_settings&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;model_settings&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;inference_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;batch_size&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Only&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;from&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;one&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;example&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;simultaneously&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;inference_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;[&lt;/span&gt;&lt;span class=&quot;s2&quot;&gt;&quot;num_unroll&quot;&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;]&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;Only&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;one&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;character&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;at&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;a&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;time&lt;/span&gt;
+&lt;span class=&quot;k&quot;&gt;model&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;LyricsPredictor&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;inference_settings&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;vocab&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;size&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;+&lt;/span&gt; &lt;span class=&quot;m&quot;&gt;1&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;  &lt;span class=&quot;p&quot;&gt;#&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;Include&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;EOS&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;token&lt;/span&gt;
+&lt;span class=&quot;n&quot;&gt;probs&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state&lt;/span&gt; &lt;span class=&quot;p&quot;&gt;=&lt;/span&gt; &lt;span class=&quot;k&quot;&gt;model&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;.&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;sample&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;(&lt;/span&gt;&lt;span class=&quot;n&quot;&gt;input&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;,&lt;/span&gt; &lt;span class=&quot;n&quot;&gt;state_placeholders&lt;/span&gt;&lt;span class=&quot;p&quot;&gt;)&lt;/span&gt;
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;This time, we use the &lt;code class=&quot;highlighter-rouge&quot;&gt;sample&lt;/code&gt; method from the &lt;code class=&quot;highlighter-rouge&quot;&gt;LyricsPredictor&lt;/code&gt; class to build the required computational graph:&lt;/p&gt;
+
+&lt;p&gt;def sample(self, input, current_state):
+    # RNN cells and states
+    cells = list()
+    for i in range(0, self.num_layers):
+        cell = tf.contrib.rnn.LSTMBlockCell(num_units=self.lstm_size) # Block LSTM version gives better performance #TODO Add linear projection option
+        cell = tf.nn.rnn_cell.DropoutWrapper(cell,1.0,1.0) # No dropout during sampling
+        cells.append(cell)
+    cell = tf.nn.rnn_cell.MultiRNNCell(cells)
+    self.initial_states = cell.zero_state(batch_size=1,dtype=tf.float32)&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Convert input into one-hot representation (from single integers indicating character)
+embedding = tf.constant(np.eye(self.vocab_size), dtype=tf.float32)
+input = tf.nn.embedding_lookup(embedding, input) # 1 x Vocab-size
+inputs\_by\_time = \[input\] # List of 1 x Vocab-size tensors (with just one tensor in it, because we just use sequence length 1
+
+self.outputs, state = tf.nn.rnn(cell, inputs\_by\_time, initial\_state=current\_state, scope='SSRNN')
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Crucially, we set the scope when setting up the RNN to the same that was used when building the model during training and testing, so that when we load the checkpoint, the RNN variables are set up correctly. Afterwards, the softmax is applied as shown earlier. The function returns the probabilities and the resulting LSTM state after processing the input character, which we store in the following.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;inference = [probs, state]
+
+current_seq = &quot;never&quot; # This can be any alphanumeric text
+current_seq_ind = vocab.char2index(current_seq)
+
+# Warm up RNN with initial sequence
+s = initial_states
+for ind in current_seq_ind:
+    # Create feed dict for states
+    feed = dict()
+    for i in range(0, model_settings[&quot;num_layers&quot;]):
+        for c in range(0, len(s[i])):
+            feed[state_placeholders[i][c]] = s[i][c]
+            feed[state_placeholders[i][c]] = s[i][c]
+
+    feed[input] = [ind] # Add new input symbol to feed
+    [p, s] = sess.run(inference, feed_dict=feed)
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;In the above code, we set an initial sequence (“never”) and prepare the LSTM to continue the lyrics (e.g. “never gonna give you up”) by feeding in one character after another and carrying over the states. These are nested tuples, organised according to layers, each with a cell and a hidden state (this is due to the LSTM structure). The hidden state now hopefully captures meaningful information about the input text &lt;code class=&quot;highlighter-rouge&quot;&gt;current_seq&lt;/code&gt;, so we can take the current prediction probabilities and sample from them to generate the next character, feed it into the network, and repeat that process until we receive the special end token signalling that the LSTM is finished with the “creative process”:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;# Sample until we receive an end-of-lyrics token
+iteration = 0
+while iteration &amp;lt; 100000: # Just a safety measure in case the model does not stop
+    # Now p contains probability of upcoming char, as estimated by model, and s the last RNN state
+    ind_sample = np.random.choice(range(0,vocab.size+1), p=np.squeeze(p))
+    if ind_sample == vocab.size: # EOS token
+        print(&quot;Model decided to stop generating!&quot;)
+        break
+
+    current_seq_ind.append(ind_sample)
+
+    # Create feed dict for states
+    feed = dict()
+    for i in range(0, model_settings[&quot;num_layers&quot;]):
+        for c in range(0, len(s[i])):
+            feed[state_placeholders[i][c]] = s[i][c]
+            feed[state_placeholders[i][c]] = s[i][c]
+
+    feed[input] = [ind_sample]  # Add new input symbol to feed
+    [p, s] = sess.run(inference, feed_dict=feed)
+
+    iteration += 1
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;Finally, we convert the generated list of integer indices to their character representation, and print out the result:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;c_sample = vocab.index2char(current_seq_ind)
+print(&quot;&quot;.join(c_sample))
+
+sess.close()
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;h2 id=&quot;example-output&quot;&gt;Example output&lt;/h2&gt;
+
+&lt;p&gt;And now starts the fun! Feel free to extend the model to your liking. Want to see what my own model generates? Here is the output of a 2-layer 512-hidden node LSTM with 0.2 output dropout trained for only two hours on Metrolyrics text, when told to start with “never”:&lt;/p&gt;
+
+&lt;blockquote&gt;
+  &lt;p&gt;never yet in you but that letters know a stobalal in you on the brink so to the victory no matter what i might understand the sun where i am with all this phon people theyll get my knife off a girl that it thats forsaken just smiling still welcome to me&lt;br /&gt;
+its a gangsta good times is like a fesire then im holding fantastine is on though we bring it out to who burn today well make all the lights in his face im here so bright&lt;br /&gt;
+sos we do what we do we dont know where we harm&lt;br /&gt;
+and every time we get you now dont need rewith nothing yeah you dont want a sip or just look at dont make it on the 5 dirty doubt then most name yeah dont know about it i know and you dont wanna play with her no no no&lt;br /&gt;
+come on ah yeah yeah women make you bury tight around rising in stop up in the top looking out of the middle of the sea&lt;br /&gt;
+youre not drunk and im not in real hard to hit you all around cover up tune whats not there how to make you cry so long your cut money rolling around and the storm ignite it youre peacent burn so fast blue no fading&lt;br /&gt;
+two number on the home was we praying of happy for your respect a death a lip another day and style niggas keep that an internuted at leven but you was the way you fall and ive been ready at all ive never seen the girls i tried to drive i took a fool from the river instead i just draw your life when my head stays the fellas we dreams to all ill stay&lt;br /&gt;
+and nobody should be there in here but when i hide all my echo and make you hold me up im going to get more to fall in your sea oh right through a night in your news one two treatnessboy shes passed out in the sky all the real friends are downs light to out here he was rightly word out im not driving in my eyes suddenly reminding me im being that dragong class i wish i was since yours your peace of&lt;br /&gt;
+pour it like like a record beautiful man i do you on the kid punk its when im attack i know when im smiling taste so i find a little far&lt;/p&gt;
+&lt;/blockquote&gt;
+
+&lt;p&gt;As you can see, the model learned to structure its musings in paragraphs akin to real lyrics, and overall makes some good attempts at coming up with new sentences. Apparently this song is more of a Gangsta rap, as suggested by the words “knife”, “gangsta”, “niggas”, etc. Sentences only sometimes make proper sense, unfortunately. It sometimes comes up with semi-random new words, like “dragong” and “peacent”, because it has to learn spelling and vocabulary from scratch as opposed to word-level language models. It also did not learn meaningful long-term dependencies such as verse/chorus structures.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.</summary></entry><entry><title type="html">Snowfall: A Very Special Video Game Controller</title><link href="http://localhost:4000/Snowfall-a-very-special-video-game-controller/" rel="alternate" type="text/html" title="Snowfall: A Very Special Video Game Controller" /><published>2015-11-20T00:00:00+00:00</published><updated>2015-11-20T00:00:00+00:00</updated><id>http://localhost:4000/Snowfall:-a-very-special-video-game-controller</id><content type="html" xml:base="http://localhost:4000/Snowfall-a-very-special-video-game-controller/">&lt;p&gt;Here is a short &lt;a href=&quot;https://www.youtube.com/watch?v=TRiBA4o_pBs&quot;&gt;Youtube video&lt;/a&gt; explaining what this post it about. How did I do it? I will try to go through the main steps in the following.&lt;/p&gt;
+
+&lt;h1 id=&quot;understanding-the-wiring-and-connecting-the-arduino&quot;&gt;Understanding the wiring and connecting the Arduino&lt;/h1&gt;
+
+&lt;p&gt;To use the mat as a game controller, I had to first understand its internal wiring before setting up a connection to the Arduino microcontroller. So I freed the PCB along with its wiring of the red plastic hull that was originally containing it. After becoming almost insane trying to figure out the totally weird wiring inside the mat by manually checking the connections from outside with a multimeter, I finally decided to just cut the mat open, which made everything much easier and saved my sanity ;)&lt;/p&gt;
+
+&lt;h2 id=&quot;part-1---leds&quot;&gt;Part 1 - LEDs&lt;/h2&gt;
+
+&lt;p&gt;Intuitively (and naively), for ten LEDs you would expect two connections for each LED and therefore 20 connections in total. But it seems that especially when dealing with cheap toy electronics, it is never that easy. Every cable drives up costs and so they favour more complicated wiring when it is less costly to produce. In this mat, there are 7 cables, each with a different colour (at least they did me that favour!). The setup can be seen in this picture:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/led-wiring.png&quot; alt=&quot;LED wiring.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;So if you want to light up the LED number 2 for example, you have to apply a current to the green cable, and pull the brown cable to the ground to allow the current to flow. In general, for every LED there is a specific combination of two buttons that you have to set. But as if that is not complicated enough, you introduce some dependencies with this setup. What if you wanted to light up LED 1 and 6 simultaneously? You would have to supply the yellow cable with current for LED 1 and the green one for LED 6. Also, the brown and red cables would both have to act as ground. But wait a minute - in this configuration, the LEDs 2 and 5 would light up too, as both are now exposed to the same current as LEDs 1 and 6. I worked around this dependency with a “cheap” trick: When multiple LEDs should be activated, I light up one LED after the other, but switch between the LEDs at such a high frequency (about 5 ms for every LED) that with our surprisingly limited visual system it looks like the LEDs are actually glowing at the same time!&lt;/p&gt;
+
+&lt;h2 id=&quot;part-2---buttons&quot;&gt;Part 2 - Buttons&lt;/h2&gt;
+
+&lt;p&gt;Unfortunately, the wiring of the buttons turned out to be even more confusing than those of the LEDs. Basically, inside the mat there are two layers of foil separated by a layer of foam. The foil has conductive areas at the position of each button as well as black lines that connect the buttons to the PCB in the toy. When pressure is applied to a button, the two layers are pressed together as the foam gets squashed, and a current can now flow between the two layers of foil. So you can model this button as a resistor that changes in resistance depending on the applied pressure. I hope the picture below makes everything a little bit clearer, where you can see one of the layers and the electrical connections in black, and the foam underneath obstructing the second layer below.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/img_20151120_180127.jpg&quot; alt=&quot;IMG_20151120_180127.jpg&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Similar to the buttons, the wiring was not straightforward, as you can see in the following schematics. For both layers, the connections accessible from the outside are drawn at the top.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-wiring-schematics.png&quot; alt=&quot;Button wiring schematics.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;On the PCB, I discovered that the buttons 1-4, 5-8 and 9-10 were each short-circuited on the second layer, as shown in red in the schematic. This made matters much more complicated, because it again introduced dependencies between the buttons that make separate measurements of the buttons much harder. It leads to matrix setup, with four connections on the first and three connections on the second layer. Here is a diagram showing this matrix:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-matrix.png&quot; alt=&quot;Button matrix.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;It assumes that current is applied on the digital pins 10 to 12 and the resulting voltage measured on the analog pins A0 to A3. For each coloured cable, the buttons that are connected to it are displayed. The matrix entries show the specific button addressed by the combination of two of these cables. So the idea is to apply HIGH to one of the three digital pins, while letting the other connections float, measuring the four analog voltages, and then selecting another digital pin to set to HIGH and repeat the procedure, and then do the same thing a final third time with the last remaining digital pin. The picture below shows a schematic of the Arduino setup for the analog pin A0 and demonstrates how setting exactly one pin between 10 and 12 to high allows for the measurement of the voltage for exactly one of the three buttons. It works analogously for the other analog pins A1 to A3.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-arduino-setup-example.png&quot; alt=&quot;Button Arduino setup example&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;Finally, I programmed my Arduino to periodically read these values, detect button presses using these measured voltages, and send the button states over the serial port, where they are received by the Unity game engine.&lt;/p&gt;
+
+&lt;h1 id=&quot;game-development-in-unity&quot;&gt;Game development in Unity&lt;/h1&gt;
+
+&lt;p&gt;The video game itself was developed in &lt;a href=&quot;https://unity3d.com/&quot;&gt;Unity&lt;/a&gt;, which is a game development platform suited to build your own 3D as well as 2D games without going through the hassle of creating your own game engine and taking care of every little detail yourself. I can really recommend it to people interested in game development, because it represents a nice, accessible starting point for further endeavours.&lt;/p&gt;
+
+&lt;h2 id=&quot;designing-the-3d-scene&quot;&gt;Designing the 3D scene&lt;/h2&gt;
+
+&lt;p&gt;One of Unity’s strength is definitely the modelling of 3D game environments. Although it can be difficult to find the right 3D models and textures for your game (and often you find many expensive offers on the internet and only few or no free ones), designing the terrain and moving, scaling and rotating objects is very intuitive and quickly done. Here is the scene of Snowfall as viewed inside the editor of Unity:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/unity-3d-scene.png&quot; alt=&quot;Unity 3D scene.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I quickly added some hills and a snow texture to the terrain, placed a lot of trees and obstacles (barely visible in the middle of the screen) and added 10 red skis with their positions relative to the main camera, so they move along with the player. Because the scene is rendered from the perspective of this main camera, for the player the skis do not seem to move at all. On the left side, you can see the scene hierarchy, containing all objects of the scene organised in a tree-like structure. As stated before, the skis are a child of the main camera object so that they do not change their position on the screen. The TreeGroup contains all trees, a directional light acts as the sunlight and the terrain features a set of obstacles in the form of many thin cuboids with a rocky texture. The UI consists of text labels from one to ten for every ski, a play button, a health slider, a title text for the start screen and a loss and win text shown when the player loses or wins. It is also simple to set it up so that a specific function in your own script is called every time the button is pressed or the slider is moved. Finally, the “GameLogic” object contains most of the C# scripts responsible for handling most of the game’s logic. I say most because some scripts are attached to specific game objects like the main camera.&lt;/p&gt;
+
+&lt;h2 id=&quot;game-logic-with-c-scripts&quot;&gt;Game logic with C# scripts&lt;/h2&gt;
+
+&lt;p&gt;So now I designed a pretty 3D game world, but nothing is really happening in it and no interaction with the player is taking place - you could hardly call that a game, right? At first, I implemented moving the camera at a certain speed through the terrain, maintaining the same height and orientation, and gradually speeding up as we go through the level. I achieved this with a script attached to the Main Camera object containing the class “CameraController”. It defines a minimum and maximum speed in units per second as well as the acceleration &lt;code class=&quot;highlighter-rouge&quot;&gt;additionalMinSpeedPerSec&lt;/code&gt;. A boolean variable determines if the camera should be moving at the moment - an external script can modify this variable to stop and start camera movement. Every frame, a call to the &lt;code class=&quot;highlighter-rouge&quot;&gt;Update()&lt;/code&gt; function causes the current camera speed to be increased by &lt;code class=&quot;highlighter-rouge&quot;&gt;Time.deltaTime * additionalMinSpeedPerSec&lt;/code&gt;, but limited to the maximum camera speed. Then, the camera is moved according to this &lt;code class=&quot;highlighter-rouge&quot;&gt;currentCameraSpeed&lt;/code&gt; using the following code: &lt;code class=&quot;highlighter-rouge&quot;&gt;Vector3 camPos = transform.localPosition; camPos.z += Time.deltaTime * currentCameraSpeed; transform.localPosition = camPos;&lt;/code&gt; Next, I implemented the desired reaction to detected collisions between skis and the rocky terrain. In the 3D scene, I already added box colliders to the obstacles and the skis and marked them as a trigger. Also, I added rigid bodies to the skis. Afterwards I attached a script to every ski whose class &lt;code class=&quot;highlighter-rouge&quot;&gt;SkiCollisionDetector&lt;/code&gt; overrides the &lt;code class=&quot;highlighter-rouge&quot;&gt;OnTriggerStay&lt;/code&gt; function which is called in regular intervals as long as a collision with the corresponding game object is detected. My implementation for every ski simply counts the total duration of the collisions in a variable &lt;code class=&quot;highlighter-rouge&quot;&gt;collisionTime&lt;/code&gt;:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;void OnTriggerStay(Collider coll)
+{
+        collisionTime += Time.deltaTime;
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;To maintain all ten skis in a comfortable way, I also implemented a &lt;code class=&quot;highlighter-rouge&quot;&gt;SkiController&lt;/code&gt; that keeps a list of all skis, can add up all the &lt;code class=&quot;highlighter-rouge&quot;&gt;collisionTime&lt;/code&gt; values of all skis to retrieve the total amount of damage, reset these variables back to zero in case a new game is started, and also set the visibility and the ability to trigger collision handling depending on the button states. The latter shall be explained in greater detail. The function &lt;code class=&quot;highlighter-rouge&quot;&gt;setSkiStates(bool[] buttonStates)&lt;/code&gt; receives information about which buttons are currently pressed, goes through the &lt;code class=&quot;highlighter-rouge&quot;&gt;skiList&lt;/code&gt; and makes only the skis belonging to those buttons visible and able to trigger the collision handling functions:&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;public void setSkiStates(bool[] buttonStates)
+{
+    for (int i = 0; i &amp;lt; skiList.Count; ++i) // Go through the ski list...
+    {
+        GameObject currentSki = ((GameObject)skiList[i]);
+        currentSki.GetComponent().enabled = buttonStates[i]; // Ski is visible if its button is pressed
+        currentSki.GetComponent().enabled = buttonStates[i]; // Ski can trigger calls of collision function (OnTriggerStay) if its button is pressed
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;
+
+&lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;HealthBar&lt;/code&gt; class uses &lt;code class=&quot;highlighter-rouge&quot;&gt;GUI.DrawTexture&lt;/code&gt; with a black and a green texture to draw the health bar, using the black texture as a background and the green texture for the bar itself. Finally, a &lt;code class=&quot;highlighter-rouge&quot;&gt;MainLoop&lt;/code&gt; class ties everything together and also reacts to pressing the play button and varying the health slider on the start screen. Setting up to have a specific function called when a specific UI element is interacted with is very easy, just select the UI element in the Unity editor and then, in the inspector on the right hand side, select the function you want to call. As an example, this screenshot shows my play button and how I set it up to call the function &lt;code class=&quot;highlighter-rouge&quot;&gt;startGame&lt;/code&gt; of the class &lt;code class=&quot;highlighter-rouge&quot;&gt;MainLoop&lt;/code&gt; contained in the game object GameLogic whenever it is pressed:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/event-handling.png&quot; alt=&quot;Event handling.png&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;I will conclude this post with the code of the main loop during active gameplay. Hopefully, it is comprehensible with the extensive comments and can further develop your coding skills in Unity.&lt;/p&gt;
+
+&lt;div class=&quot;highlighter-rouge&quot;&gt;&lt;div class=&quot;highlight&quot;&gt;&lt;pre class=&quot;highlight&quot;&gt;&lt;code&gt;// Update is called once per frame
+void Update()
+{
+    parser.readButtonStates(buttonStates); // Read the current button states
+    skiController.setSkiStates(buttonStates); // Set ski visibility and collision triggering according to these button states
+
+    if (gameActive) // If the game is active at the moment
+    {
+        float currentDamage = skiController.getSkiCollisionTime(); // Determine current collision time (&quot;damage&quot;)
+        float percentage = currentDamage / maxSeconds; // Determine ratio between damage and total health
+        healthBar.setPercentage(1 - percentage); // Set health bar to reflect how many time is still available
+
+        // Check for game ending conditions
+        bool lossCondition = (percentage &amp;gt;= 1.0f); // Game lost if health percentage is above 1
+        bool winCondition = (camController.transform.position.z &amp;gt;= 5300.0f); // Game won if camera has moved to the end of the level (camera moves along z axis only, starts at 0, at z=5300 the end of the level is reached)
+        if (lossCondition || winCondition) // If a loss or a win occurred
+        {
+            gameActive = false; // Game is no longer active
+            camController.setMoving(false); // Stop camera movement
+
+            StartCoroutine(resetGame()); // Reset the game in 10 seconds
+
+            if (winCondition) // Show winning text when won...
+            {
+                winText.enabled = true;
+                print(&quot;WON&quot;);
+            }
+            else if (lossCondition) // ... otherwise show losing text
+            {
+                lossText.enabled = true;
+                print(&quot;LOST&quot;);
+            }
+        }
+    }
+}
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;&lt;/div&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">Here is a short Youtube video explaining what this post it about. How did I do it? I will try to go through the main steps in the following.</summary></entry></feed>
