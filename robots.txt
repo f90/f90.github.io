@@ -1,1 +1,1 @@
-Sitemap: https://f90.github.io/sitemap.xml
+Sitemap: https://dans.world/sitemap.xml

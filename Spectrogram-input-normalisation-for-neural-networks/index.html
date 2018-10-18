@@ -19,7 +19,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:site_name" content="Dans World">
 <meta property="og:title" content="Spectrogram Input Normalisation For Neural Networks">
-<meta property="og:url" content="https://f90.github.io/Spectrogram-input-normalisation-for-neural-networks/">
+<meta property="og:url" content="https://dans.world/Spectrogram-input-normalisation-for-neural-networks/">
 
 
   <meta property="og:description" content="In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.">
@@ -41,7 +41,7 @@
   
 
 
-<link rel="canonical" href="https://f90.github.io/Spectrogram-input-normalisation-for-neural-networks/">
+<link rel="canonical" href="https://dans.world/Spectrogram-input-normalisation-for-neural-networks/">
 
 
 
@@ -54,7 +54,7 @@
       "@context": "http://schema.org",
       "@type": "Person",
       "name": "Daniel Stoller",
-      "url": "https://f90.github.io",
+      "url": "https://dans.world",
       "sameAs": null
     }
   </script>
@@ -147,22 +147,22 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/research/" >Research</a>
+              <a href="https://dans.world/research/" >Research</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/publications/" >Publications</a>
+              <a href="https://dans.world/publications/" >Publications</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/about/" >About</a>
+              <a href="https://dans.world/about/" >About</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/" >Blog</a>
+              <a href="https://dans.world/" >Blog</a>
             </li>
           
         </ul>
@@ -348,12 +348,12 @@
 <p>For many audio tasks, only the magnitudes $\mathbf{M}$ are used and the phases $ \mathbf{P}$ are discarded - when using overlapping windows, $ \mathbf{S}$ can be reconstructed from $ \mathbf{M}$ alone, and the phase tends to have a <a href="http://deepsound.io/dcgan_spectrograms.html">minor impact on sound quality</a>. Here you can see the magnitude and phase for an example song, computed from an STFT with $ N=2048$ samples in each window, and a hop size of 512:</p>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrogram.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrogram.png" alt="my alt text" />
   <figcaption>Magnitudes $ \mathbf{M}$ on logarithmic scale ($log(x+1)$) of an example song, with frequency on the vertical, and time frames on the horizontal axes.</figcaption>
 </figure>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/phasespectrogram.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/phasespectrogram.png" alt="my alt text" />
   <figcaption>Phase matrix $ \mathbf{P}$, each value being an angle in radians</figcaption>
 </figure>
 
@@ -374,7 +374,7 @@
 <p>However, the overall distribution of magnitude values is very non-Gaussian, since many entries in the spectrogram are close to zero, creating a very skewed (heavy-tailed) distribution which can impede learning:</p>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/spectrohistro.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/spectrohistro.png" alt="my alt text" />
   <figcaption>Histogram of spectrogram values, frequency on vertical axis.</figcaption>
 </figure>
 
@@ -385,12 +385,12 @@
 <p>For a roughly exponential distribution, an obvious idea would be to compute $\log(\mathbf{S})$, which is a simple and dataset-independent transformation, to stretch out the near-zero values. However, magnitudes can be zero, and log(0) is undefined! What about if we add a certain positive constant c and compute $\log(\mathbf{S} + c)$? The problem here is that the value of the number critically influences how much low magnitudes close to zero are expanded during transformation - low values of c such as 0.001 lead to great expansion, and vice versa. It is also not immediately clear how to set c to approximate a normal distribution closest. Despite these problems, the transformation at least compresses large values effectively and is used so often that many computing libraries such as Numpy offer the c=1 version with a shorthand called “<a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.log1p.html">log1p</a>”, and the inverse “<a href="https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.expm1.html">expm1</a>” defined as $\exp{x} - 1$. For our example, we see that c=1 does not change the shape of distribution much at all, while $ c=10^{-7}$ gets us close to a normal distribution:</p>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrohisto.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrohisto.png" alt="my alt text" />
   <figcaption>Applying $log1p = \log(x+1)$ (c=1) to the magnitude values does not change the shape of the distribution much, but constrains the input values to a much smaller range, and enlarges differences between small values.</figcaption>
 </figure>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/loggspectrohisto.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/loggspectrohisto.png" alt="my alt text" />
   <figcaption>Applying $\log(x + 10^{-7})$ ($c=10^{-7}$) to the magnitude values almost gives us a normally distributed variable, leaving only a small additional peak at around -8.</figcaption>
 </figure>
 
@@ -410,12 +410,12 @@ y_i^{(\boldsymbol{\lambda})} =
 <p>Upon closer inspection, we can see similarities to our first option, the logarithmic transformation. $ \lambda_2$ serves the same purpose as the constant c: Making the values non-zero so we can apply further transformations. For $ \lambda_1 = 0$, Box-Cox is even equivalent to our first method and can be seen as an extension of it! The important difference is that <strong>the parameters are estimated from data</strong> so that the resulting distribution is as close to normally distributed as possible, which is more accurate than a simple log transform with a predefined constant c. I have not come across an implementation that estimates both parameters, though. With the boxcox method from Scipy, we can only estimate $ \lambda_1$, so for our audio example we use $ \lambda_2 = 10^{-7}$ just like in our first method. The best parameter found is $ \lambda_1 = 0.043$, which is very close to zero and therefore a very similar transformation:</p>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxhisto.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxhisto.png" alt="my alt text" />
   <figcaption>Histogram of magnitude values after Box-Cox transformation with $\lambda_1 = 0.043, \lambda_2 = 10^{-7}$. The tails of the distribution are more symmetrical and the peak is more centered between them, but the additional peak remains.</figcaption>
 </figure>
 
 <figure>
-  <img src="https://f90.github.io/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxspectro.png" alt="my alt text" />
+  <img src="https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxspectro.png" alt="my alt text" />
   <figcaption>Box-cox-transformed magnitude spectrogram. The structures in the higher frequency ranges are now more easily visible, while the fact that lower frequencies have higher energy is less emphasized.</figcaption>
 </figure>
 
@@ -443,13 +443,13 @@ y_i^{(\boldsymbol{\lambda})} =
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Spectrogram+Input+Normalisation+For+Neural+Networks%20https%3A%2F%2Ff90.github.io%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Spectrogram+Input+Normalisation+For+Neural+Networks%20https%3A%2F%2Fdans.world%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ff90.github.io%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=https%3A%2F%2Ff90.github.io%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Ff90.github.io%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FSpectrogram-input-normalisation-for-neural-networks%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 

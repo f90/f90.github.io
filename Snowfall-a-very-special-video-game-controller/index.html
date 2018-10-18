@@ -19,7 +19,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:site_name" content="Dans World">
 <meta property="og:title" content="Snowfall: A Very Special Video Game Controller">
-<meta property="og:url" content="https://f90.github.io/Snowfall-a-very-special-video-game-controller/">
+<meta property="og:url" content="https://dans.world/Snowfall-a-very-special-video-game-controller/">
 
 
   <meta property="og:description" content="Here is a short Youtube video explaining what this post it about. How did I do it? I will try to go through the main steps in the following.">
@@ -41,7 +41,7 @@
   
 
 
-<link rel="canonical" href="https://f90.github.io/Snowfall-a-very-special-video-game-controller/">
+<link rel="canonical" href="https://dans.world/Snowfall-a-very-special-video-game-controller/">
 
 
 
@@ -54,7 +54,7 @@
       "@context": "http://schema.org",
       "@type": "Person",
       "name": "Daniel Stoller",
-      "url": "https://f90.github.io",
+      "url": "https://dans.world",
       "sameAs": null
     }
   </script>
@@ -129,22 +129,22 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/research/" >Research</a>
+              <a href="https://dans.world/research/" >Research</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/publications/" >Publications</a>
+              <a href="https://dans.world/publications/" >Publications</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/about/" >About</a>
+              <a href="https://dans.world/about/" >About</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://f90.github.io/" >Blog</a>
+              <a href="https://dans.world/" >Blog</a>
             </li>
           
         </ul>
@@ -329,7 +329,7 @@
 
 <p>Intuitively (and naively), for ten LEDs you would expect two connections for each LED and therefore 20 connections in total. But it seems that especially when dealing with cheap toy electronics, it is never that easy. Every cable drives up costs and so they favour more complicated wiring when it is less costly to produce. In this mat, there are 7 cables, each with a different colour (at least they did me that favour!). The setup can be seen in this picture:</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/led-wiring.png" alt="LED wiring.png" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/led-wiring.png" alt="LED wiring.png" /></p>
 
 <p>So if you want to light up the LED number 2 for example, you have to apply a current to the green cable, and pull the brown cable to the ground to allow the current to flow. In general, for every LED there is a specific combination of two buttons that you have to set. But as if that is not complicated enough, you introduce some dependencies with this setup. What if you wanted to light up LED 1 and 6 simultaneously? You would have to supply the yellow cable with current for LED 1 and the green one for LED 6. Also, the brown and red cables would both have to act as ground. But wait a minute - in this configuration, the LEDs 2 and 5 would light up too, as both are now exposed to the same current as LEDs 1 and 6. I worked around this dependency with a “cheap” trick: When multiple LEDs should be activated, I light up one LED after the other, but switch between the LEDs at such a high frequency (about 5 ms for every LED) that with our surprisingly limited visual system it looks like the LEDs are actually glowing at the same time!</p>
 
@@ -337,19 +337,19 @@
 
 <p>Unfortunately, the wiring of the buttons turned out to be even more confusing than those of the LEDs. Basically, inside the mat there are two layers of foil separated by a layer of foam. The foil has conductive areas at the position of each button as well as black lines that connect the buttons to the PCB in the toy. When pressure is applied to a button, the two layers are pressed together as the foam gets squashed, and a current can now flow between the two layers of foil. So you can model this button as a resistor that changes in resistance depending on the applied pressure. I hope the picture below makes everything a little bit clearer, where you can see one of the layers and the electrical connections in black, and the foam underneath obstructing the second layer below.</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/img_20151120_180127.jpg" alt="IMG_20151120_180127.jpg" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/img_20151120_180127.jpg" alt="IMG_20151120_180127.jpg" /></p>
 
 <p>Similar to the buttons, the wiring was not straightforward, as you can see in the following schematics. For both layers, the connections accessible from the outside are drawn at the top.</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-wiring-schematics.png" alt="Button wiring schematics.png" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-wiring-schematics.png" alt="Button wiring schematics.png" /></p>
 
 <p>On the PCB, I discovered that the buttons 1-4, 5-8 and 9-10 were each short-circuited on the second layer, as shown in red in the schematic. This made matters much more complicated, because it again introduced dependencies between the buttons that make separate measurements of the buttons much harder. It leads to matrix setup, with four connections on the first and three connections on the second layer. Here is a diagram showing this matrix:</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-matrix.png" alt="Button matrix.png" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-matrix.png" alt="Button matrix.png" /></p>
 
 <p>It assumes that current is applied on the digital pins 10 to 12 and the resulting voltage measured on the analog pins A0 to A3. For each coloured cable, the buttons that are connected to it are displayed. The matrix entries show the specific button addressed by the combination of two of these cables. So the idea is to apply HIGH to one of the three digital pins, while letting the other connections float, measuring the four analog voltages, and then selecting another digital pin to set to HIGH and repeat the procedure, and then do the same thing a final third time with the last remaining digital pin. The picture below shows a schematic of the Arduino setup for the analog pin A0 and demonstrates how setting exactly one pin between 10 and 12 to high allows for the measurement of the voltage for exactly one of the three buttons. It works analogously for the other analog pins A1 to A3.</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-arduino-setup-example.png" alt="Button Arduino setup example" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-arduino-setup-example.png" alt="Button Arduino setup example" /></p>
 
 <p>Finally, I programmed my Arduino to periodically read these values, detect button presses using these measured voltages, and send the button states over the serial port, where they are received by the Unity game engine.</p>
 
@@ -361,7 +361,7 @@
 
 <p>One of Unity’s strength is definitely the modelling of 3D game environments. Although it can be difficult to find the right 3D models and textures for your game (and often you find many expensive offers on the internet and only few or no free ones), designing the terrain and moving, scaling and rotating objects is very intuitive and quickly done. Here is the scene of Snowfall as viewed inside the editor of Unity:</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/unity-3d-scene.png" alt="Unity 3D scene.png" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/unity-3d-scene.png" alt="Unity 3D scene.png" /></p>
 
 <p>I quickly added some hills and a snow texture to the terrain, placed a lot of trees and obstacles (barely visible in the middle of the screen) and added 10 red skis with their positions relative to the main camera, so they move along with the player. Because the scene is rendered from the perspective of this main camera, for the player the skis do not seem to move at all. On the left side, you can see the scene hierarchy, containing all objects of the scene organised in a tree-like structure. As stated before, the skis are a child of the main camera object so that they do not change their position on the screen. The TreeGroup contains all trees, a directional light acts as the sunlight and the terrain features a set of obstacles in the form of many thin cuboids with a rocky texture. The UI consists of text labels from one to ten for every ski, a play button, a health slider, a title text for the start screen and a loss and win text shown when the player loses or wins. It is also simple to set it up so that a specific function in your own script is called every time the button is pressed or the slider is moved. Finally, the “GameLogic” object contains most of the C# scripts responsible for handling most of the game’s logic. I say most because some scripts are attached to specific game objects like the main camera.</p>
 
@@ -390,7 +390,7 @@
 
 <p>A <code class="highlighter-rouge">HealthBar</code> class uses <code class="highlighter-rouge">GUI.DrawTexture</code> with a black and a green texture to draw the health bar, using the black texture as a background and the green texture for the bar itself. Finally, a <code class="highlighter-rouge">MainLoop</code> class ties everything together and also reacts to pressing the play button and varying the health slider on the start screen. Setting up to have a specific function called when a specific UI element is interacted with is very easy, just select the UI element in the Unity editor and then, in the inspector on the right hand side, select the function you want to call. As an example, this screenshot shows my play button and how I set it up to call the function <code class="highlighter-rouge">startGame</code> of the class <code class="highlighter-rouge">MainLoop</code> contained in the game object GameLogic whenever it is pressed:</p>
 
-<p><img src="https://f90.github.io/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/event-handling.png" alt="Event handling.png" /></p>
+<p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/event-handling.png" alt="Event handling.png" /></p>
 
 <p>I will conclude this post with the code of the main loop during active gameplay. Hopefully, it is comprehensible with the extensive comments and can further develop your coding skills in Unity.</p>
 
@@ -449,13 +449,13 @@ void Update()
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Snowfall%3A+A+Very+Special+Video+Game+Controller%20https%3A%2F%2Ff90.github.io%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Snowfall%3A+A+Very+Special+Video+Game+Controller%20https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ff90.github.io%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=https%3A%2F%2Ff90.github.io%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Ff90.github.io%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 
