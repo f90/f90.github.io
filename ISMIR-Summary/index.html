@@ -1,0 +1,750 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>ISMIR - Paper overviews - Dans World</title>
+<meta name="description" content="This year’s ISMIR was great as ever, this time featuring  lots of deep learning - I suspect since it became much more easy to use with recently developed libraries  lots of new, and surprisingly large, datasets (suited for the new deep learning era)  and a fantastic boat tour through Paris!For those that want some very quick overview about many of the papers (but not all - and the selection is biased towards my own research interests admittedly). I created “mini-abstracts” designed to describe the core idea or contribution in each paper that should at least be understandable to someone familiar with the field, since even abstracts tend to sometimes be wordy or unneccessarily, well… abstract! I divided them according to the ISMIR conference session they belong to.Use this page in parallel to quickly retrieve the links to each paper’s PDF document.Musical objects">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="ISMIR - Paper overviews">
+<meta property="og:url" content="https://f90.github.io/ISMIR-Summary/">
+
+
+  <meta property="og:description" content="This year’s ISMIR was great as ever, this time featuring  lots of deep learning - I suspect since it became much more easy to use with recently developed libraries  lots of new, and surprisingly large, datasets (suited for the new deep learning era)  and a fantastic boat tour through Paris!For those that want some very quick overview about many of the papers (but not all - and the selection is biased towards my own research interests admittedly). I created “mini-abstracts” designed to describe the core idea or contribution in each paper that should at least be understandable to someone familiar with the field, since even abstracts tend to sometimes be wordy or unneccessarily, well… abstract! I divided them according to the ISMIR conference session they belong to.Use this page in parallel to quickly retrieve the links to each paper’s PDF document.Musical objects">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2018-10-18T00:00:00+01:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://f90.github.io/ISMIR-Summary/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "https://f90.github.io",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://f90.github.io/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://f90.github.io/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://f90.github.io/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://f90.github.io/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Daniel Stoller</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Researcher in Machine Learning and Music Information Retrieval.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">London, UK</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:business@dstoller.net">
+            <meta itemprop="email" content="business@dstoller.net" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/daniel-stoller" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/f90" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+        <li>
+    <a href="https://orcid.org/0000-0002-8615-4144" itemprop="sameAs">
+      <i class="ai ai-orcid-square ai-fw"></i> ORCID
+    </a>
+  </li>
+
+  <li>
+    <a href="https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ" itemprop="sameAs">
+      <i class="ai ai-google-scholar-square ai-fw"></i> Google Scholar
+    </a>
+</li>
+
+  <li>
+    <a href="https://qmul.academia.edu/DanielStoller" itemprop="sameAs">
+      <i class="ai ai-academia-square ai-fw"></i> Academia.edu
+    </a>
+</li>
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="ISMIR - Paper overviews">
+    <meta itemprop="description" content="This year’s ISMIR was great as ever, this time featuring  lots of deep learning - I suspect since it became much more easy to use with recently developed libraries  lots of new, and surprisingly large, datasets (suited for the new deep learning era)  and a fantastic boat tour through Paris!For those that want some very quick overview about many of the papers (but not all - and the selection is biased towards my own research interests admittedly). I created “mini-abstracts” designed to describe the core idea or contribution in each paper that should at least be understandable to someone familiar with the field, since even abstracts tend to sometimes be wordy or unneccessarily, well… abstract! I divided them according to the ISMIR conference session they belong to.Use this page in parallel to quickly retrieve the links to each paper’s PDF document.Musical objects">
+    <meta itemprop="datePublished" content="October 18, 2018">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">ISMIR - Paper overviews
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  13 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>This year’s ISMIR was great as ever, this time featuring</p>
+
+<ul>
+  <li>lots of deep learning - I suspect since it became much more easy to use with recently developed libraries</li>
+  <li>lots of new, and surprisingly large, datasets (suited for the new deep learning era)</li>
+  <li>and a fantastic boat tour through Paris!</li>
+</ul>
+
+<p>For those that want some very quick overview about many of the papers (but not all - and the selection is biased towards my own research interests admittedly).
+ I created “mini-abstracts” designed to describe the core idea or contribution in each paper that should at least be understandable to someone familiar with the field, since even abstracts tend to sometimes be wordy or unneccessarily, well… abstract! I divided them according to the ISMIR conference session they belong to.</p>
+
+<p>Use <a href="http://ismir2018.ircam.fr/pages/events-main-program.html">this page</a> in parallel to quickly retrieve the links to each paper’s PDF document.</p>
+
+<h1 id="musical-objects">Musical objects</h1>
+
+<h2 id="a-1-a-confidence-measure-for-key-labelling">(A-1) A Confidence Measure For Key Labelling</h2>
+
+<p>Roman B. Gebhardt, Michael Stein and Athanasios Lykartsis</p>
+
+<p>Uncertainty in key classification for songs can be estimated by looking at how much the estimated key varies across the whole song (stability), and by taking the sum of the chroma vector at each timepoint and taking the average over the whole song as a measure of how much tonality is contained (keyness)</p>
+
+<h2 id="a-2-improved-chord-recognition-by-combining-duration-and-harmonic-language-models">(A-2) Improved Chord Recognition by Combining Duration and Harmonic Language Models</h2>
+<p>Filip Korzeniowski and Gerhard Widmer</p>
+
+<p>Use a model for predicting the next chord given the previous ones, combined with a duration model that predicts at which timestep the chord changes, as a language model to facilitate the learning of long-term dependencies that would be otherwise hard to learn with a time-frame based approach.</p>
+
+<h2 id="a-4-a-predictive-model-for-music-based-on-learned-interval-representations">(A-4) A Predictive Model for Music based on Learned Interval Representations</h2>
+<p>Stefan Lattner, Maarten Grachten and Gerhard Widmer</p>
+
+<p>Use a gated recurrent autoencoder to encode the relativ change in pitch at each timestep, then model these relativ changes with an RNN to perform monphonic pitch sequence generation, to enable an RNN to generalize better to repeating melody patterns that continually rise/fall each time.</p>
+
+<h2 id="a-5-an-end-to-end-framework-for-audio-to-score-music-transcription-on-monophonic-excerpts">(A-5) An End-to-end Framework for Audio-to-Score Music Transcription on Monophonic Excerpts</h2>
+<p>Miguel A. Román, Antonio Pertusa and Jorge Calvo-Zaragoza</p>
+
+<p>Use a neural network on audio to output a symbolic sequence using a vocbulary with clefs, keys, pitches etc. required to reconstruct a full score-sheet, using a CTC loss.</p>
+
+<h2 id="a-6-evaluating-automatic-polyphonic-music-transcription">(A-6) Evaluating Automatic Polyphonic Music Transcription</h2>
+<p>Andrew McLeod and Mark Steedman</p>
+
+<p>Proposes five metrics with which to rate the quality of a music transcription system, and combines them to one metric describing overall quality, aiming to penalize each mistake only in exactly one of the five metrics (no multiple penalties). There is however no evaluation as to how this metric correlates with subjective quality ratings by humans.</p>
+
+<h2 id="a-7-onsets-and-frames-dual-objective-piano-transcription">(A-7) Onsets and Frames: Dual-Objective Piano Transcription</h2>
+<p>Curtis Hawthorne, Erich Elsen, Jialin Song, Adam Roberts, Ian Simon, Colin Raffel, Jesse Engel, Sageev Oore and Douglas Eck</p>
+
+<p>Instead of using a frame-wise cross-entropy loss on the piano roll output for transcription, also predict the onset position of notes to improve performance/reduce spurious note activations. They also predict note velocity separately to further improve the sound of the synthesized transcription.</p>
+
+<h2 id="a-8-player-vs-transcriber-a-game-approach-to-data-manipulation-for-automatic-drum-transcription">(A-8) Player Vs Transcriber: A Game Approach To Data Manipulation For Automatic Drum Transcription</h2>
+<p>Carl Southall, Ryan Stables and Jason Hockman</p>
+
+<p>Add another model to the drum transcription setting (player) that can learn to use data augmentation operations on the training set to decrease the resulting transciption accuracy. Player and transcriber are trained together to make the transcriber learn from difficult examples not seen in the training data.</p>
+
+<h2 id="a-10-evaluating-a-collection-of-sound-tracing-data-of-melodic-phrases">(A-10) Evaluating a collection of Sound-Tracing Data of Melodic Phrases</h2>
+<p>Tejaswinee Kelkar, Udit Roy and Alexander Refsum Jensenius</p>
+
+<p>Make people move their bodies in response to melodic phrases while motion-capturing them and then try to find out which movement features correlate with/predict the corresponding melody.</p>
+
+<h2 id="a-11-main-melody-estimation-with-source-filter-nmf-and-crnn">(A-11) Main Melody Estimation with Source-Filter NMF and CRNN</h2>
+<p>Dogac Basaran, Slim Essid and Geoffroy Peeters</p>
+
+<p>Pretrain a source-filter NMF model to provide useful features for input into a convolutional-recurrent neural network to track the main melody in music pieces. Pretraining helps since it provides a better representation of the dominant fundamental frequency/pitch salience.</p>
+
+<h2 id="a-13-a-single-step-approach-to-musical-tempo-estimation-using-a-convolutional-neural-network">(A-13) A single-step approach to musical tempo estimation using a convolutional neural network</h2>
+<p>Hendrik Schreiber and Meinard Mueller</p>
+
+<p>Neural network that predicts the local tempo given a 12 second long audio input, and its aggregated outputs over a whole song can be used for estimating the whole song’s tempo.</p>
+
+<h2 id="a-14-analysis-of-common-design-choices-in-deep-learning-systems-for-downbeat-tracking">(A-14) Analysis of Common Design Choices in Deep Learning Systems for Downbeat Tracking</h2>
+<p>Magdalena Fuentes, Brian McFee, Hélène C. Crayencour, Slim Essid and Juan Pablo Bello</p>
+
+<p>Investigation how downbeat performance changes when the SotA approaches are changed slightly, e.g. what temporal granularity the input spectrogram has, how the output is decoded from the neural network, convolutional-RNN vs only RNN.</p>
+
+<h1 id="generation-visual">Generation, visual</h1>
+
+<h2 id="b-5-bridging-audio-analysis-perception-and-synthesis-with-perceptually-regularized-variational-timbre-spaces">(B-5) Bridging audio analysis, perception and synthesis with perceptually-regularized variational timbre spaces</h2>
+<p>Philippe Esling, Axel Chemla–Romeu-Santos and Adrien Bitton</p>
+
+<p>Beta-VAE is used on instrument samples. The latent space is additionally regularized such that the distances between samples of different instruments corresponds to the perceived timbral difference according to perceptual ratings. The resulting model’s latent space can be used to classify the instrument, pitch, dynamics and family, and together with the decoder one can synthesize smoothly interpolated new sounds.</p>
+
+<h2 id="b-6-conditioning-deep-generative-raw-audio-models-for-structured-automatic-music">(B-6) Conditioning Deep Generative Raw Audio Models for Structured Automatic Music</h2>
+<p>Rachel Manzelli, Vijay Thakkar, Ali Siahkamari and Brian Kulis</p>
+
+<p>Combine symbolic and audio music models: Recurrent network is trained to model symbolic note sequences, and a Wavenet model separately is trained to produce raw audio conditioned on a piano-roll representation. Then the models are put together to synthesize music pieces.</p>
+
+<h2 id="b-7-convolutional-generative-adversarial-networks-with-binary-neurons-for-polyphonic-music-generation">(B-7) Convolutional Generative Adversarial Networks with Binary Neurons for Polyphonic Music Generation</h2>
+<p>Hao-Wen Dong and Yi-Hsuan Yang</p>
+
+<p>To adapt GANs for symbolic music generation, which is a discrete problem and not a continuous problem as usually handled by GANs, they use the straight-through estimator (“stochastic binary neurons”) that have a binary output (randomly sampled) in the forward, but a real-valued probability in the backward path to compute gradients.</p>
+
+<h1 id="source-separation">Source separation</h1>
+
+<h2 id="c-2-music-source-separation-using-stacked-hourglass-networks">(C-2) Music Source Separation Using Stacked Hourglass Networks</h2>
+<p>Sungheon Park, Taehoon Kim, Kyogu Lee and Nojun Kwak</p>
+
+<p>2D U-Net neural network for source separation applied multiple times in a row using a residual connection, so that the initial estimate can be further refined each time</p>
+
+<h2 id="c-3-the-northwestern-university-source-separation-library">(C-3) The Northwestern University Source Separation Library</h2>
+<p>Ethan Manilow, Prem Seetharaman and Bryan Pardo</p>
+
+<p>Library for source separation: Supports using trained separation models easily, offers computation of evaluation metrics</p>
+
+<h2 id="c-4-improving-bass-saliency-estimation-using-transfer-learning-and-label-propagation">(C-4) Improving Bass Saliency Estimation using Transfer Learning and Label Propagation</h2>
+<p>Jakob Abeßer, Stefan Balke and Meinard Müller</p>
+
+<p>Detecting bass notes in jazz ensemble recordings. Two techniques are investigated in the face of the small available labelled data: Label propagation - train model on annotated dataset, then predict labels for unlabelled data and retrain - and transfer learning - network is trained on isolated bass recordings first, then on the actual jazz data.</p>
+
+<h2 id="c-5-improving-peak-picking-using-multiple-time-step-loss-functions">(C-5) Improving Peak-picking Using Multiple Time-step Loss Functions</h2>
+<p>Carl Southall, Ryan Stables and Jason Hockman</p>
+
+<p>Since many current models that predict a series of events given an audio sequence are trained with frame-wise cross-entropy followed by separate peak picking, the models activations might not be well suited for the peak picking procedure. Loss functions that act on neighbouring outputs as well are investigated to remedy this.</p>
+
+<h2 id="c-6-zero-mean-convolutions-for-level-invariant-singing-voice-detection">(C-6) Zero-Mean Convolutions for Level-Invariant Singing Voice Detection</h2>
+<p>Jan Schlüter and Bernhard Lehner</p>
+
+<p>Singing voice classifiers turn out to be sensitive to the overall volume of the music output, which is undesirable. While data augmentation by random amplification and mixing of voice and instrumentals helps, the paper shows you can also directly bake in this invariance by constraining the first convolutional layer so that ist weights sum up to 1, which improves robustness a bit more. However a very quiet music input with singing voice will now be classified as positive, although a listener might not be able to hear anything and say there is no singing voice.</p>
+
+<h2 id="c-8-wave-u-net-a-multi-scale-neural-network-for-end-to-end-audio-source-separation">(C-8) Wave-U-Net: A Multi-Scale Neural Network for End-to-End Audio Source Separation</h2>
+<p>Daniel Stoller, Sebastian Ewert and Simon Dixon</p>
+
+<p>This is our own paper ;)</p>
+
+<p>Change the “U-Net”, previously used in biomedical image segmentation and magnitude-based source separation to capture multi-scale features and dependencies, from 2D to 1D convolution (across time), to perform separation directly on the waveform without needing artifact-inducing source reconstruction steps.</p>
+
+<p>For more information, please see the corresponding Github repository <a href="https://github.com/f90/Wave-U-Net">here</a></p>
+
+<h2 id="c-13-music-mood-detection-based-on-audio-and-lyrics-with-deep-neural-net">(C-13) Music Mood Detection Based on Audio and Lyrics with Deep Neural Net</h2>
+<p>Rémi Delbouys, Romain Hennequin, Francesco Piccoli, Jimena Royo-Letelier and Manuel Moussallam</p>
+
+<p>Predicting the mood of a music piece by combining audio and lyrics information helps performance.</p>
+
+<h1 id="corpora">Corpora</h1>
+
+<h2 id="d-4-dali-a-large-dataset-of-synchronized-audio-lyrics-and-notes-automatically-created-using-teacher-student-machine-learning-paradigm">(D-4) DALI: a large Dataset of synchronized Audio, LyrIcs and notes, automatically created using teacher-student machine learning paradigm</h2>
+<p>Gabriel Meseguer-Brocal, Alice Cohen-Hadria and Geoffroy Peeters</p>
+
+<p>5000 music pieces with lyrics aligned up to a syllable-level, created by matching Karaoke files with user-defined aligned lyrics with the corresponding audio tracks according to a singing voice probability vector across the time duration of the song. Iteratively, the singing voice detection system can be retrained with the newly derived dataset to improve its performance, and the cycle can be repeated.</p>
+
+<h2 id="d-5-openmic-2018-an-open-data-set-for-multiple-instrument-recognition">(D-5) OpenMIC-2018: An open data-set for multiple instrument recognition</h2>
+<p>Eric Humphrey, Simon Durand and Brian McFee</p>
+
+<p>Large dataset of 10 sec music snippets with labels indicating which instruments are present.</p>
+
+<h2 id="d-6-from-labeled-to-unlabeled-data--on-the-data-challenge-in-automatic-drum-transcription">(D-6) From Labeled to Unlabeled Data – On the Data Challenge in Automatic Drum Transcription</h2>
+<p>Chih-Wei Wu and Alexander Lerch</p>
+
+<p>Investigating feature learning and student-teacher learning paradigms for drum transcription to circumvent the lack of labelled training data. Performance does not clearly increase however, indicating the need for better feature learning/student-teacher learning approaches to enable better transfer.</p>
+
+<h2 id="d-9-vocalset-a-singing-voice-dataset">(D-9) VocalSet: A Singing Voice Dataset</h2>
+<p>Julia Wilkins, Prem Seetharaman, Alison Wahl and Bryan Pardo</p>
+
+<p>Solo singing voice recordings by 20 different professional singers with annotated labels of singing style and pitch.</p>
+
+<h2 id="d-10-the-nes-music-database-a-multi-instrumental-dataset-with-expressive-performance-attributes">(D-10) The NES Music Database: A multi-instrumental dataset with expressive performance attributes</h2>
+<p>Chris Donahue, Huanru Henry Mao and Julian McAuley</p>
+
+<p>Large dataset of polyphonic music in symbolic form taken from NES games, but with extra performance-related attributes (note velocity, timbre)</p>
+
+<h2 id="d-14-revisiting-singing-voice-detection-a-quantitative-review-and-the-future-outlook">(D-14) Revisiting Singing Voice Detection: A quantitative review and the future outlook</h2>
+<p>Kyungyun Lee, Keunwoo Choi and Juhan Nam</p>
+
+<p>Review paper about singing voice detection. Common problems are identified where current methods fail: 1. Low SNR ratio between vocals and instrumentals 2. Guitar and other instruments that sound “similar” to voice are mistaken for it and 3. Presence of vibrato in other instruments is mistaken for singing voice. These findings give inspiration on how to improve future systems.</p>
+
+<h2 id="d-15-vocals-in-music-matter-the-relevance-of-vocals-in-the-minds-of-listeners">(D-15) Vocals in Music Matter: the Relevance of Vocals in the Minds of Listeners</h2>
+<p>Andrew Demetriou, Andreas Jansson, Aparna Kumar and Rachel Bittner</p>
+
+<p>Psychological qualtiative and quantitative studies demonstrate that listeners attend very closely to singing voice compared to many other aspects of music, despite the lack of singing voice related attributes in music tags for songs.</p>
+
+<h2 id="d-16-vocal-melody-extraction-with-semantic-segmentation-and-audio-symbolic-domain-transfer-learning">(D-16) Vocal melody extraction with semantic segmentation and audio-symbolic domain transfer learning</h2>
+<p>Wei Tsung Lu and Li Su</p>
+
+<p>For vocal melody extraction, a symbolic vocal segmentation model is first trained on symbolic data. Then the vocal melody extractor is trained from the audio plus the symbolic representation extracted by the other model (we assume audio and symbolic input is known for each sample). At test time, since symbolic data is not available, a simple filter is applied to the audio to get an estimate of what the symbolic transcription might look like to feed it into the symbolic model, before its output is fed into the audio model.</p>
+
+<h2 id="d-17-empirically-weighting-the-importance-of-decision-factors-for-singing-preference">(D-17) Empirically Weighting the Importance of Decision Factors for Singing Preference</h2>
+<p>Michael Barone, Karim Ibrahim, Chitralekha Gupta and Ye Wang</p>
+
+<p>Psychological study into how important different factors (familiarity, genre preference,
+ease of vocal reproducibility, and overall preference of the song) are for predicting how attractive it is for a person to sing along to a song.</p>
+
+<h1 id="timbre-tagging-similarity-patterns-and-alignment">Timbre, tagging, similarity, patterns and alignment</h1>
+
+<h2 id="e-3-comparison-of-audio-features-for-recognition-of-western-and-ethnic-instruments-in-polyphonic-mixtures">(E-3) Comparison of Audio Features for Recognition of Western and Ethnic Instruments in Polyphonic Mixtures</h2>
+<p>Igor Vatolkin and Günter Rudolph</p>
+
+<p>Using evolutionary optimisation to select features most useful for detecting Western or Ethnic instruments. Since these feature sets turn out to be somewhat different, they also search for the best “compromise set” of features that performs reasonably well (but worse than the specialised features) on both types of data.</p>
+
+<h2 id="e-4-instrudive-a-music-visualization-system-based-on-automatically-recognized-instrumentation">(E-4) Instrudive: A Music Visualization System Based on Automatically Recognized Instrumentation</h2>
+<p>Takumi Takahashi, Satoru Fukayama and Masataka Goto</p>
+
+<p>Visualising a collection of music pieces by turning each piece into a pie-chart that shows the percentage of time each instrument is active.</p>
+
+<h2 id="e-6-jazz-solo-instrument-classification-with-convolutional-neural-networks-source-separation-and-transfer-learning">(E-6) Jazz Solo Instrument Classification with Convolutional Neural Networks, Source Separation, and Transfer Learning</h2>
+<p>Juan S. Gómez, Jakob Abeßer and Estefanía Cano 
+ 
+To classify the particular jazz solo instrument playing, source separation is used to remove other instruments first, which helps classification performance. Transfer learning on the other hand by using a model trained on a different dataset beforehand does not turn out to work better, but that may be due to the way the model predictions are aggregated to compute the evaluation metrics.</p>
+
+<h2 id="e-9-semi-supervised-lyrics-and-solo-singing-alignment">(E-9) Semi-supervised lyrics and solo-singing alignment</h2>
+<p>Chitralekha Gupta, Rong Tong, Haizhou Li and Ye Wang</p>
+
+<p>Usage of the DAMP data containing amateur solo singing recordings together with unaligned lyrics, which are roughly aligned by using existing speech recognition technology, to train a lyrics transcription and alignment system. They reach a word error rate of 36%, however it is not known how much this degrades on normal music with lots of accopaniment noise.</p>
+
+<h2 id="e-14-end-to-end-learning-for-music-audio-tagging-at-scale">(E-14) End-to-end Learning for Music Audio Tagging at Scale</h2>
+<p>Jordi Pons, Oriol Nieto, Matthew Prockup, Erik M. Schmidt, Andreas F. Ehmann and Xavier Serra</p>
+
+<p>Comparison of spectrogram-based with direct raw audio-based classification models for music tagging with varying sizes of training data indicates that spectrograms lead to slightly better performance for small, but slightly worse performance for very large training datasets compared to direct audio input.</p>
+
+<h2 id="e-17-learning-interval-representations-from-polyphonic-music-sequences">(E-17) Learning Interval Representations from Polyphonic Music Sequences</h2>
+<p>Stefan Lattner, Maarten Grachten and Gerhard Widmer</p>
+
+<p>Instead of modeling a sequence of pitches directly, we model the transformation of previous pitches into the current one with a gated auto-encoder and then let the RNN model the autoencoder embeddings, which makes for key-invariant processing.</p>
+
+<h1 id="session-f---machine-and-human-learning-of-music">Session F - Machine and human learning of music</h1>
+
+<h2 id="f-3-listener-anonymizer-camouflaging-play-logs-to-preserve-users-demographic-anonymity">(F-3) Listener Anonymizer: Camouflaging Play Logs to Preserve User’s Demographic Anonymity</h2>
+<p>Kosetsu Tsukuda, Satoru Fukayama and Masataka Goto 
+ 
+Individual users of music streaming services can protect themselves against being identified in terms of their nationality, age, etc. by way of their playlist history with this technique, which estimates these attributes internally and then tells the user which songs he should play to confuse the recommendation engine to obfuscate these attributes.</p>
+
+<h2 id="f-7-representation-learning-of-music-using-artist-labels">(F-7) Representation Learning of Music Using Artist Labels</h2>
+<p>Jiyoung Park, Jongpil Lee, Jangyeon Park, Jung-Woo Ha and Juhan Nam</p>
+
+<p>Instead of classifying genre directly, which limits training data and introduces label noise, train to detect the artist, which are objective, easily obtained labels, first. Then use the learned feature representation in the last layer to perform genre detection on a few different datasets</p>
+
+<h2 id="f-11-midi-vae-modeling-dynamics-and-instrumentation-of-music-with-applications-to-style-transfer">(F-11) MIDI-VAE: Modeling Dynamics and Instrumentation of Music with Applications to Style Transfer</h2>
+<p>Gino Brunner, Andres Konrad, Yuyi Wang and Roger Wattenhofer</p>
+
+<p>Use a VAE on short audio excerpts, but reserve 2 dimensions in the latent space for modeling different musical styles (jazz, classic, …) by ensuring that a classifier using these dimensions can identify the style of the input. Then the VAE can be used for style transfer by encoding a given input, and changing the style code in the latent space before decoding it.</p>
+
+<h2 id="f-12-understanding-a-deep-machine-listening-model-through-feature-inversion">(F-12) Understanding a Deep Machine Listening Model Through Feature Inversion</h2>
+<p>Saumitra Mishra, Bob L. Sturm and Simon Dixon</p>
+
+<p>To understand what information/concept is captured by each layer/neuron at a deep audio model, extra decoder functions are trained at each layer to recover the original input of the network (which gets harder the closer you get to the classification layer).</p>
+
+<h2 id="f-16-learning-to-listen-read-and-follow-score-following-as-a-reinforcement-learning-game">(F-16) Learning to Listen, Read, and Follow: Score Following as a Reinforcement Learning Game</h2>
+<p>Matthias Dorfer, Florian Henkel and Gerhard Widmer</p>
+
+<p>Apply reinforcement learning to score following by defining an agent that looks at the current section of music sheet and audio spectrogram and then decides whether to increase or decrease the current note sheet scrolling speed.</p>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2018-10-18T00:00:00+01:00">October 18, 2018</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=ISMIR+-+Paper+overviews%20https%3A%2F%2Ff90.github.io%2FISMIR-Summary%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Ff90.github.io%2FISMIR-Summary%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=https%3A%2F%2Ff90.github.io%2FISMIR-Summary%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Ff90.github.io%2FISMIR-Summary%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/Spectrogram-input-normalisation-for-neural-networks/" class="pagination--pager" title="Spectrogram Input Normalisation For Neural Networks
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram Input Normalisation For Neural Networks
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.
+
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Tensorflow-LSTM-for-Language-Modelling/" rel="permalink">Tensorflow LSTM for Language Modelling
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  18 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previo...</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Snowfall-a-very-special-video-game-controller/" rel="permalink">Snowfall: A Very Special Video Game Controller
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Here is a short Youtube video explaining what this post it about. How did I do it? I will try to go through the main steps in the following.
+
+</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2018 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  
+
+
+
+  </body>
+</html>
