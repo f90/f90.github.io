@@ -113,7 +113,7 @@ Since many current models that predict a series of events given an audio sequenc
 ## (C-6) Zero-Mean Convolutions for Level-Invariant Singing Voice Detection 
 Jan Schlüter and Bernhard Lehner 
 
-Singing voice classifiers turn out to be sensitive to the overall volume of the music output, which is undesirable. While data augmentation by random amplification and mixing of voice and instrumentals helps, the paper shows you can also directly bake in this invariance by constraining the first convolutional layer so that ist weights sum up to 1, which improves robustness a bit more. However a very quiet music input with singing voice will now be classified as positive, although a listener might not be able to hear anything and say there is no singing voice.
+Singing voice classifiers turn out to be sensitive to the overall volume of the music output, which is undesirable. While data augmentation by random amplification and mixing of voice and instrumentals helps with classification performance, it appears that this sensitivity largely remains. The paper shows you can directly bake in this invariance by constraining the first convolutional layer so that the weights in each filter sum up to 0, and get better performance. One potential drawback is that a very quiet music input with singing voice will now be classified as positive, although a listener might not be able to hear anything and say there is no singing voice.
 
 ## (C-8) Wave-U-Net: A Multi-Scale Neural Network for End-to-End Audio Source Separation 
 Daniel Stoller, Sebastian Ewert and Simon Dixon 
