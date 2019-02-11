@@ -14,8 +14,13 @@ var store = [{
         "tags": [],
         "url": "https://dans.world/Spectrogram-input-normalisation-for-neural-networks/",
         "teaser":null},{
-        "title": "ISMIR - Paper overviews",
+        "title": "ISMIR 2018 - Paper Overviews",
         "excerpt":"This year’s ISMIR was great as ever, this time featuring lots of deep learning - I suspect since it became much more easy to use with recently developed libraries lots of new, and surprisingly large, datasets (suited for the new deep learning era) and a fantastic boat tour through Paris!For...","categories": [],
         "tags": [],
         "url": "https://dans.world/ISMIR-Summary/",
+        "teaser":null},{
+        "title": "Bounded output regression with neural networks",
+        "excerpt":"Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\\hat{y}$ as possible. We also know that...","categories": [],
+        "tags": [],
+        "url": "https://dans.world/Bounded-output-networks/",
         "teaser":null}]

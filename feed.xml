@@ -1,4 +1,84 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="https://dans.world/feed.xml" rel="self" type="application/atom+xml" /><link href="https://dans.world/" rel="alternate" type="text/html" /><updated>2018-10-18T19:40:37+01:00</updated><id>https://dans.world/</id><title type="html">Dans World</title><subtitle>Machine learning, music information retrieval, and other things</subtitle><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><entry><title type="html">ISMIR - Paper overviews</title><link href="https://dans.world/ISMIR-Summary/" rel="alternate" type="text/html" title="ISMIR - Paper overviews" /><published>2018-10-18T00:00:00+01:00</published><updated>2018-10-18T00:00:00+01:00</updated><id>https://dans.world/ISMIR-Summary</id><content type="html" xml:base="https://dans.world/ISMIR-Summary/">&lt;p&gt;This year’s ISMIR was great as ever, this time featuring&lt;/p&gt;
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="https://dans.world/feed.xml" rel="self" type="application/atom+xml" /><link href="https://dans.world/" rel="alternate" type="text/html" /><updated>2019-02-11T19:12:15+00:00</updated><id>https://dans.world/</id><title type="html">Dans World</title><subtitle>Machine learning, music information retrieval, and other things</subtitle><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><entry><title type="html">Bounded output regression with neural networks</title><link href="https://dans.world/Bounded-output-networks/" rel="alternate" type="text/html" title="Bounded output regression with neural networks" /><published>2019-01-23T00:00:00+00:00</published><updated>2019-01-23T00:00:00+00:00</updated><id>https://dans.world/Bounded-output-networks</id><content type="html" xml:base="https://dans.world/Bounded-output-networks/">&lt;p&gt;Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.&lt;/p&gt;
+
+&lt;p&gt;This sounds like a very standard setting that should not pose any problems.
+But as we will see, it is not so obvious how to ensure the output of the network is always in the given interval, and that training based on stochastic gradient descent (SGD) is possible without issues.&lt;/p&gt;
+
+&lt;h2 id=&quot;application-directly-output-audio-waveforms&quot;&gt;Application: Directly output audio waveforms&lt;/h2&gt;
+
+&lt;p&gt;This supervised regression occurs in many situations, such predicting a depth map from an image, or audio style transfer.
+We will take a look at the &lt;a href=&quot;https://github.com/f90/Wave-U-Net&quot;&gt;Wave-U-Net&lt;/a&gt; model that takes a music waveform as input $x$, and predicts the individual instrument tracks directly as raw audio.
+Since audio amplitudes are usually represented as values in the $[-1,1]$ range, I decided to use $\tanh(a)$ as the final activation function with $a \in \mathbb{R}$ as the last layer’s output at a given time-step.
+As a result, all outputs are now between -1 and 1:&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2019-01-23-Bounded-output-networks/tanh.png&quot; alt=&quot;Tanh activation function&quot; /&gt;&lt;/p&gt;
+
+&lt;p&gt;As loss function for the regression, I simply use the mean squared error (MSE, $(y - \hat{y})^2$) between the prediction $y$ and the target $\hat{y}$.&lt;/p&gt;
+
+&lt;h2 id=&quot;squashing-the-output-with-tanh-issues&quot;&gt;Squashing the output with $\tanh$: Issues&lt;/h2&gt;
+
+&lt;p&gt;This looks like a good solution at first glance, since the network always produces valid outputs, so the output does not need to be post-processed.
+But there are two potential problems:&lt;/p&gt;
+
+&lt;ol&gt;
+  &lt;li&gt;
+    &lt;p&gt;The true audio amplitudes $\hat{y}$ are in the range $[-1,1]$, but $\tanh(a) \in (-1, 1)$ and so never reaches -1 and 1 exactly. 
+If our targets $\hat{y}$ in the training data actually contain these values, the network is forced to output extremely large/small $a$ so that $\tanh(a)$ gets as close to -1 or 1 as possible.
+I tested this with the Wave-U-Net in an extreme scenario, where all target amplitudes $\hat{y}$ are 1 for all inputs $x$.
+After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can become a problem in practice (although my training data is unrealistic in itself).&lt;/p&gt;
+  &lt;/li&gt;
+  &lt;li&gt;
+    &lt;p&gt;At very small or large $x$ values, the gradient of $\tanh(a)$ with respect to a, $\tanh’(a)$, vanishes towards zero, as you can see in the plot below.
+&lt;img src=&quot;https://dans.world/assets/img/2019-01-23-Bounded-output-networks/tanh_derivative.png&quot; alt=&quot;Tanh derivative&quot; /&gt;
+At any point during training, a large weight update that makes all model outputs $y$ almost $-1$ or $1$ would thus make the gradient of the loss with respect to the weights vanish towards zero, since it contains $\tanh’(a)$ as one factor.
+This can actually happen in practice - some people reported to me that for their dataset, the Wave-U-Net suddenly diverged in this fashion after training stably for a long time, and then couldn’t recover.&lt;/p&gt;
+  &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2 id=&quot;possible-solutions&quot;&gt;Possible solutions&lt;/h2&gt;
+
+&lt;p&gt;So what other options are there? 
+One option is to simply use a linear output, but clipped to the $[-1,1]$ range: $y := \min(\max(a, -1), 1)$.
+This solves problem number 1, since $-1$ and $1$ can be output directly.
+However, problem number 2 still remains, and is maybe even more pronounced now: Clipping all output values outside $[-1,1]$ means the gradient for these outputs is exactly zero, not just arbitrarily close to it like with $\tanh$, so the network might still diverge and never recover.&lt;/p&gt;
+
+&lt;p&gt;Finally, I want to propose a third option: A linear output that is unbounded during training ($y := a$), but at test time, the output is clipped to $[-1,1]$. Compared to always clipping, there is now a significant, non-zero gradient for the network to learn from during training at all times:
+If the network predicts for example $1.4$ as amplitude where the target is $1$, the MSE loss will result in the output being properly corrected towards $1$.&lt;/p&gt;
+
+&lt;p&gt;I trained a Wave-U-Net variant for singing voice separation that uses this linear output with test-time clipping for each source independently. Apart from that, all settings are equal to the &lt;a href=&quot;https://github.com/f90/Wave-U-Net&quot;&gt;M5-HighSR&lt;/a&gt; model, which uses the $\tanh$ function to predict the accompaniment, and outputs the difference between the input music and the predicted accompaniment signal as voice signal.&lt;/p&gt;
+
+&lt;p&gt;Below you can see the waveforms of an instrumental section of a Nightwish song (top), the accompaniment prediction from our new model variant (middle), and from the $\tanh$ model (bottom). Red parts indicate amplitude clipping.
+&lt;img src=&quot;https://dans.world/assets/img/2019-01-23-Bounded-output-networks/waveform_comparison.png&quot; alt=&quot;Waveform comparison&quot; /&gt;
+We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input almost 1:1, which is the goal for this section as the input already consists of accompaniment only.&lt;/p&gt;
+
+&lt;p&gt;This output problem with the accompaniment also creates more noise in the vocal channel in turn for the $\tanh$ model since it uses the difference signal as vocal output:&lt;/p&gt;
+
+&lt;ul&gt;
+  &lt;li&gt;Original song&lt;/li&gt;
+&lt;/ul&gt;
+&lt;audio controls=&quot;&quot;&gt;
+  &lt;source src=&quot;https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_original.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
+Your browser does not support audio file playing!
+&lt;/audio&gt;
+&lt;ul&gt;
+  &lt;li&gt;Tanh model vocal prediction&lt;/li&gt;
+&lt;/ul&gt;
+&lt;audio controls=&quot;&quot;&gt;
+  &lt;source src=&quot;https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_tanh_vocals.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
+Your browser does not support audio file playing!
+&lt;/audio&gt;
+&lt;ul&gt;
+  &lt;li&gt;Linear output model vocal prediction&lt;/li&gt;
+&lt;/ul&gt;
+&lt;audio controls=&quot;&quot;&gt;
+  &lt;source src=&quot;https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_direct_vocals.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
+Your browser does not support audio file playing!
+&lt;/audio&gt;
+
+&lt;h2 id=&quot;outlook&quot;&gt;Outlook&lt;/h2&gt;
+
+&lt;p&gt;Although we managed to get improvements over $\tanh$ to output values of bounded range with neural networks, this might not be the perfect solution. Output activations such as $\sin$ or $\cos$ could also be considered, since they squash the output to a desired interval while still allowing to output the boundary values, but training might be difficult due to their periodic nature.&lt;/p&gt;
+
+&lt;p&gt;Also, different regression loss functions than MSE might be useful, too. If we used cross-entropy as loss function, it should provide a more well-behaved gradient even when using the $\tanh$ activation, so different loss functions can also play a role and should be explored in the future.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.</summary></entry><entry><title type="html">ISMIR 2018 - Paper Overviews</title><link href="https://dans.world/ISMIR-Summary/" rel="alternate" type="text/html" title="ISMIR 2018 - Paper Overviews" /><published>2018-10-18T00:00:00+01:00</published><updated>2018-10-18T00:00:00+01:00</updated><id>https://dans.world/ISMIR-Summary</id><content type="html" xml:base="https://dans.world/ISMIR-Summary/">&lt;p&gt;This year’s ISMIR was great as ever, this time featuring&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;lots of deep learning - I suspect since it became much more easy to use with recently developed libraries&lt;/li&gt;
