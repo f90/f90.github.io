@@ -1,5 +1,5 @@
 ---
-title: ISMIR - Paper overviews
+title: ISMIR 2018 - Paper Overviews
 ---
  
  This year's ISMIR was great as ever, this time featuring

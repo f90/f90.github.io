@@ -24,6 +24,9 @@
 - ext: slides.pdf
   icon: fa-file-pdf
   text: "Slides"
+- ext: poster.pdf
+  icon: fa-file-pdf
+  text: "Poster"
 - ext: zip
   icon: fa-file-archive
   text: "File Archive (.zip)"
