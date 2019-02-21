@@ -23,4 +23,9 @@ var store = [{
         "excerpt":"Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\\hat{y}$ as possible. We also know that...","categories": [],
         "tags": [],
         "url": "https://dans.world/Bounded-output-networks/",
+        "teaser":null},{
+        "title": "Spotify Research Internship Report",
+        "excerpt":"From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.Their work is also similar to my PhD, focused on...","categories": [],
+        "tags": [],
+        "url": "https://dans.world/Spotify-internship/",
         "teaser":null}]

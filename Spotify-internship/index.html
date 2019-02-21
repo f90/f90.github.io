@@ -1,0 +1,765 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Spotify Research Internship Report - Dans World</title>
+<meta name="description" content="From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.">
+
+
+
+<meta property="og:type" content="article">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="Spotify Research Internship Report">
+<meta property="og:url" content="https://dans.world/Spotify-internship/">
+
+
+  <meta property="og:description" content="From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.">
+
+
+
+
+
+
+
+  <meta property="article:published_time" content="2019-02-21T00:00:00+00:00">
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://dans.world/Spotify-internship/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "https://dans.world",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--single">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Daniel Stoller</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Researcher in Machine Learning and Music Information Retrieval.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">London, UK</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:business@dstoller.net">
+            <meta itemprop="email" content="business@dstoller.net" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/daniel-stoller" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/f90" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+        <li>
+    <a href="https://orcid.org/0000-0002-8615-4144" itemprop="sameAs">
+      <i class="ai ai-orcid-square ai-fw"></i> ORCID
+    </a>
+  </li>
+
+  <li>
+    <a href="https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ" itemprop="sameAs">
+      <i class="ai ai-google-scholar-square ai-fw"></i> Google Scholar
+    </a>
+</li>
+
+  <li>
+    <a href="https://qmul.academia.edu/DanielStoller" itemprop="sameAs">
+      <i class="ai ai-academia-square ai-fw"></i> Academia.edu
+    </a>
+</li>
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
+    <meta itemprop="headline" content="Spotify Research Internship Report">
+    <meta itemprop="description" content="From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.">
+    <meta itemprop="datePublished" content="February 21, 2019">
+    
+
+    <div class="page__inner-wrap">
+      
+        <header>
+          <h1 id="page-title" class="page__title" itemprop="headline">Spotify Research Internship Report
+</h1>
+          
+            <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  6 minute read
+</p>
+          
+        </header>
+      
+
+      <section class="page__content" itemprop="text">
+        
+        <p>From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.
+I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.
+Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.</p>
+
+<p><img src="https://dans.world/assets/img/2019-02-21-Spotify-internship/jam.png" alt="Jamming night at Spotify" />
+<em>Jam night at Spotify New York</em></p>
+
+<h2 id="overall-impressions">Overall impressions</h2>
+
+<p>Overall my experience was very good. 
+Spotify has lots of energetic, ambitious people that are happy to help out and collaborate with you (on that note, many thanks to Simon, Tristan, Sebastian, Rachel, Andreas, Till, Aparna, and probably more that I forgot!)</p>
+
+<p>Compared to my usual PhD work, this made me especially productive - I worked a lot during these months, but enjoyed it at the same time.
+Add to that many (mostly optional) meetings such as “Research weekly”, talks from invited researchers, and so on, as well as a great IT infrastructure that puts powerful compute at your fingertips and increases your work efficiency, and you have a very engaging atmosphere that extracts the most out of everyone’s potential.</p>
+
+<p>I also had great freedom in terms of selecting the topic I wanted to research. This is not a given at all considering interns are often bound to one particular task during their stay.</p>
+
+<p>Unfortunately, Spotify had their London offices restructured at the time, so I worked in a temporary office building that was a bit bland in design compared to the nicely designed and decorated main offices. However they were still very high-quality and a big step up from some of the buildings at my university!</p>
+
+<p>Since much of the MIQ team works in the New York offices, I was also able to visit them for a week, with all expenses sponsored!
+It was great to meet all those people in real life that I only saw in video-conferences until then.
+Offices there are quite big, and even offer daily catering and in-house music events such as a jam night.</p>
+
+<p>During my stay, I investigated methods for</p>
+<ul>
+  <li>separating singing voice from accompaniment</li>
+  <li>detecting what is being sung in a music piece (lyrics transcription)</li>
+  <li>and when it is being sung if the lyrics text is already given along with the music piece (lyrics alignment).</li>
+</ul>
+
+<h2 id="better-objectives-for-singing-voice-separation">Better objectives for singing voice separation</h2>
+
+<p>For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system <a href="#Huang2014">(Huang, Kim, Hasegawa-Johnson, &amp; Smaragdis, 2014; Stoller, Ewert, &amp; Dixon, 2018)</a>.
+The problem is that those do not necessarily align with how a human listening to, let’s say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
+This means we are not optimising our systems to maximise the actual listening quality!
+Evaluation metrics such as SDR <a href="#Vincent2006">(Vincent, Gribonval, &amp; Fevotte, 2006)</a> or PEASS <a href="#Vincent2012">(Vincent, 2012)</a> share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
+
+<p>The above losses and metrics also assume that for every music input, there exists <em>exactly one true source output</em> as solution for the separation task (uni-modal).
+But that might not be the case - if music has background vocals for example, there are <em>two</em> solutions for singing voice separation that both make sense: one that puts the background vocals into the accompaniment track, and one that puts them into the vocal track along with the main vocals:</p>
+
+<p><img src="https://dans.world/assets/img/2019-02-21-Spotify-internship/multi_modal_output.png" alt="Multiple solutions for separation" /></p>
+
+<p>These monotonic objectives would take whatever option happens to be in the training dataset, and reward the separator more the closer it gets to that solution.
+This means the other option is punished severely, and the separator might, instead of representing both, be encouraged to predict an average of the two solutions, which however can be a bad output in itself.</p>
+
+<p>We investigated GAN-based training as a potential solution, and also performed perceptual listening experiments (with great help of Aparna!) in an effort to develop a better objective function that more closely resembles how humans would rate the output quality of such systems.
+The work is still ongoing - stay tuned for more info!</p>
+
+<h2 id="combining-singing-voice-separation-and-lyrics-transcription">Combining singing voice separation and lyrics transcription</h2>
+
+<p>Another idea explored in my internship is concerned with the interactions between tasks:
+Maybe we can separate voice better if we know what is being sung.
+And similarly, if we know the isolated voice track, detecting what is being sung should be much easier!</p>
+
+<p>Therefore we looked at <em>multi-task learning</em> to build models that perform separation and lyrics transcription at the same time.
+We chose the <em>Wave-U-Net</em> <a href="#Stoller2018a">(Stoller, Ewert, &amp; Dixon, 2018)</a> model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
+
+<p><img src="https://dans.world/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png" alt="Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here." />
+<em>Branching off a Wave-U-Net upsampling block to predict lyrics characters (<a href="https://arxiv.org/abs/1902.06797">source</a>) . The later upsampling blocks for separation are not depicted here</em></p>
+
+<p>Although we hoped to improve performance this way and tried out many different multi-tasking strategies, the multi-task models were only very slightly better, if at all, than their single-task counterparts.
+We don’t know exactly why, since there are many factors that can influence the results: Possibly the datasets were so big that the single-task models already underfit, so extra information from other task was not beneficial, or the tasks do not overlap so much after all, or we used the wrong multi-tasking strategy, etc. So we did not investigate further.</p>
+
+<p>Also, we found that lyrics transcription is very, very hard!
+This might not be very surprising, since it could be seen as speech recognition, which is already hard, but with a lot of additional noise (from the accompaniment), slurred pronounciation and other unusual effects due to singing differing from speech.</p>
+
+<h2 id="lyrics-alignment">Lyrics alignment</h2>
+
+<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models <a href="#MIREX2017Alignment">(MIREX, 2017)</a>.</p>
+
+<p>In conclusion, we find that <strong>you can train a lyrics transcription system from only line-level aligned lyrics annotations to predict characters directly from raw audio</strong>, and <strong>get excellent alignment accuracy even with mediocre transcription performance - see our ICASSP publication (preprint available <a href="https://arxiv.org/abs/1902.06797">here</a>)!</strong></p>
+
+<p>Lyrics transcription however, can still be considered unsolved for now, and this exciting problem will hopefully attract lots of research in the future.</p>
+
+<h2 id="references">References</h2>
+
+<ol class="bibliography"><li><div>
+<b>Wave-U-Net: A Multi-Scale Neural Network for End-to-End Source
+	Separation</b> <span style="font-size:15px"> (2018) </span>
+<br />
+
+  Proceedings of the International Society for Music Information Retrieval
+	Conference (ISMIR)
+  <br />
+
+
+<i>Stoller, Daniel and Ewert, Sebastian and Dixon, Simon</i>
+</div>
+
+<!--
+
+-->
+
+
+    <a href="/repository/Stoller2018a.published.pdf"><input class="button0" type="button" value="PDF" /></a>
+
+
+
+
+<!--
+
+-->
+
+
+
+
+
+<a download="Stoller2018a.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BStoller2018a,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20title%20=%20%7B%7BWave-U-Net%7D:%20A%20Multi-Scale%20Neural%20Network%20for%20End-to-End%20Source%0A%20%20%09Separation%7D,%0A%20%20booktitle%20=%20%7BProceedings%20of%20the%20International%20Society%20for%20Music%20Information%20Retrieval%0A%20%20%09Conference%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%0A%20%20%09spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%0A%20%20%09dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%0A%20%20%09we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%0A%20%20%09allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%0A%20%20%09Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%0A%20%20%09context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%0A%20%20%09separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%0A%20%20%09this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%0A%20%20%09to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%0A%20%20%09maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%0A%20%20%09introduce%20further%20architectural%20improvements,%20including%20an%20output%0A%20%20%09layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%0A%20%20%09a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%0A%20%20%09Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%0A%20%20%09yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%0A%20%20%09U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%0A%20%20%09with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%0A%20%20%09reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Stoller2018a/">Details</a></li>
+<li><div>
+<b>Lyrics alignment results</b> <span style="font-size:15px"> (2017) </span>
+<br />
+
+
+<i>MIREX</i>
+</div>
+
+<!--
+
+-->
+
+
+
+
+
+<!--
+
+    <a href="https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results"><input class="button" type="button" value="link" /></a>
+
+-->
+
+
+
+
+    <a href="https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results"><input class="button0" type="button" value="Link" /></a>
+
+
+<a download="MIREX2017Alignment.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@electronic%7BMIREX2017Alignment,%0A%20%20author%20=%20%7BMIREX%7D,%0A%20%20year%20=%20%7B2017%7D,%0A%20%20title%20=%20%7BLyrics%20alignment%20results%7D,%0A%20%20howpublished%20=%20%7B%5Curl%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D%7D,%0A%20%20url%20=%20%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D,%0A%20%20owner%20=%20%7Bdaniel%7D,%0A%20%20timestamp%20=%20%7B2018.10.23%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/MIREX2017Alignment/">Details</a></li>
+<li><div>
+<b>Singing-Voice Separation from Monaural Recordings using Deep Recurrent
+	Neural Networks.</b> <span style="font-size:15px"> (2014) </span>
+<br />
+
+  International Society for Music Information Retrieval (ISMIR)
+  <br />
+
+
+<i>Huang, Po-Sen and Kim, Minje and Hasegawa-Johnson, Mark and Smaragdis, Paris</i>
+</div>
+
+<!--
+
+-->
+
+
+
+
+
+<!--
+
+-->
+
+
+
+
+
+<a download="Huang2014.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BHuang2014,%0A%20%20author%20=%20%7BHuang,%20Po-Sen%20and%20Kim,%20Minje%20and%20Hasegawa-Johnson,%20Mark%20and%20Smaragdis,%20Paris%7D,%0A%20%20title%20=%20%7BSinging-Voice%20Separation%20from%20Monaural%20Recordings%20using%20Deep%20Recurrent%0A%20%20%09Neural%20Networks.%7D,%0A%20%20booktitle%20=%20%7BInternational%20Society%20for%20Music%20Information%20Retrieval%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2014%7D,%0A%20%20pages%20=%20%7B477--482%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Huang2014/">Details</a></li>
+<li><div>
+<b>Improved Perceptual Metrics for the Evaluation of Audio Source Separation</b> <span style="font-size:15px"> (2012) </span>
+<br />
+
+  Latent Variable Analysis and Signal Separation
+  <br />
+
+
+<i>Vincent, Emmanuel</i>
+</div>
+
+<!--
+
+-->
+
+
+
+
+
+<!--
+
+-->
+
+
+
+
+
+<a download="Vincent2012.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BVincent2012,%0A%20%20author%20=%20%7BVincent,%20Emmanuel%7D,%0A%20%20title%20=%20%7BImproved%20Perceptual%20Metrics%20for%20the%20Evaluation%20of%20Audio%20Source%20Separation%7D,%0A%20%20booktitle%20=%20%7BLatent%20Variable%20Analysis%20and%20Signal%20Separation%7D,%0A%20%20year%20=%20%7B2012%7D,%0A%20%20pages%20=%20%7B430--437%7D,%0A%20%20publisher%20=%20%7BSpringer%7D,%0A%20%20abstract%20=%20%7BWe%20aim%20to%20predict%20the%20perceived%20quality%20of%20estimated%20source%20signals%0A%20%20%09in%20the%20context%20of%20audio%20source%20separation.%20Recently,%20we%20proposed%0A%20%20%09a%20set%20of%20metrics%20called%20PEASS%20that%20consist%20of%20three%20computation%20steps:%0A%20%20%09decomposition%20of%20the%20estimation%20error%20into%20three%20components,%20measurement%0A%20%20%09of%20the%20salience%20of%20each%20component%20via%20the%20PEMO-Q%20auditory-motivated%0A%20%20%09measure,%20and%20combination%20of%20these%20saliences%20via%20a%20nonlinear%20mapping%0A%20%20%09trained%20on%20subjective%20opinion%20scores.%20The%20parameters%20of%20the%20decomposition%0A%20%20%09were%20shown%20to%20have%20little%20influence%20on%20the%20prediction%20performance.%0A%20%20%09In%20this%20paper,%20we%20evaluate%20the%20impact%20of%20the%20parameters%20of%20PEMO-Q%0A%20%20%09and%20the%20nonlinear%20mapping%20on%20the%20prediction%20performance.%20By%20selecting%0A%20%20%09the%20optimal%20parameters,%20we%20improve%20the%20average%20correlation%20with%20mean%0A%20%20%09opinion%20scores%20(MOS)%20from%200.738%20to%200.909%20in%20a%20cross-validation%20setting.%0A%20%20%09The%20resulting%20improved%20metrics%20are%20used%20in%20the%20context%20of%20the%202011%0A%20%20%09Signal%20Separation%20Evaluation%20Campaign%20(SiSEC).%7D,%0A%20%20isbn%20=%20%7B978-3-642-28551-6%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Vincent2012/">Details</a></li>
+<li><div>
+<b>Performance measurement in blind audio source separation</b> <span style="font-size:15px"> (2006) </span>
+<br />
+
+
+IEEE Transactions on Audio, Speech, and Language Processing
+
+<i>Vincent, E. and Gribonval, R. and Fevotte, C.</i>
+</div>
+
+<!--
+
+    <a href="http://doi.org/10.1109/TSA.2005.858005"><input class="button1" type="button" value="doi" /></a>
+
+-->
+
+
+
+
+
+<!--
+
+-->
+
+
+
+
+
+<a download="Vincent2006.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@article%7BVincent2006,%0A%20%20author%20=%20%7BVincent,%20E.%20and%20Gribonval,%20R.%20and%20Fevotte,%20C.%7D,%0A%20%20title%20=%20%7BPerformance%20measurement%20in%20blind%20audio%20source%20separation%7D,%0A%20%20journal%20=%20%7BIEEE%20Transactions%20on%20Audio,%20Speech,%20and%20Language%20Processing%7D,%0A%20%20year%20=%20%7B2006%7D,%0A%20%20volume%20=%20%7B14%7D,%0A%20%20pages%20=%20%7B1462-1469%7D,%0A%20%20number%20=%20%7B4%7D,%0A%20%20doi%20=%20%7B10.1109/TSA.2005.858005%7D,%0A%20%20issn%20=%20%7B1558-7916%7D,%0A%20%20keywords%20=%20%7Baudio%20signal%20processing;blind%20source%20separation;distortion;time-varying%0A%20%20%09filters;additive%20noise;algorithmic%20artifacts;blind%20audio%20source%20separation;distortions;interference;source%0A%20%20%09estimation;time-invariant%20gains;time-varying%20filters;Additive%20noise;Data%0A%20%20%09mining;Distortion%20measurement;Energy%20measurement;Filters;Image%20analysis;Independent%0A%20%20%09component%20analysis;Interference;Microphones;Source%20separation;Audio%0A%20%20%09source%20separation;evaluation;measure;performance;quality%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Vincent2006/">Details</a></li></ol>
+
+        
+      </section>
+
+      <footer class="page__meta">
+        
+        
+
+
+        
+          <p class="page__date"><strong><i class="fas fa-fw fa-calendar-alt" aria-hidden="true"></i> Updated:</strong> <time datetime="2019-02-21T00:00:00+00:00">February 21, 2019</time></p>
+        
+      </footer>
+
+      <section class="page__share">
+  
+    <h4 class="page__share-title">Share on</h4>
+  
+
+  <a href="https://twitter.com/intent/tweet?text=Spotify+Research+Internship+Report%20https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+
+  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+
+  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+</section>
+
+
+      
+  <nav class="pagination">
+    
+      <a href="/Bounded-output-networks/" class="pagination--pager" title="Bounded output regression with neural networks
+">Previous</a>
+    
+    
+      <a href="#" class="pagination--pager disabled">Next</a>
+    
+  </nav>
+
+    </div>
+
+    
+  </article>
+
+  
+  
+    <div class="page__related">
+      <h4 class="page__related-title">You May Also Enjoy</h4>
+      <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Bounded-output-networks/" rel="permalink">Bounded output regression with neural networks
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  4 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or m...</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ISMIR-Summary/" rel="permalink">ISMIR 2018 - Paper Overviews
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  13 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">This year’s ISMIR was great as ever, this time featuring
+
+
+  lots of deep learning - I suspect since it became much more easy to use with recently developed ...</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram Input Normalisation For Neural Networks
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  7 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.
+
+</p>
+  </article>
+</div>
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/Tensorflow-LSTM-for-Language-Modelling/" rel="permalink">Tensorflow LSTM for Language Modelling
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  18 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previo...</p>
+  </article>
+</div>
+        
+      </div>
+    </div>
+  
+  
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+    
+  
+
+
+
+  </body>
+</html>
