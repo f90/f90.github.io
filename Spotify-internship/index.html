@@ -351,10 +351,10 @@ Offices there are quite big, and even offer daily catering and in-house music ev
 
 <h2 id="better-objectives-for-singing-voice-separation">Better objectives for singing voice separation</h2>
 
-<p>For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system <a href="#Huang2014">(Huang, Kim, Hasegawa-Johnson, &amp; Smaragdis, 2014; Stoller, Ewert, &amp; Dixon, 2018)</a>.
+<p>For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system <a href="#Huang2014">[1], [2]</a>.
 The problem is that those do not necessarily align with how a human listening to, let’s say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
 This means we are not optimising our systems to maximise the actual listening quality!
-Evaluation metrics such as SDR <a href="#Vincent2006">(Vincent, Gribonval, &amp; Fevotte, 2006)</a> or PEASS <a href="#Vincent2012">(Vincent, 2012)</a> share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
+Evaluation metrics such as SDR <a href="#Vincent2006">[3]</a> or PEASS <a href="#Vincent2012">[4]</a> share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
 
 <p>The above losses and metrics also assume that for every music input, there exists <em>exactly one true source output</em> as solution for the separation task (uni-modal).
 But that might not be the case - if music has background vocals for example, there are <em>two</em> solutions for singing voice separation that both make sense: one that puts the background vocals into the accompaniment track, and one that puts them into the vocal track along with the main vocals:</p>
@@ -374,7 +374,7 @@ Maybe we can separate voice better if we know what is being sung.
 And similarly, if we know the isolated voice track, detecting what is being sung should be much easier!</p>
 
 <p>Therefore we looked at <em>multi-task learning</em> to build models that perform separation and lyrics transcription at the same time.
-We chose the <em>Wave-U-Net</em> <a href="#Stoller2018a">(Stoller, Ewert, &amp; Dixon, 2018)</a> model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
+We chose the <em>Wave-U-Net</em> <a href="#Stoller2018a">[2]</a> model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
 
 <p><img src="https://dans.world/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png" alt="Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here." />
 <em>Branching off a Wave-U-Net upsampling block to predict lyrics characters (<a href="https://arxiv.org/abs/1902.06797">source</a>) . The later upsampling blocks for separation are not depicted here</em></p>
@@ -387,7 +387,7 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <h2 id="lyrics-alignment">Lyrics alignment</h2>
 
-<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models <a href="#MIREX2017Alignment">(MIREX, 2017)</a>.</p>
+<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models <a href="#MIREX2017Alignment">[5]</a>.</p>
 
 <p>In conclusion, we find that <strong>you can train a lyrics transcription system from only line-level aligned lyrics annotations to predict characters directly from raw audio</strong>, and <strong>get excellent alignment accuracy even with mediocre transcription performance - see our ICASSP publication (preprint available <a href="https://arxiv.org/abs/1902.06797">here</a>)!</strong></p>
 
@@ -396,6 +396,37 @@ This might not be very surprising, since it could be seen as speech recognition,
 <h2 id="references">References</h2>
 
 <ol class="bibliography"><li><div>
+<a name="Huang2014" />
+<b>Singing-Voice Separation from Monaural Recordings using Deep Recurrent
+	Neural Networks.</b> <span style="font-size:15px"> (2014) </span>
+<br />
+
+  International Society for Music Information Retrieval (ISMIR)
+  <br />
+
+
+<i>Huang, Po-Sen and Kim, Minje and Hasegawa-Johnson, Mark and Smaragdis, Paris</i>
+</div>
+
+<!--
+
+-->
+
+
+
+
+
+<!--
+
+-->
+
+
+
+
+
+<a download="Huang2014.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BHuang2014,%0A%20%20author%20=%20%7BHuang,%20Po-Sen%20and%20Kim,%20Minje%20and%20Hasegawa-Johnson,%20Mark%20and%20Smaragdis,%20Paris%7D,%0A%20%20title%20=%20%7BSinging-Voice%20Separation%20from%20Monaural%20Recordings%20using%20Deep%20Recurrent%0A%20%20%09Neural%20Networks.%7D,%0A%20%20booktitle%20=%20%7BInternational%20Society%20for%20Music%20Information%20Retrieval%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2014%7D,%0A%20%20pages%20=%20%7B477--482%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Huang2014/">Details</a></li>
+<li><div>
+<a name="Stoller2018a" />
 <b>Wave-U-Net: A Multi-Scale Neural Network for End-to-End Source
 	Separation</b> <span style="font-size:15px"> (2018) </span>
 <br />
@@ -428,15 +459,20 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <a download="Stoller2018a.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BStoller2018a,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20title%20=%20%7B%7BWave-U-Net%7D:%20A%20Multi-Scale%20Neural%20Network%20for%20End-to-End%20Source%0A%20%20%09Separation%7D,%0A%20%20booktitle%20=%20%7BProceedings%20of%20the%20International%20Society%20for%20Music%20Information%20Retrieval%0A%20%20%09Conference%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%0A%20%20%09spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%0A%20%20%09dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%0A%20%20%09we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%0A%20%20%09allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%0A%20%20%09Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%0A%20%20%09context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%0A%20%20%09separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%0A%20%20%09this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%0A%20%20%09to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%0A%20%20%09maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%0A%20%20%09introduce%20further%20architectural%20improvements,%20including%20an%20output%0A%20%20%09layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%0A%20%20%09a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%0A%20%20%09Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%0A%20%20%09yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%0A%20%20%09U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%0A%20%20%09with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%0A%20%20%09reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Stoller2018a/">Details</a></li>
 <li><div>
-<b>Lyrics alignment results</b> <span style="font-size:15px"> (2017) </span>
+<a name="Vincent2006" />
+<b>Performance measurement in blind audio source separation</b> <span style="font-size:15px"> (2006) </span>
 <br />
 
 
-<i>MIREX</i>
+IEEE Transactions on Audio, Speech, and Language Processing
+
+<i>Vincent, E. and Gribonval, R. and Fevotte, C.</i>
 </div>
 
 <!--
 
+    <a href="http://doi.org/10.1109/TSA.2005.858005"><input class="button1" type="button" value="doi" /></a>
+
 -->
 
 
@@ -445,47 +481,15 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <!--
 
-    <a href="https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results"><input class="button" type="button" value="link" /></a>
-
 -->
 
 
 
 
-    <a href="https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results"><input class="button0" type="button" value="Link" /></a>
 
-
-<a download="MIREX2017Alignment.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@electronic%7BMIREX2017Alignment,%0A%20%20author%20=%20%7BMIREX%7D,%0A%20%20year%20=%20%7B2017%7D,%0A%20%20title%20=%20%7BLyrics%20alignment%20results%7D,%0A%20%20howpublished%20=%20%7B%5Curl%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D%7D,%0A%20%20url%20=%20%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D,%0A%20%20owner%20=%20%7Bdaniel%7D,%0A%20%20timestamp%20=%20%7B2018.10.23%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/MIREX2017Alignment/">Details</a></li>
+<a download="Vincent2006.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@article%7BVincent2006,%0A%20%20author%20=%20%7BVincent,%20E.%20and%20Gribonval,%20R.%20and%20Fevotte,%20C.%7D,%0A%20%20title%20=%20%7BPerformance%20measurement%20in%20blind%20audio%20source%20separation%7D,%0A%20%20journal%20=%20%7BIEEE%20Transactions%20on%20Audio,%20Speech,%20and%20Language%20Processing%7D,%0A%20%20year%20=%20%7B2006%7D,%0A%20%20volume%20=%20%7B14%7D,%0A%20%20pages%20=%20%7B1462-1469%7D,%0A%20%20number%20=%20%7B4%7D,%0A%20%20doi%20=%20%7B10.1109/TSA.2005.858005%7D,%0A%20%20issn%20=%20%7B1558-7916%7D,%0A%20%20keywords%20=%20%7Baudio%20signal%20processing;blind%20source%20separation;distortion;time-varying%0A%20%20%09filters;additive%20noise;algorithmic%20artifacts;blind%20audio%20source%20separation;distortions;interference;source%0A%20%20%09estimation;time-invariant%20gains;time-varying%20filters;Additive%20noise;Data%0A%20%20%09mining;Distortion%20measurement;Energy%20measurement;Filters;Image%20analysis;Independent%0A%20%20%09component%20analysis;Interference;Microphones;Source%20separation;Audio%0A%20%20%09source%20separation;evaluation;measure;performance;quality%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Vincent2006/">Details</a></li>
 <li><div>
-<b>Singing-Voice Separation from Monaural Recordings using Deep Recurrent
-	Neural Networks.</b> <span style="font-size:15px"> (2014) </span>
-<br />
-
-  International Society for Music Information Retrieval (ISMIR)
-  <br />
-
-
-<i>Huang, Po-Sen and Kim, Minje and Hasegawa-Johnson, Mark and Smaragdis, Paris</i>
-</div>
-
-<!--
-
--->
-
-
-
-
-
-<!--
-
--->
-
-
-
-
-
-<a download="Huang2014.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BHuang2014,%0A%20%20author%20=%20%7BHuang,%20Po-Sen%20and%20Kim,%20Minje%20and%20Hasegawa-Johnson,%20Mark%20and%20Smaragdis,%20Paris%7D,%0A%20%20title%20=%20%7BSinging-Voice%20Separation%20from%20Monaural%20Recordings%20using%20Deep%20Recurrent%0A%20%20%09Neural%20Networks.%7D,%0A%20%20booktitle%20=%20%7BInternational%20Society%20for%20Music%20Information%20Retrieval%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2014%7D,%0A%20%20pages%20=%20%7B477--482%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Huang2014/">Details</a></li>
-<li><div>
+<a name="Vincent2012" />
 <b>Improved Perceptual Metrics for the Evaluation of Audio Source Separation</b> <span style="font-size:15px"> (2012) </span>
 <br />
 
@@ -514,19 +518,16 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <a download="Vincent2012.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BVincent2012,%0A%20%20author%20=%20%7BVincent,%20Emmanuel%7D,%0A%20%20title%20=%20%7BImproved%20Perceptual%20Metrics%20for%20the%20Evaluation%20of%20Audio%20Source%20Separation%7D,%0A%20%20booktitle%20=%20%7BLatent%20Variable%20Analysis%20and%20Signal%20Separation%7D,%0A%20%20year%20=%20%7B2012%7D,%0A%20%20pages%20=%20%7B430--437%7D,%0A%20%20publisher%20=%20%7BSpringer%7D,%0A%20%20abstract%20=%20%7BWe%20aim%20to%20predict%20the%20perceived%20quality%20of%20estimated%20source%20signals%0A%20%20%09in%20the%20context%20of%20audio%20source%20separation.%20Recently,%20we%20proposed%0A%20%20%09a%20set%20of%20metrics%20called%20PEASS%20that%20consist%20of%20three%20computation%20steps:%0A%20%20%09decomposition%20of%20the%20estimation%20error%20into%20three%20components,%20measurement%0A%20%20%09of%20the%20salience%20of%20each%20component%20via%20the%20PEMO-Q%20auditory-motivated%0A%20%20%09measure,%20and%20combination%20of%20these%20saliences%20via%20a%20nonlinear%20mapping%0A%20%20%09trained%20on%20subjective%20opinion%20scores.%20The%20parameters%20of%20the%20decomposition%0A%20%20%09were%20shown%20to%20have%20little%20influence%20on%20the%20prediction%20performance.%0A%20%20%09In%20this%20paper,%20we%20evaluate%20the%20impact%20of%20the%20parameters%20of%20PEMO-Q%0A%20%20%09and%20the%20nonlinear%20mapping%20on%20the%20prediction%20performance.%20By%20selecting%0A%20%20%09the%20optimal%20parameters,%20we%20improve%20the%20average%20correlation%20with%20mean%0A%20%20%09opinion%20scores%20(MOS)%20from%200.738%20to%200.909%20in%20a%20cross-validation%20setting.%0A%20%20%09The%20resulting%20improved%20metrics%20are%20used%20in%20the%20context%20of%20the%202011%0A%20%20%09Signal%20Separation%20Evaluation%20Campaign%20(SiSEC).%7D,%0A%20%20isbn%20=%20%7B978-3-642-28551-6%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Vincent2012/">Details</a></li>
 <li><div>
-<b>Performance measurement in blind audio source separation</b> <span style="font-size:15px"> (2006) </span>
+<a name="MIREX2017Alignment" />
+<b>Lyrics alignment results</b> <span style="font-size:15px"> (2017) </span>
 <br />
 
 
-IEEE Transactions on Audio, Speech, and Language Processing
-
-<i>Vincent, E. and Gribonval, R. and Fevotte, C.</i>
+<i>MIREX</i>
 </div>
 
 <!--
 
-    <a href="http://doi.org/10.1109/TSA.2005.858005"><input class="button1" type="button" value="doi" /></a>
-
 -->
 
 
@@ -535,13 +536,17 @@ IEEE Transactions on Audio, Speech, and Language Processing
 
 <!--
 
+    <a href="https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results"><input class="button" type="button" value="link" /></a>
+
 -->
 
 
 
 
+    <a href="https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results"><input class="button0" type="button" value="Link" /></a>
 
-<a download="Vincent2006.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@article%7BVincent2006,%0A%20%20author%20=%20%7BVincent,%20E.%20and%20Gribonval,%20R.%20and%20Fevotte,%20C.%7D,%0A%20%20title%20=%20%7BPerformance%20measurement%20in%20blind%20audio%20source%20separation%7D,%0A%20%20journal%20=%20%7BIEEE%20Transactions%20on%20Audio,%20Speech,%20and%20Language%20Processing%7D,%0A%20%20year%20=%20%7B2006%7D,%0A%20%20volume%20=%20%7B14%7D,%0A%20%20pages%20=%20%7B1462-1469%7D,%0A%20%20number%20=%20%7B4%7D,%0A%20%20doi%20=%20%7B10.1109/TSA.2005.858005%7D,%0A%20%20issn%20=%20%7B1558-7916%7D,%0A%20%20keywords%20=%20%7Baudio%20signal%20processing;blind%20source%20separation;distortion;time-varying%0A%20%20%09filters;additive%20noise;algorithmic%20artifacts;blind%20audio%20source%20separation;distortions;interference;source%0A%20%20%09estimation;time-invariant%20gains;time-varying%20filters;Additive%20noise;Data%0A%20%20%09mining;Distortion%20measurement;Energy%20measurement;Filters;Image%20analysis;Independent%0A%20%20%09component%20analysis;Interference;Microphones;Source%20separation;Audio%0A%20%20%09source%20separation;evaluation;measure;performance;quality%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/Vincent2006/">Details</a></li></ol>
+
+<a download="MIREX2017Alignment.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@electronic%7BMIREX2017Alignment,%0A%20%20author%20=%20%7BMIREX%7D,%0A%20%20year%20=%20%7B2017%7D,%0A%20%20title%20=%20%7BLyrics%20alignment%20results%7D,%0A%20%20howpublished%20=%20%7B%5Curl%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D%7D,%0A%20%20url%20=%20%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D,%0A%20%20owner%20=%20%7Bdaniel%7D,%0A%20%20timestamp%20=%20%7B2018.10.23%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a><a class="details" href="/repository/MIREX2017Alignment/">Details</a></li></ol>
 
         
       </section>
