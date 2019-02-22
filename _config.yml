@@ -221,7 +221,7 @@ plugins:
 
 # Jekyll scholar
 scholar:
-  style: apa #assets/bibliography/mycslfile.csl
+  style: ieee #assets/bibliography/mycslfile.csl
   locale: en
 
   sort_by: year, month

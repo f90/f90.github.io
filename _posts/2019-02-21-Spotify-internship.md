@@ -76,4 +76,4 @@ Lyrics transcription however, can still be considered unsolved for now, and this
 
 ## References
 
-{% bibliography --cited %}
+{% bibliography --cited_in_order %}
