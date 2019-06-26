@@ -1,4 +1,4 @@
-# This file defines how particular supplementary file types should be rendered
+﻿# This file defines how particular supplementary file types should be rendered
 # on a publication page.
 
 # Fields:
@@ -21,6 +21,14 @@
 - ext: techreport.pdf
   icon: fa-file-pdf
   text: "Technical Report"
+- ext: external.link
+  icon: fa-link
+  text: "Link to article"
+  include: true
+- ext: supplementary.link
+  icon: fa-link
+  text: "Supplementary files"
+  include: true
 - ext: slides.pdf
   icon: fa-file-pdf
   text: "Slides"
@@ -33,10 +41,6 @@
 - ext: tgz
   icon: fa-file-archive
   text: "File Archive (.tgz)"
-- ext: github.link
-  icon: fa-github
-  text: "Code Repository (GitHub)"
-  include: true
 - ext: repo.link
   icon: fa-code-branch
   text: "Code Repository"

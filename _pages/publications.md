@@ -1,4 +1,4 @@
----
+﻿---
 title: List of publications
 permalink: /publications/
 ---
@@ -10,7 +10,3 @@ permalink: /publications/
 ## Conference papers
 
 {% bibliography --query @inproceedings[status!=editorial && status!=other && author^=Stoller] %}
-
-## Thesis
-
-{% bibliography --query @thesis[author^=Stoller] @mastersthesis[author^=Stoller] %}

@@ -27,7 +27,8 @@ But there are two potential problems:
 1. The true audio amplitudes $\hat{y}$ are in the range $[-1,1]$, but $\tanh(a) \in (-1, 1)$ and so never reaches -1 and 1 exactly. 
 If our targets $\hat{y}$ in the training data actually contain these values, the network is forced to output extremely large/small $a$ so that $\tanh(a)$ gets as close to -1 or 1 as possible.
 I tested this with the Wave-U-Net in an extreme scenario, where all target amplitudes $\hat{y}$ are 1 for all inputs $x$.
-After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can become a problem in practice (although my training data is unrealistic in itself).
+After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can actually become a problem (although my training data is a bit unrealistic).
+And generally, the network has to drive up activations $a$ (and thus weights) to produce predictions with very high or low amplitudes, potentially making training more unstable.
 
 2. At very small or large $x$ values, the gradient of $\tanh(a)$ with respect to a, $\tanh'(a)$, vanishes towards zero, as you can see in the plot below.
 ![Tanh derivative]({{ site.url }}/assets/img/2019-01-23-Bounded-output-networks/tanh_derivative.png)
@@ -48,9 +49,9 @@ I trained a Wave-U-Net variant for singing voice separation that uses this linea
 
 Below you can see the waveforms of an instrumental section of a Nightwish song (top), the accompaniment prediction from our new model variant (middle), and from the $\tanh$ model (bottom). Red parts indicate amplitude clipping.
 ![Waveform comparison]({{ site.url }}/assets/img/2019-01-23-Bounded-output-networks/waveform_comparison.png)
-We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input almost 1:1, which is the goal for this section as the input already consists of accompaniment only.
+We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input music almost 1:1, which is here since there are no vocals to subtract. The clipping occurs where the original input also has it, so this can be considered a feature, not a bug.
 
-This output problem with the accompaniment also creates more noise in the vocal channel in turn for the $\tanh$ model since it uses the difference signal as vocal output:
+The problem with the accompaniment output also creates more noise in the vocal channel for the $\tanh$ model, since it uses the difference signal as vocal output:
 
 - Original song
 <audio controls>

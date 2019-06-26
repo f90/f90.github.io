@@ -1,4 +1,4 @@
----
+﻿---
 title: Spotify Research Internship Report
 ---
 
@@ -46,7 +46,6 @@ These monotonic objectives would take whatever option happens to be in the train
 This means the other option is punished severely, and the separator might, instead of representing both, be encouraged to predict an average of the two solutions, which however can be a bad output in itself.
 
 We investigated GAN-based training as a potential solution, and also performed perceptual listening experiments (with great help of Aparna!) in an effort to develop a better objective function that more closely resembles how humans would rate the output quality of such systems.
-The work is still ongoing - stay tuned for more info!
 
 ## Combining singing voice separation and lyrics transcription
 
