@@ -1,8 +1,8 @@
-<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="https://dans.world/feed.xml" rel="self" type="application/atom+xml" /><link href="https://dans.world/" rel="alternate" type="text/html" /><updated>2019-02-22T14:40:02+00:00</updated><id>https://dans.world/</id><title type="html">Dans World</title><subtitle>Machine learning, music information retrieval, and other things</subtitle><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><entry><title type="html">Spotify Research Internship Report</title><link href="https://dans.world/Spotify-internship/" rel="alternate" type="text/html" title="Spotify Research Internship Report" /><published>2019-02-21T00:00:00+00:00</published><updated>2019-02-21T00:00:00+00:00</updated><id>https://dans.world/Spotify-internship</id><content type="html" xml:base="https://dans.world/Spotify-internship/">&lt;p&gt;From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.
+<?xml version="1.0" encoding="utf-8"?><feed xmlns="http://www.w3.org/2005/Atom" ><generator uri="https://jekyllrb.com/" version="3.7.3">Jekyll</generator><link href="http://localhost:4000/feed.xml" rel="self" type="application/atom+xml" /><link href="http://localhost:4000/" rel="alternate" type="text/html" /><updated>2019-06-26T20:56:05+01:00</updated><id>http://localhost:4000/</id><title type="html">Dans World</title><subtitle>Machine learning, music information retrieval, and other things</subtitle><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><entry><title type="html">Spotify Research Internship Report</title><link href="http://localhost:4000/Spotify-internship/" rel="alternate" type="text/html" title="Spotify Research Internship Report" /><published>2019-02-21T00:00:00+00:00</published><updated>2019-02-21T00:00:00+00:00</updated><id>http://localhost:4000/Spotify-internship</id><content type="html" xml:base="http://localhost:4000/Spotify-internship/">&lt;p&gt;From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.
 I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.
 Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2019-02-21-Spotify-internship/jam.png&quot; alt=&quot;Jamming night at Spotify&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2019-02-21-Spotify-internship/jam.png&quot; alt=&quot;Jamming night at Spotify&quot; /&gt;
 &lt;em&gt;Jam night at Spotify New York&lt;/em&gt;&lt;/p&gt;
 
 &lt;h2 id=&quot;overall-impressions&quot;&gt;Overall impressions&lt;/h2&gt;
@@ -30,21 +30,20 @@ Offices there are quite big, and even offer daily catering and in-house music ev
 
 &lt;h2 id=&quot;better-objectives-for-singing-voice-separation&quot;&gt;Better objectives for singing voice separation&lt;/h2&gt;
 
-&lt;p&gt;For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system &lt;a href=&quot;#Huang2014&quot;&gt;[1], [2]&lt;/a&gt;.
+&lt;p&gt;For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system (missing reference).
 The problem is that those do not necessarily align with how a human listening to, let’s say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
 This means we are not optimising our systems to maximise the actual listening quality!
-Evaluation metrics such as SDR &lt;a href=&quot;#Vincent2006&quot;&gt;[3]&lt;/a&gt; or PEASS &lt;a href=&quot;#Vincent2012&quot;&gt;[4]&lt;/a&gt; share similar issues, and are also more complicated to compute or possibly unstable to use for training.&lt;/p&gt;
+Evaluation metrics such as SDR (missing reference) or PEASS (missing reference) share similar issues, and are also more complicated to compute or possibly unstable to use for training.&lt;/p&gt;
 
 &lt;p&gt;The above losses and metrics also assume that for every music input, there exists &lt;em&gt;exactly one true source output&lt;/em&gt; as solution for the separation task (uni-modal).
 But that might not be the case - if music has background vocals for example, there are &lt;em&gt;two&lt;/em&gt; solutions for singing voice separation that both make sense: one that puts the background vocals into the accompaniment track, and one that puts them into the vocal track along with the main vocals:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2019-02-21-Spotify-internship/multi_modal_output.png&quot; alt=&quot;Multiple solutions for separation&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2019-02-21-Spotify-internship/multi_modal_output.png&quot; alt=&quot;Multiple solutions for separation&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;These monotonic objectives would take whatever option happens to be in the training dataset, and reward the separator more the closer it gets to that solution.
 This means the other option is punished severely, and the separator might, instead of representing both, be encouraged to predict an average of the two solutions, which however can be a bad output in itself.&lt;/p&gt;
 
-&lt;p&gt;We investigated GAN-based training as a potential solution, and also performed perceptual listening experiments (with great help of Aparna!) in an effort to develop a better objective function that more closely resembles how humans would rate the output quality of such systems.
-The work is still ongoing - stay tuned for more info!&lt;/p&gt;
+&lt;p&gt;We investigated GAN-based training as a potential solution, and also performed perceptual listening experiments (with great help of Aparna!) in an effort to develop a better objective function that more closely resembles how humans would rate the output quality of such systems.&lt;/p&gt;
 
 &lt;h2 id=&quot;combining-singing-voice-separation-and-lyrics-transcription&quot;&gt;Combining singing voice separation and lyrics transcription&lt;/h2&gt;
 
@@ -53,9 +52,9 @@ Maybe we can separate voice better if we know what is being sung.
 And similarly, if we know the isolated voice track, detecting what is being sung should be much easier!&lt;/p&gt;
 
 &lt;p&gt;Therefore we looked at &lt;em&gt;multi-task learning&lt;/em&gt; to build models that perform separation and lyrics transcription at the same time.
-We chose the &lt;em&gt;Wave-U-Net&lt;/em&gt; &lt;a href=&quot;#Stoller2018a&quot;&gt;[2]&lt;/a&gt; model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our &lt;a href=&quot;https://arxiv.org/abs/1902.06797&quot;&gt;publication on lyrics transcription and alignment&lt;/a&gt; for details).&lt;/p&gt;
+We chose the &lt;em&gt;Wave-U-Net&lt;/em&gt; (missing reference) model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our &lt;a href=&quot;https://arxiv.org/abs/1902.06797&quot;&gt;publication on lyrics transcription and alignment&lt;/a&gt; for details).&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png&quot; alt=&quot;Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here.&quot; /&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png&quot; alt=&quot;Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here.&quot; /&gt;
 &lt;em&gt;Branching off a Wave-U-Net upsampling block to predict lyrics characters (&lt;a href=&quot;https://arxiv.org/abs/1902.06797&quot;&gt;source&lt;/a&gt;) . The later upsampling blocks for separation are not depicted here&lt;/em&gt;&lt;/p&gt;
 
 &lt;p&gt;Although we hoped to improve performance this way and tried out many different multi-tasking strategies, the multi-task models were only very slightly better, if at all, than their single-task counterparts.
@@ -66,7 +65,7 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 &lt;h2 id=&quot;lyrics-alignment&quot;&gt;Lyrics alignment&lt;/h2&gt;
 
-&lt;p&gt;Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models &lt;a href=&quot;#MIREX2017Alignment&quot;&gt;[5]&lt;/a&gt;.&lt;/p&gt;
+&lt;p&gt;Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models (missing reference).&lt;/p&gt;
 
 &lt;p&gt;In conclusion, we find that &lt;strong&gt;you can train a lyrics transcription system from only line-level aligned lyrics annotations to predict characters directly from raw audio&lt;/strong&gt;, and &lt;strong&gt;get excellent alignment accuracy even with mediocre transcription performance - see our ICASSP publication (preprint available &lt;a href=&quot;https://arxiv.org/abs/1902.06797&quot;&gt;here&lt;/a&gt;)!&lt;/strong&gt;&lt;/p&gt;
 
@@ -74,158 +73,7 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 &lt;h2 id=&quot;references&quot;&gt;References&lt;/h2&gt;
 
-&lt;ol class=&quot;bibliography&quot;&gt;&lt;li&gt;&lt;div&gt;
-&lt;a name=&quot;Huang2014&quot; /&gt;
-&lt;b&gt;Singing-Voice Separation from Monaural Recordings using Deep Recurrent
-	Neural Networks.&lt;/b&gt; &lt;span style=&quot;font-size:15px&quot;&gt; (2014) &lt;/span&gt;
-&lt;br /&gt;
-
-  International Society for Music Information Retrieval (ISMIR)
-  &lt;br /&gt;
-
-
-&lt;i&gt;Huang, Po-Sen and Kim, Minje and Hasegawa-Johnson, Mark and Smaragdis, Paris&lt;/i&gt;
-&lt;/div&gt;
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;a download=&quot;Huang2014.bib&quot; href=&quot;data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BHuang2014,%0A%20%20author%20=%20%7BHuang,%20Po-Sen%20and%20Kim,%20Minje%20and%20Hasegawa-Johnson,%20Mark%20and%20Smaragdis,%20Paris%7D,%0A%20%20title%20=%20%7BSinging-Voice%20Separation%20from%20Monaural%20Recordings%20using%20Deep%20Recurrent%0A%20%20%09Neural%20Networks.%7D,%0A%20%20booktitle%20=%20%7BInternational%20Society%20for%20Music%20Information%20Retrieval%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2014%7D,%0A%20%20pages%20=%20%7B477--482%7D%0A%7D%0A%7B%25endraw%25%7D&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;Bibtex&quot; /&gt;&lt;/a&gt;&lt;a class=&quot;details&quot; href=&quot;/repository/Huang2014/&quot;&gt;Details&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;div&gt;
-&lt;a name=&quot;Stoller2018a&quot; /&gt;
-&lt;b&gt;Wave-U-Net: A Multi-Scale Neural Network for End-to-End Source
-	Separation&lt;/b&gt; &lt;span style=&quot;font-size:15px&quot;&gt; (2018) &lt;/span&gt;
-&lt;br /&gt;
-
-  Proceedings of the International Society for Music Information Retrieval
-	Conference (ISMIR)
-  &lt;br /&gt;
-
-
-&lt;i&gt;Stoller, Daniel and Ewert, Sebastian and Dixon, Simon&lt;/i&gt;
-&lt;/div&gt;
-
-&lt;!--
-
---&gt;
-
-
-    &lt;a href=&quot;/repository/Stoller2018a.published.pdf&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;PDF&quot; /&gt;&lt;/a&gt;
-
-
-
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;a download=&quot;Stoller2018a.bib&quot; href=&quot;data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BStoller2018a,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20title%20=%20%7B%7BWave-U-Net%7D:%20A%20Multi-Scale%20Neural%20Network%20for%20End-to-End%20Source%0A%20%20%09Separation%7D,%0A%20%20booktitle%20=%20%7BProceedings%20of%20the%20International%20Society%20for%20Music%20Information%20Retrieval%0A%20%20%09Conference%20(%7BISMIR%7D)%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%0A%20%20%09spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%0A%20%20%09dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%0A%20%20%09we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%0A%20%20%09allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%0A%20%20%09Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%0A%20%20%09context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%0A%20%20%09separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%0A%20%20%09this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%0A%20%20%09to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%0A%20%20%09maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%0A%20%20%09introduce%20further%20architectural%20improvements,%20including%20an%20output%0A%20%20%09layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%0A%20%20%09a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%0A%20%20%09Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%0A%20%20%09yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%0A%20%20%09U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%0A%20%20%09with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%0A%20%20%09reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;Bibtex&quot; /&gt;&lt;/a&gt;&lt;a class=&quot;details&quot; href=&quot;/repository/Stoller2018a/&quot;&gt;Details&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;div&gt;
-&lt;a name=&quot;Vincent2006&quot; /&gt;
-&lt;b&gt;Performance measurement in blind audio source separation&lt;/b&gt; &lt;span style=&quot;font-size:15px&quot;&gt; (2006) &lt;/span&gt;
-&lt;br /&gt;
-
-
-IEEE Transactions on Audio, Speech, and Language Processing
-
-&lt;i&gt;Vincent, E. and Gribonval, R. and Fevotte, C.&lt;/i&gt;
-&lt;/div&gt;
-
-&lt;!--
-
-    &lt;a href=&quot;http://doi.org/10.1109/TSA.2005.858005&quot;&gt;&lt;input class=&quot;button1&quot; type=&quot;button&quot; value=&quot;doi&quot; /&gt;&lt;/a&gt;
-
---&gt;
-
-
-
-
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;a download=&quot;Vincent2006.bib&quot; href=&quot;data:application/x-bibtex,%7B%25raw%25%7D@article%7BVincent2006,%0A%20%20author%20=%20%7BVincent,%20E.%20and%20Gribonval,%20R.%20and%20Fevotte,%20C.%7D,%0A%20%20title%20=%20%7BPerformance%20measurement%20in%20blind%20audio%20source%20separation%7D,%0A%20%20journal%20=%20%7BIEEE%20Transactions%20on%20Audio,%20Speech,%20and%20Language%20Processing%7D,%0A%20%20year%20=%20%7B2006%7D,%0A%20%20volume%20=%20%7B14%7D,%0A%20%20pages%20=%20%7B1462-1469%7D,%0A%20%20number%20=%20%7B4%7D,%0A%20%20doi%20=%20%7B10.1109/TSA.2005.858005%7D,%0A%20%20issn%20=%20%7B1558-7916%7D,%0A%20%20keywords%20=%20%7Baudio%20signal%20processing;blind%20source%20separation;distortion;time-varying%0A%20%20%09filters;additive%20noise;algorithmic%20artifacts;blind%20audio%20source%20separation;distortions;interference;source%0A%20%20%09estimation;time-invariant%20gains;time-varying%20filters;Additive%20noise;Data%0A%20%20%09mining;Distortion%20measurement;Energy%20measurement;Filters;Image%20analysis;Independent%0A%20%20%09component%20analysis;Interference;Microphones;Source%20separation;Audio%0A%20%20%09source%20separation;evaluation;measure;performance;quality%7D%0A%7D%0A%7B%25endraw%25%7D&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;Bibtex&quot; /&gt;&lt;/a&gt;&lt;a class=&quot;details&quot; href=&quot;/repository/Vincent2006/&quot;&gt;Details&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;div&gt;
-&lt;a name=&quot;Vincent2012&quot; /&gt;
-&lt;b&gt;Improved Perceptual Metrics for the Evaluation of Audio Source Separation&lt;/b&gt; &lt;span style=&quot;font-size:15px&quot;&gt; (2012) &lt;/span&gt;
-&lt;br /&gt;
-
-  Latent Variable Analysis and Signal Separation
-  &lt;br /&gt;
-
-
-&lt;i&gt;Vincent, Emmanuel&lt;/i&gt;
-&lt;/div&gt;
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;a download=&quot;Vincent2012.bib&quot; href=&quot;data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BVincent2012,%0A%20%20author%20=%20%7BVincent,%20Emmanuel%7D,%0A%20%20title%20=%20%7BImproved%20Perceptual%20Metrics%20for%20the%20Evaluation%20of%20Audio%20Source%20Separation%7D,%0A%20%20booktitle%20=%20%7BLatent%20Variable%20Analysis%20and%20Signal%20Separation%7D,%0A%20%20year%20=%20%7B2012%7D,%0A%20%20pages%20=%20%7B430--437%7D,%0A%20%20publisher%20=%20%7BSpringer%7D,%0A%20%20abstract%20=%20%7BWe%20aim%20to%20predict%20the%20perceived%20quality%20of%20estimated%20source%20signals%0A%20%20%09in%20the%20context%20of%20audio%20source%20separation.%20Recently,%20we%20proposed%0A%20%20%09a%20set%20of%20metrics%20called%20PEASS%20that%20consist%20of%20three%20computation%20steps:%0A%20%20%09decomposition%20of%20the%20estimation%20error%20into%20three%20components,%20measurement%0A%20%20%09of%20the%20salience%20of%20each%20component%20via%20the%20PEMO-Q%20auditory-motivated%0A%20%20%09measure,%20and%20combination%20of%20these%20saliences%20via%20a%20nonlinear%20mapping%0A%20%20%09trained%20on%20subjective%20opinion%20scores.%20The%20parameters%20of%20the%20decomposition%0A%20%20%09were%20shown%20to%20have%20little%20influence%20on%20the%20prediction%20performance.%0A%20%20%09In%20this%20paper,%20we%20evaluate%20the%20impact%20of%20the%20parameters%20of%20PEMO-Q%0A%20%20%09and%20the%20nonlinear%20mapping%20on%20the%20prediction%20performance.%20By%20selecting%0A%20%20%09the%20optimal%20parameters,%20we%20improve%20the%20average%20correlation%20with%20mean%0A%20%20%09opinion%20scores%20(MOS)%20from%200.738%20to%200.909%20in%20a%20cross-validation%20setting.%0A%20%20%09The%20resulting%20improved%20metrics%20are%20used%20in%20the%20context%20of%20the%202011%0A%20%20%09Signal%20Separation%20Evaluation%20Campaign%20(SiSEC).%7D,%0A%20%20isbn%20=%20%7B978-3-642-28551-6%7D%0A%7D%0A%7B%25endraw%25%7D&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;Bibtex&quot; /&gt;&lt;/a&gt;&lt;a class=&quot;details&quot; href=&quot;/repository/Vincent2012/&quot;&gt;Details&lt;/a&gt;&lt;/li&gt;
-&lt;li&gt;&lt;div&gt;
-&lt;a name=&quot;MIREX2017Alignment&quot; /&gt;
-&lt;b&gt;Lyrics alignment results&lt;/b&gt; &lt;span style=&quot;font-size:15px&quot;&gt; (2017) &lt;/span&gt;
-&lt;br /&gt;
-
-
-&lt;i&gt;MIREX&lt;/i&gt;
-&lt;/div&gt;
-
-&lt;!--
-
---&gt;
-
-
-
-
-
-&lt;!--
-
-    &lt;a href=&quot;https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results&quot;&gt;&lt;input class=&quot;button&quot; type=&quot;button&quot; value=&quot;link&quot; /&gt;&lt;/a&gt;
-
---&gt;
-
-
-
-
-    &lt;a href=&quot;https://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;Link&quot; /&gt;&lt;/a&gt;
-
-
-&lt;a download=&quot;MIREX2017Alignment.bib&quot; href=&quot;data:application/x-bibtex,%7B%25raw%25%7D@electronic%7BMIREX2017Alignment,%0A%20%20author%20=%20%7BMIREX%7D,%0A%20%20year%20=%20%7B2017%7D,%0A%20%20title%20=%20%7BLyrics%20alignment%20results%7D,%0A%20%20howpublished%20=%20%7B%5Curl%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D%7D,%0A%20%20url%20=%20%7Bhttps://www.music-ir.org/mirex/wiki/2017:Automatic_Lyrics-to-Audio_Alignment_Results%7D,%0A%20%20owner%20=%20%7Bdaniel%7D,%0A%20%20timestamp%20=%20%7B2018.10.23%7D%0A%7D%0A%7B%25endraw%25%7D&quot;&gt;&lt;input class=&quot;button0&quot; type=&quot;button&quot; value=&quot;Bibtex&quot; /&gt;&lt;/a&gt;&lt;a class=&quot;details&quot; href=&quot;/repository/MIREX2017Alignment/&quot;&gt;Details&lt;/a&gt;&lt;/li&gt;&lt;/ol&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London. I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team. Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.</summary></entry><entry><title type="html">Bounded output regression with neural networks</title><link href="https://dans.world/Bounded-output-networks/" rel="alternate" type="text/html" title="Bounded output regression with neural networks" /><published>2019-01-23T00:00:00+00:00</published><updated>2019-01-23T00:00:00+00:00</updated><id>https://dans.world/Bounded-output-networks</id><content type="html" xml:base="https://dans.world/Bounded-output-networks/">&lt;p&gt;Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.&lt;/p&gt;
+&lt;ol class=&quot;bibliography&quot;&gt;&lt;/ol&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London. I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team. Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.</summary></entry><entry><title type="html">Bounded output regression with neural networks</title><link href="http://localhost:4000/Bounded-output-networks/" rel="alternate" type="text/html" title="Bounded output regression with neural networks" /><published>2019-01-23T00:00:00+00:00</published><updated>2019-01-23T00:00:00+00:00</updated><id>http://localhost:4000/Bounded-output-networks</id><content type="html" xml:base="http://localhost:4000/Bounded-output-networks/">&lt;p&gt;Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.&lt;/p&gt;
 
 &lt;p&gt;This sounds like a very standard setting that should not pose any problems.
 But as we will see, it is not so obvious how to ensure the output of the network is always in the given interval, and that training based on stochastic gradient descent (SGD) is possible without issues.&lt;/p&gt;
@@ -237,7 +85,7 @@ We will take a look at the &lt;a href=&quot;https://github.com/f90/Wave-U-Net&qu
 Since audio amplitudes are usually represented as values in the $[-1,1]$ range, I decided to use $\tanh(a)$ as the final activation function with $a \in \mathbb{R}$ as the last layer’s output at a given time-step.
 As a result, all outputs are now between -1 and 1:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2019-01-23-Bounded-output-networks/tanh.png&quot; alt=&quot;Tanh activation function&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2019-01-23-Bounded-output-networks/tanh.png&quot; alt=&quot;Tanh activation function&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;As loss function for the regression, I simply use the mean squared error (MSE, $(y - \hat{y})^2$) between the prediction $y$ and the target $\hat{y}$.&lt;/p&gt;
 
@@ -251,11 +99,12 @@ But there are two potential problems:&lt;/p&gt;
     &lt;p&gt;The true audio amplitudes $\hat{y}$ are in the range $[-1,1]$, but $\tanh(a) \in (-1, 1)$ and so never reaches -1 and 1 exactly. 
 If our targets $\hat{y}$ in the training data actually contain these values, the network is forced to output extremely large/small $a$ so that $\tanh(a)$ gets as close to -1 or 1 as possible.
 I tested this with the Wave-U-Net in an extreme scenario, where all target amplitudes $\hat{y}$ are 1 for all inputs $x$.
-After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can become a problem in practice (although my training data is unrealistic in itself).&lt;/p&gt;
+After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can actually become a problem (although my training data is a bit unrealistic).
+And generally, the network has to drive up activations $a$ (and thus weights) to produce predictions with very high or low amplitudes, potentially making training more unstable.&lt;/p&gt;
   &lt;/li&gt;
   &lt;li&gt;
     &lt;p&gt;At very small or large $x$ values, the gradient of $\tanh(a)$ with respect to a, $\tanh’(a)$, vanishes towards zero, as you can see in the plot below.
-&lt;img src=&quot;https://dans.world/assets/img/2019-01-23-Bounded-output-networks/tanh_derivative.png&quot; alt=&quot;Tanh derivative&quot; /&gt;
+&lt;img src=&quot;http://localhost:4000/assets/img/2019-01-23-Bounded-output-networks/tanh_derivative.png&quot; alt=&quot;Tanh derivative&quot; /&gt;
 At any point during training, a large weight update that makes all model outputs $y$ almost $-1$ or $1$ would thus make the gradient of the loss with respect to the weights vanish towards zero, since it contains $\tanh’(a)$ as one factor.
 This can actually happen in practice - some people reported to me that for their dataset, the Wave-U-Net suddenly diverged in this fashion after training stably for a long time, and then couldn’t recover.&lt;/p&gt;
   &lt;/li&gt;
@@ -274,30 +123,30 @@ If the network predicts for example $1.4$ as amplitude where the target is $1$, 
 &lt;p&gt;I trained a Wave-U-Net variant for singing voice separation that uses this linear output with test-time clipping for each source independently. Apart from that, all settings are equal to the &lt;a href=&quot;https://github.com/f90/Wave-U-Net&quot;&gt;M5-HighSR&lt;/a&gt; model, which uses the $\tanh$ function to predict the accompaniment, and outputs the difference between the input music and the predicted accompaniment signal as voice signal.&lt;/p&gt;
 
 &lt;p&gt;Below you can see the waveforms of an instrumental section of a Nightwish song (top), the accompaniment prediction from our new model variant (middle), and from the $\tanh$ model (bottom). Red parts indicate amplitude clipping.
-&lt;img src=&quot;https://dans.world/assets/img/2019-01-23-Bounded-output-networks/waveform_comparison.png&quot; alt=&quot;Waveform comparison&quot; /&gt;
-We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input almost 1:1, which is the goal for this section as the input already consists of accompaniment only.&lt;/p&gt;
+&lt;img src=&quot;http://localhost:4000/assets/img/2019-01-23-Bounded-output-networks/waveform_comparison.png&quot; alt=&quot;Waveform comparison&quot; /&gt;
+We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input music almost 1:1, which is here since there are no vocals to subtract. The clipping occurs where the original input also has it, so this can be considered a feature, not a bug.&lt;/p&gt;
 
-&lt;p&gt;This output problem with the accompaniment also creates more noise in the vocal channel in turn for the $\tanh$ model since it uses the difference signal as vocal output:&lt;/p&gt;
+&lt;p&gt;The problem with the accompaniment output also creates more noise in the vocal channel for the $\tanh$ model, since it uses the difference signal as vocal output:&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;Original song&lt;/li&gt;
 &lt;/ul&gt;
 &lt;audio controls=&quot;&quot;&gt;
-  &lt;source src=&quot;https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_original.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
+  &lt;source src=&quot;http://localhost:4000/assets/audio/2019-01-23-Bounded-output-networks/nightwish_original.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
 Your browser does not support audio file playing!
 &lt;/audio&gt;
 &lt;ul&gt;
   &lt;li&gt;Tanh model vocal prediction&lt;/li&gt;
 &lt;/ul&gt;
 &lt;audio controls=&quot;&quot;&gt;
-  &lt;source src=&quot;https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_tanh_vocals.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
+  &lt;source src=&quot;http://localhost:4000/assets/audio/2019-01-23-Bounded-output-networks/nightwish_tanh_vocals.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
 Your browser does not support audio file playing!
 &lt;/audio&gt;
 &lt;ul&gt;
   &lt;li&gt;Linear output model vocal prediction&lt;/li&gt;
 &lt;/ul&gt;
 &lt;audio controls=&quot;&quot;&gt;
-  &lt;source src=&quot;https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_direct_vocals.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
+  &lt;source src=&quot;http://localhost:4000/assets/audio/2019-01-23-Bounded-output-networks/nightwish_direct_vocals.mp3&quot; type=&quot;audio/mpeg&quot; /&gt;
 Your browser does not support audio file playing!
 &lt;/audio&gt;
 
@@ -305,7 +154,7 @@ Your browser does not support audio file playing!
 
 &lt;p&gt;Although we managed to get improvements over $\tanh$ to output values of bounded range with neural networks, this might not be the perfect solution. Output activations such as $\sin$ or $\cos$ could also be considered, since they squash the output to a desired interval while still allowing to output the boundary values, but training might be difficult due to their periodic nature.&lt;/p&gt;
 
-&lt;p&gt;Also, different regression loss functions than MSE might be useful, too. If we used cross-entropy as loss function, it should provide a more well-behaved gradient even when using the $\tanh$ activation, so different loss functions can also play a role and should be explored in the future.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.</summary></entry><entry><title type="html">ISMIR 2018 - Paper Overviews</title><link href="https://dans.world/ISMIR-Summary/" rel="alternate" type="text/html" title="ISMIR 2018 - Paper Overviews" /><published>2018-10-18T00:00:00+01:00</published><updated>2018-10-18T00:00:00+01:00</updated><id>https://dans.world/ISMIR-Summary</id><content type="html" xml:base="https://dans.world/ISMIR-Summary/">&lt;p&gt;This year’s ISMIR was great as ever, this time featuring&lt;/p&gt;
+&lt;p&gt;Also, different regression loss functions than MSE might be useful, too. If we used cross-entropy as loss function, it should provide a more well-behaved gradient even when using the $\tanh$ activation, so different loss functions can also play a role and should be explored in the future.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.</summary></entry><entry><title type="html">ISMIR 2018 - Paper Overviews</title><link href="http://localhost:4000/ISMIR-Summary/" rel="alternate" type="text/html" title="ISMIR 2018 - Paper Overviews" /><published>2018-10-18T00:00:00+01:00</published><updated>2018-10-18T00:00:00+01:00</updated><id>http://localhost:4000/ISMIR-Summary</id><content type="html" xml:base="http://localhost:4000/ISMIR-Summary/">&lt;p&gt;This year’s ISMIR was great as ever, this time featuring&lt;/p&gt;
 
 &lt;ul&gt;
   &lt;li&gt;lots of deep learning - I suspect since it became much more easy to use with recently developed libraries&lt;/li&gt;
@@ -539,7 +388,7 @@ Individual users of music streaming services can protect themselves against bein
 &lt;h2 id=&quot;f-16-learning-to-listen-read-and-follow-score-following-as-a-reinforcement-learning-game&quot;&gt;(F-16) Learning to Listen, Read, and Follow: Score Following as a Reinforcement Learning Game&lt;/h2&gt;
 &lt;p&gt;Matthias Dorfer, Florian Henkel and Gerhard Widmer&lt;/p&gt;
 
-&lt;p&gt;Apply reinforcement learning to score following by defining an agent that looks at the current section of music sheet and audio spectrogram and then decides whether to increase or decrease the current note sheet scrolling speed.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">This year’s ISMIR was great as ever, this time featuring lots of deep learning - I suspect since it became much more easy to use with recently developed libraries lots of new, and surprisingly large, datasets (suited for the new deep learning era) and a fantastic boat tour through Paris! For those that want some very quick overview about many of the papers (but not all - and the selection is biased towards my own research interests admittedly). I created “mini-abstracts” designed to describe the core idea or contribution in each paper that should at least be understandable to someone familiar with the field, since even abstracts tend to sometimes be wordy or unneccessarily, well… abstract! I divided them according to the ISMIR conference session they belong to. Use this page in parallel to quickly retrieve the links to each paper’s PDF document. Musical objects</summary></entry><entry><title type="html">Spectrogram Input Normalisation For Neural Networks</title><link href="https://dans.world/Spectrogram-input-normalisation-for-neural-networks/" rel="alternate" type="text/html" title="Spectrogram Input Normalisation For Neural Networks" /><published>2017-11-29T00:00:00+00:00</published><updated>2017-11-29T00:00:00+00:00</updated><id>https://dans.world/Spectrogram-input-normalisation-for-neural-networks</id><content type="html" xml:base="https://dans.world/Spectrogram-input-normalisation-for-neural-networks/">&lt;p&gt;In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.&lt;/p&gt;
+&lt;p&gt;Apply reinforcement learning to score following by defining an agent that looks at the current section of music sheet and audio spectrogram and then decides whether to increase or decrease the current note sheet scrolling speed.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">This year’s ISMIR was great as ever, this time featuring lots of deep learning - I suspect since it became much more easy to use with recently developed libraries lots of new, and surprisingly large, datasets (suited for the new deep learning era) and a fantastic boat tour through Paris! For those that want some very quick overview about many of the papers (but not all - and the selection is biased towards my own research interests admittedly). I created “mini-abstracts” designed to describe the core idea or contribution in each paper that should at least be understandable to someone familiar with the field, since even abstracts tend to sometimes be wordy or unneccessarily, well… abstract! I divided them according to the ISMIR conference session they belong to. Use this page in parallel to quickly retrieve the links to each paper’s PDF document. Musical objects</summary></entry><entry><title type="html">Spectrogram Input Normalisation For Neural Networks</title><link href="http://localhost:4000/Spectrogram-input-normalisation-for-neural-networks/" rel="alternate" type="text/html" title="Spectrogram Input Normalisation For Neural Networks" /><published>2017-11-29T00:00:00+00:00</published><updated>2017-11-29T00:00:00+00:00</updated><id>http://localhost:4000/Spectrogram-input-normalisation-for-neural-networks</id><content type="html" xml:base="http://localhost:4000/Spectrogram-input-normalisation-for-neural-networks/">&lt;p&gt;In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.&lt;/p&gt;
 
 &lt;h3 id=&quot;introduction-time-frequency-representations-magnitude-spectrogram&quot;&gt;Introduction: Time-frequency representations, magnitude spectrogram&lt;/h3&gt;
 
@@ -550,12 +399,12 @@ Individual users of music streaming services can protect themselves against bein
 &lt;p&gt;For many audio tasks, only the magnitudes $\mathbf{M}$ are used and the phases $ \mathbf{P}$ are discarded - when using overlapping windows, $ \mathbf{S}$ can be reconstructed from $ \mathbf{M}$ alone, and the phase tends to have a &lt;a href=&quot;http://deepsound.io/dcgan_spectrograms.html&quot;&gt;minor impact on sound quality&lt;/a&gt;. Here you can see the magnitude and phase for an example song, computed from an STFT with $ N=2048$ samples in each window, and a hop size of 512:&lt;/p&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrogram.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrogram.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Magnitudes $ \mathbf{M}$ on logarithmic scale ($log(x+1)$) of an example song, with frequency on the vertical, and time frames on the horizontal axes.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/phasespectrogram.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/phasespectrogram.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Phase matrix $ \mathbf{P}$, each value being an angle in radians&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -576,7 +425,7 @@ Individual users of music streaming services can protect themselves against bein
 &lt;p&gt;However, the overall distribution of magnitude values is very non-Gaussian, since many entries in the spectrogram are close to zero, creating a very skewed (heavy-tailed) distribution which can impede learning:&lt;/p&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/spectrohistro.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/spectrohistro.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Histogram of spectrogram values, frequency on vertical axis.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -587,12 +436,12 @@ Individual users of music streaming services can protect themselves against bein
 &lt;p&gt;For a roughly exponential distribution, an obvious idea would be to compute $\log(\mathbf{S})$, which is a simple and dataset-independent transformation, to stretch out the near-zero values. However, magnitudes can be zero, and log(0) is undefined! What about if we add a certain positive constant c and compute $\log(\mathbf{S} + c)$? The problem here is that the value of the number critically influences how much low magnitudes close to zero are expanded during transformation - low values of c such as 0.001 lead to great expansion, and vice versa. It is also not immediately clear how to set c to approximate a normal distribution closest. Despite these problems, the transformation at least compresses large values effectively and is used so often that many computing libraries such as Numpy offer the c=1 version with a shorthand called “&lt;a href=&quot;https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.log1p.html&quot;&gt;log1p&lt;/a&gt;”, and the inverse “&lt;a href=&quot;https://docs.scipy.org/doc/numpy-1.13.0/reference/generated/numpy.expm1.html&quot;&gt;expm1&lt;/a&gt;” defined as $\exp{x} - 1$. For our example, we see that c=1 does not change the shape of distribution much at all, while $ c=10^{-7}$ gets us close to a normal distribution:&lt;/p&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrohisto.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/logspectrohisto.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Applying $log1p = \log(x+1)$ (c=1) to the magnitude values does not change the shape of the distribution much, but constrains the input values to a much smaller range, and enlarges differences between small values.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/loggspectrohisto.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/loggspectrohisto.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Applying $\log(x + 10^{-7})$ ($c=10^{-7}$) to the magnitude values almost gives us a normally distributed variable, leaving only a small additional peak at around -8.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -612,12 +461,12 @@ y_i^{(\boldsymbol{\lambda})} =
 &lt;p&gt;Upon closer inspection, we can see similarities to our first option, the logarithmic transformation. $ \lambda_2$ serves the same purpose as the constant c: Making the values non-zero so we can apply further transformations. For $ \lambda_1 = 0$, Box-Cox is even equivalent to our first method and can be seen as an extension of it! The important difference is that &lt;strong&gt;the parameters are estimated from data&lt;/strong&gt; so that the resulting distribution is as close to normally distributed as possible, which is more accurate than a simple log transform with a predefined constant c. I have not come across an implementation that estimates both parameters, though. With the boxcox method from Scipy, we can only estimate $ \lambda_1$, so for our audio example we use $ \lambda_2 = 10^{-7}$ just like in our first method. The best parameter found is $ \lambda_1 = 0.043$, which is very close to zero and therefore a very similar transformation:&lt;/p&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxhisto.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxhisto.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Histogram of magnitude values after Box-Cox transformation with $\lambda_1 = 0.043, \lambda_2 = 10^{-7}$. The tails of the distribution are more symmetrical and the peak is more centered between them, but the additional peak remains.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
 &lt;figure&gt;
-  &lt;img src=&quot;https://dans.world/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxspectro.png&quot; alt=&quot;my alt text&quot; /&gt;
+  &lt;img src=&quot;http://localhost:4000/assets/img/2017-11-29-Spectrogram-input-normalisation-for-neural-networks/boxcoxspectro.png&quot; alt=&quot;my alt text&quot; /&gt;
   &lt;figcaption&gt;Box-cox-transformed magnitude spectrogram. The structures in the higher frequency ranges are now more easily visible, while the fact that lower frequencies have higher energy is less emphasized.&lt;/figcaption&gt;
 &lt;/figure&gt;
 
@@ -625,7 +474,7 @@ y_i^{(\boldsymbol{\lambda})} =
 
 &lt;p&gt;Magnitude spectrograms are tricky to use as input or output of neural networks due to their very skewed, non-normal distribution of values, and because it is hard to find out their maximum value that is needed to scale the value range to a desired interval. The latter is especially important for neural networks that output magnitudes directly, whose training can work better with an output activation function that restricts the network output range to valid values.&lt;/p&gt;
 
-&lt;p&gt;The solution is input normalisation: &lt;strong&gt;First, transform the values&lt;/strong&gt; either with a simple $x \rightarrow \log(x+1)$ (first option) or a Box-Cox transformation (second option, more advanced), which should expand low values and compress high ones, &lt;strong&gt;making the distribution more Gaussian&lt;/strong&gt;. &lt;strong&gt;Then bring the transformed values into the desired interval&lt;/strong&gt;. For this we calculate which value 0 and the maximum magnitude are transformed into after applying our particular Gaussianisation, and use this to scale the values to the desired interval.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.</summary></entry><entry><title type="html">Tensorflow LSTM for Language Modelling</title><link href="https://dans.world/Tensorflow-LSTM-for-Language-Modelling/" rel="alternate" type="text/html" title="Tensorflow LSTM for Language Modelling" /><published>2016-11-12T00:00:00+00:00</published><updated>2016-11-12T00:00:00+00:00</updated><id>https://dans.world/Tensorflow-LSTM-for-Language-Modelling</id><content type="html" xml:base="https://dans.world/Tensorflow-LSTM-for-Language-Modelling/">&lt;p&gt;In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.&lt;/p&gt;
+&lt;p&gt;The solution is input normalisation: &lt;strong&gt;First, transform the values&lt;/strong&gt; either with a simple $x \rightarrow \log(x+1)$ (first option) or a Box-Cox transformation (second option, more advanced), which should expand low values and compress high ones, &lt;strong&gt;making the distribution more Gaussian&lt;/strong&gt;. &lt;strong&gt;Then bring the transformed values into the desired interval&lt;/strong&gt;. For this we calculate which value 0 and the maximum magnitude are transformed into after applying our particular Gaussianisation, and use this to scale the values to the desired interval.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.</summary></entry><entry><title type="html">Tensorflow LSTM for Language Modelling</title><link href="http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling/" rel="alternate" type="text/html" title="Tensorflow LSTM for Language Modelling" /><published>2016-11-12T00:00:00+00:00</published><updated>2016-11-12T00:00:00+00:00</updated><id>http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling</id><content type="html" xml:base="http://localhost:4000/Tensorflow-LSTM-for-Language-Modelling/">&lt;p&gt;In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.&lt;/p&gt;
 
 &lt;h2 id=&quot;the-code&quot;&gt;The code&lt;/h2&gt;
 
@@ -1089,7 +938,7 @@ and nobody should be there in here but when i hide all my echo and make you hold
 pour it like like a record beautiful man i do you on the kid punk its when im attack i know when im smiling taste so i find a little far&lt;/p&gt;
 &lt;/blockquote&gt;
 
-&lt;p&gt;As you can see, the model learned to structure its musings in paragraphs akin to real lyrics, and overall makes some good attempts at coming up with new sentences. Apparently this song is more of a Gangsta rap, as suggested by the words “knife”, “gangsta”, “niggas”, etc. Sentences only sometimes make proper sense, unfortunately. It sometimes comes up with semi-random new words, like “dragong” and “peacent”, because it has to learn spelling and vocabulary from scratch as opposed to word-level language models. It also did not learn meaningful long-term dependencies such as verse/chorus structures.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.</summary></entry><entry><title type="html">Snowfall: A Very Special Video Game Controller</title><link href="https://dans.world/Snowfall-a-very-special-video-game-controller/" rel="alternate" type="text/html" title="Snowfall: A Very Special Video Game Controller" /><published>2015-11-20T00:00:00+00:00</published><updated>2015-11-20T00:00:00+00:00</updated><id>https://dans.world/Snowfall:-a-very-special-video-game-controller</id><content type="html" xml:base="https://dans.world/Snowfall-a-very-special-video-game-controller/">&lt;p&gt;Here is a short &lt;a href=&quot;https://www.youtube.com/watch?v=TRiBA4o_pBs&quot;&gt;Youtube video&lt;/a&gt; explaining what this post it about. How did I do it? I will try to go through the main steps in the following.&lt;/p&gt;
+&lt;p&gt;As you can see, the model learned to structure its musings in paragraphs akin to real lyrics, and overall makes some good attempts at coming up with new sentences. Apparently this song is more of a Gangsta rap, as suggested by the words “knife”, “gangsta”, “niggas”, etc. Sentences only sometimes make proper sense, unfortunately. It sometimes comes up with semi-random new words, like “dragong” and “peacent”, because it has to learn spelling and vocabulary from scratch as opposed to word-level language models. It also did not learn meaningful long-term dependencies such as verse/chorus structures.&lt;/p&gt;</content><author><name>Daniel Stoller</name><email>business@dstoller.net</email></author><summary type="html">In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.</summary></entry><entry><title type="html">Snowfall: A Very Special Video Game Controller</title><link href="http://localhost:4000/Snowfall-a-very-special-video-game-controller/" rel="alternate" type="text/html" title="Snowfall: A Very Special Video Game Controller" /><published>2015-11-20T00:00:00+00:00</published><updated>2015-11-20T00:00:00+00:00</updated><id>http://localhost:4000/Snowfall:-a-very-special-video-game-controller</id><content type="html" xml:base="http://localhost:4000/Snowfall-a-very-special-video-game-controller/">&lt;p&gt;Here is a short &lt;a href=&quot;https://www.youtube.com/watch?v=TRiBA4o_pBs&quot;&gt;Youtube video&lt;/a&gt; explaining what this post it about. How did I do it? I will try to go through the main steps in the following.&lt;/p&gt;
 
 &lt;h1 id=&quot;understanding-the-wiring-and-connecting-the-arduino&quot;&gt;Understanding the wiring and connecting the Arduino&lt;/h1&gt;
 
@@ -1099,7 +948,7 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
 
 &lt;p&gt;Intuitively (and naively), for ten LEDs you would expect two connections for each LED and therefore 20 connections in total. But it seems that especially when dealing with cheap toy electronics, it is never that easy. Every cable drives up costs and so they favour more complicated wiring when it is less costly to produce. In this mat, there are 7 cables, each with a different colour (at least they did me that favour!). The setup can be seen in this picture:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/led-wiring.png&quot; alt=&quot;LED wiring.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/led-wiring.png&quot; alt=&quot;LED wiring.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;So if you want to light up the LED number 2 for example, you have to apply a current to the green cable, and pull the brown cable to the ground to allow the current to flow. In general, for every LED there is a specific combination of two buttons that you have to set. But as if that is not complicated enough, you introduce some dependencies with this setup. What if you wanted to light up LED 1 and 6 simultaneously? You would have to supply the yellow cable with current for LED 1 and the green one for LED 6. Also, the brown and red cables would both have to act as ground. But wait a minute - in this configuration, the LEDs 2 and 5 would light up too, as both are now exposed to the same current as LEDs 1 and 6. I worked around this dependency with a “cheap” trick: When multiple LEDs should be activated, I light up one LED after the other, but switch between the LEDs at such a high frequency (about 5 ms for every LED) that with our surprisingly limited visual system it looks like the LEDs are actually glowing at the same time!&lt;/p&gt;
 
@@ -1107,19 +956,19 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
 
 &lt;p&gt;Unfortunately, the wiring of the buttons turned out to be even more confusing than those of the LEDs. Basically, inside the mat there are two layers of foil separated by a layer of foam. The foil has conductive areas at the position of each button as well as black lines that connect the buttons to the PCB in the toy. When pressure is applied to a button, the two layers are pressed together as the foam gets squashed, and a current can now flow between the two layers of foil. So you can model this button as a resistor that changes in resistance depending on the applied pressure. I hope the picture below makes everything a little bit clearer, where you can see one of the layers and the electrical connections in black, and the foam underneath obstructing the second layer below.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/img_20151120_180127.jpg&quot; alt=&quot;IMG_20151120_180127.jpg&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/img_20151120_180127.jpg&quot; alt=&quot;IMG_20151120_180127.jpg&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Similar to the buttons, the wiring was not straightforward, as you can see in the following schematics. For both layers, the connections accessible from the outside are drawn at the top.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-wiring-schematics.png&quot; alt=&quot;Button wiring schematics.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-wiring-schematics.png&quot; alt=&quot;Button wiring schematics.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;On the PCB, I discovered that the buttons 1-4, 5-8 and 9-10 were each short-circuited on the second layer, as shown in red in the schematic. This made matters much more complicated, because it again introduced dependencies between the buttons that make separate measurements of the buttons much harder. It leads to matrix setup, with four connections on the first and three connections on the second layer. Here is a diagram showing this matrix:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-matrix.png&quot; alt=&quot;Button matrix.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-matrix.png&quot; alt=&quot;Button matrix.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;It assumes that current is applied on the digital pins 10 to 12 and the resulting voltage measured on the analog pins A0 to A3. For each coloured cable, the buttons that are connected to it are displayed. The matrix entries show the specific button addressed by the combination of two of these cables. So the idea is to apply HIGH to one of the three digital pins, while letting the other connections float, measuring the four analog voltages, and then selecting another digital pin to set to HIGH and repeat the procedure, and then do the same thing a final third time with the last remaining digital pin. The picture below shows a schematic of the Arduino setup for the analog pin A0 and demonstrates how setting exactly one pin between 10 and 12 to high allows for the measurement of the voltage for exactly one of the three buttons. It works analogously for the other analog pins A1 to A3.&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-arduino-setup-example.png&quot; alt=&quot;Button Arduino setup example&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/button-arduino-setup-example.png&quot; alt=&quot;Button Arduino setup example&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;Finally, I programmed my Arduino to periodically read these values, detect button presses using these measured voltages, and send the button states over the serial port, where they are received by the Unity game engine.&lt;/p&gt;
 
@@ -1131,7 +980,7 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
 
 &lt;p&gt;One of Unity’s strength is definitely the modelling of 3D game environments. Although it can be difficult to find the right 3D models and textures for your game (and often you find many expensive offers on the internet and only few or no free ones), designing the terrain and moving, scaling and rotating objects is very intuitive and quickly done. Here is the scene of Snowfall as viewed inside the editor of Unity:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/unity-3d-scene.png&quot; alt=&quot;Unity 3D scene.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/unity-3d-scene.png&quot; alt=&quot;Unity 3D scene.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I quickly added some hills and a snow texture to the terrain, placed a lot of trees and obstacles (barely visible in the middle of the screen) and added 10 red skis with their positions relative to the main camera, so they move along with the player. Because the scene is rendered from the perspective of this main camera, for the player the skis do not seem to move at all. On the left side, you can see the scene hierarchy, containing all objects of the scene organised in a tree-like structure. As stated before, the skis are a child of the main camera object so that they do not change their position on the screen. The TreeGroup contains all trees, a directional light acts as the sunlight and the terrain features a set of obstacles in the form of many thin cuboids with a rocky texture. The UI consists of text labels from one to ten for every ski, a play button, a health slider, a title text for the start screen and a loss and win text shown when the player loses or wins. It is also simple to set it up so that a specific function in your own script is called every time the button is pressed or the slider is moved. Finally, the “GameLogic” object contains most of the C# scripts responsible for handling most of the game’s logic. I say most because some scripts are attached to specific game objects like the main camera.&lt;/p&gt;
 
@@ -1160,7 +1009,7 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
 
 &lt;p&gt;A &lt;code class=&quot;highlighter-rouge&quot;&gt;HealthBar&lt;/code&gt; class uses &lt;code class=&quot;highlighter-rouge&quot;&gt;GUI.DrawTexture&lt;/code&gt; with a black and a green texture to draw the health bar, using the black texture as a background and the green texture for the bar itself. Finally, a &lt;code class=&quot;highlighter-rouge&quot;&gt;MainLoop&lt;/code&gt; class ties everything together and also reacts to pressing the play button and varying the health slider on the start screen. Setting up to have a specific function called when a specific UI element is interacted with is very easy, just select the UI element in the Unity editor and then, in the inspector on the right hand side, select the function you want to call. As an example, this screenshot shows my play button and how I set it up to call the function &lt;code class=&quot;highlighter-rouge&quot;&gt;startGame&lt;/code&gt; of the class &lt;code class=&quot;highlighter-rouge&quot;&gt;MainLoop&lt;/code&gt; contained in the game object GameLogic whenever it is pressed:&lt;/p&gt;
 
-&lt;p&gt;&lt;img src=&quot;https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/event-handling.png&quot; alt=&quot;Event handling.png&quot; /&gt;&lt;/p&gt;
+&lt;p&gt;&lt;img src=&quot;http://localhost:4000/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/event-handling.png&quot; alt=&quot;Event handling.png&quot; /&gt;&lt;/p&gt;
 
 &lt;p&gt;I will conclude this post with the code of the main loop during active gameplay. Hopefully, it is comprehensible with the extensive comments and can further develop your coding skills in Unity.&lt;/p&gt;
 

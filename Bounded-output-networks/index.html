@@ -19,7 +19,7 @@
 <meta property="og:locale" content="en_GB">
 <meta property="og:site_name" content="Dans World">
 <meta property="og:title" content="Bounded output regression with neural networks">
-<meta property="og:url" content="https://dans.world/Bounded-output-networks/">
+<meta property="og:url" content="http://localhost:4000/Bounded-output-networks/">
 
 
   <meta property="og:description" content="Say we have a neural network (or some other model trainable with gradient descent) that performs supervised regression: For an input $x$, it outputs one or more real values $y$ as prediction, and tries to get as close to a given target value $\hat{y}$ as possible. We also know that the targets $\hat{y}$ always lie in a certain interval $[a,b]$.">
@@ -41,7 +41,7 @@
   
 
 
-<link rel="canonical" href="https://dans.world/Bounded-output-networks/">
+<link rel="canonical" href="http://localhost:4000/Bounded-output-networks/">
 
 
 
@@ -54,7 +54,7 @@
       "@context": "http://schema.org",
       "@type": "Person",
       "name": "Daniel Stoller",
-      "url": "https://dans.world",
+      "url": "http://localhost:4000",
       "sameAs": null
     }
   </script>
@@ -147,22 +147,22 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/research/" >Research</a>
+              <a href="http://localhost:4000/research/" >Research</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/publications/" >Publications</a>
+              <a href="http://localhost:4000/publications/" >Publications</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/about/" >About</a>
+              <a href="http://localhost:4000/about/" >About</a>
             </li>
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/" >Blog</a>
+              <a href="http://localhost:4000/" >Blog</a>
             </li>
           
         </ul>
@@ -329,7 +329,7 @@
 
 
 
-  4 minute read
+  5 minute read
 </p>
           
         </header>
@@ -349,7 +349,7 @@ We will take a look at the <a href="https://github.com/f90/Wave-U-Net">Wave-U-Ne
 Since audio amplitudes are usually represented as values in the $[-1,1]$ range, I decided to use $\tanh(a)$ as the final activation function with $a \in \mathbb{R}$ as the last layer’s output at a given time-step.
 As a result, all outputs are now between -1 and 1:</p>
 
-<p><img src="https://dans.world/assets/img/2019-01-23-Bounded-output-networks/tanh.png" alt="Tanh activation function" /></p>
+<p><img src="http://localhost:4000/assets/img/2019-01-23-Bounded-output-networks/tanh.png" alt="Tanh activation function" /></p>
 
 <p>As loss function for the regression, I simply use the mean squared error (MSE, $(y - \hat{y})^2$) between the prediction $y$ and the target $\hat{y}$.</p>
 
@@ -363,11 +363,12 @@ But there are two potential problems:</p>
     <p>The true audio amplitudes $\hat{y}$ are in the range $[-1,1]$, but $\tanh(a) \in (-1, 1)$ and so never reaches -1 and 1 exactly. 
 If our targets $\hat{y}$ in the training data actually contain these values, the network is forced to output extremely large/small $a$ so that $\tanh(a)$ gets as close to -1 or 1 as possible.
 I tested this with the Wave-U-Net in an extreme scenario, where all target amplitudes $\hat{y}$ are 1 for all inputs $x$.
-After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can become a problem in practice (although my training data is unrealistic in itself).</p>
+After just a few training steps, activations in the layers began to explode to increase $a$, which confirms that this can actually become a problem (although my training data is a bit unrealistic).
+And generally, the network has to drive up activations $a$ (and thus weights) to produce predictions with very high or low amplitudes, potentially making training more unstable.</p>
   </li>
   <li>
     <p>At very small or large $x$ values, the gradient of $\tanh(a)$ with respect to a, $\tanh’(a)$, vanishes towards zero, as you can see in the plot below.
-<img src="https://dans.world/assets/img/2019-01-23-Bounded-output-networks/tanh_derivative.png" alt="Tanh derivative" />
+<img src="http://localhost:4000/assets/img/2019-01-23-Bounded-output-networks/tanh_derivative.png" alt="Tanh derivative" />
 At any point during training, a large weight update that makes all model outputs $y$ almost $-1$ or $1$ would thus make the gradient of the loss with respect to the weights vanish towards zero, since it contains $\tanh’(a)$ as one factor.
 This can actually happen in practice - some people reported to me that for their dataset, the Wave-U-Net suddenly diverged in this fashion after training stably for a long time, and then couldn’t recover.</p>
   </li>
@@ -386,30 +387,30 @@ If the network predicts for example $1.4$ as amplitude where the target is $1$, 
 <p>I trained a Wave-U-Net variant for singing voice separation that uses this linear output with test-time clipping for each source independently. Apart from that, all settings are equal to the <a href="https://github.com/f90/Wave-U-Net">M5-HighSR</a> model, which uses the $\tanh$ function to predict the accompaniment, and outputs the difference between the input music and the predicted accompaniment signal as voice signal.</p>
 
 <p>Below you can see the waveforms of an instrumental section of a Nightwish song (top), the accompaniment prediction from our new model variant (middle), and from the $\tanh$ model (bottom). Red parts indicate amplitude clipping.
-<img src="https://dans.world/assets/img/2019-01-23-Bounded-output-networks/waveform_comparison.png" alt="Waveform comparison" />
-We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input almost 1:1, which is the goal for this section as the input already consists of accompaniment only.</p>
+<img src="http://localhost:4000/assets/img/2019-01-23-Bounded-output-networks/waveform_comparison.png" alt="Waveform comparison" />
+We can see the accompaniment from the $\tanh$ model is attenuated, since it cannot reach values close to $-1$ and $1$ easily. In contrast, our model can output the input music almost 1:1, which is here since there are no vocals to subtract. The clipping occurs where the original input also has it, so this can be considered a feature, not a bug.</p>
 
-<p>This output problem with the accompaniment also creates more noise in the vocal channel in turn for the $\tanh$ model since it uses the difference signal as vocal output:</p>
+<p>The problem with the accompaniment output also creates more noise in the vocal channel for the $\tanh$ model, since it uses the difference signal as vocal output:</p>
 
 <ul>
   <li>Original song</li>
 </ul>
 <audio controls="">
-  <source src="https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_original.mp3" type="audio/mpeg" />
+  <source src="http://localhost:4000/assets/audio/2019-01-23-Bounded-output-networks/nightwish_original.mp3" type="audio/mpeg" />
 Your browser does not support audio file playing!
 </audio>
 <ul>
   <li>Tanh model vocal prediction</li>
 </ul>
 <audio controls="">
-  <source src="https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_tanh_vocals.mp3" type="audio/mpeg" />
+  <source src="http://localhost:4000/assets/audio/2019-01-23-Bounded-output-networks/nightwish_tanh_vocals.mp3" type="audio/mpeg" />
 Your browser does not support audio file playing!
 </audio>
 <ul>
   <li>Linear output model vocal prediction</li>
 </ul>
 <audio controls="">
-  <source src="https://dans.world/assets/audio/2019-01-23-Bounded-output-networks/nightwish_direct_vocals.mp3" type="audio/mpeg" />
+  <source src="http://localhost:4000/assets/audio/2019-01-23-Bounded-output-networks/nightwish_direct_vocals.mp3" type="audio/mpeg" />
 Your browser does not support audio file playing!
 </audio>
 
@@ -437,13 +438,13 @@ Your browser does not support audio file playing!
     <h4 class="page__share-title">Share on</h4>
   
 
-  <a href="https://twitter.com/intent/tweet?text=Bounded+output+regression+with+neural+networks%20https%3A%2F%2Fdans.world%2FBounded-output-networks%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Bounded+output+regression+with+neural+networks%20http%3A%2F%2Flocalhost%3A4000%2FBounded-output-networks%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
-  <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FBounded-output-networks%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
+  <a href="https://www.facebook.com/sharer/sharer.php?u=http%3A%2F%2Flocalhost%3A4000%2FBounded-output-networks%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
 
-  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FBounded-output-networks%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
+  <a href="https://plus.google.com/share?url=http%3A%2F%2Flocalhost%3A4000%2FBounded-output-networks%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
-  <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FBounded-output-networks%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
+  <a href="https://www.linkedin.com/shareArticle?mini=true&url=http%3A%2F%2Flocalhost%3A4000%2FBounded-output-networks%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
 
 

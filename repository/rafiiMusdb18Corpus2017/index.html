@@ -1,0 +1,457 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>The Musdb18 Corpus For Music Separation - Dans World</title>
+<meta name="description" content="Machine learning, music information retrieval, and other things">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="The Musdb18 Corpus For Music Separation">
+<meta property="og:url" content="http://localhost:4000/repository/rafiiMusdb18Corpus2017/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="http://localhost:4000/repository/rafiiMusdb18Corpus2017/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "http://localhost:4000",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--archive">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="http://localhost:4000/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+  <div class="sidebar sticky">
+  
+
+
+<div itemscope itemtype="http://schema.org/Person">
+
+  
+
+  <div class="author__content">
+    
+      <h3 class="author__name" itemprop="name">Daniel Stoller</h3>
+    
+    
+      <p class="author__bio" itemprop="description">
+        Researcher in Machine Learning and Music Information Retrieval.
+      </p>
+    
+  </div>
+
+  <div class="author__urls-wrapper">
+    <button class="btn btn--inverse">Follow</button>
+    <ul class="author__urls social-icons">
+      
+        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
+          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">London, UK</span>
+        </li>
+      
+
+      
+
+      
+        <li>
+          <a href="mailto:business@dstoller.net">
+            <meta itemprop="email" content="business@dstoller.net" />
+            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://www.linkedin.com/in/daniel-stoller" itemprop="sameAs">
+            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+        <li>
+          <a href="https://github.com/f90" itemprop="sameAs">
+            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
+          </a>
+        </li>
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+      
+
+        <li>
+    <a href="https://orcid.org/0000-0002-8615-4144" itemprop="sameAs">
+      <i class="ai ai-orcid-square ai-fw"></i> ORCID
+    </a>
+  </li>
+
+  <li>
+    <a href="https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ" itemprop="sameAs">
+      <i class="ai ai-google-scholar-square ai-fw"></i> Google Scholar
+    </a>
+</li>
+
+  <li>
+    <a href="https://qmul.academia.edu/DanielStoller" itemprop="sameAs">
+      <i class="ai ai-academia-square ai-fw"></i> Academia.edu
+    </a>
+</li>
+    </ul>
+  </div>
+</div>
+
+  
+  </div>
+
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">The Musdb18 Corpus For Music Separation</h1>
+    
+    <div>
+  <div>
+    <h5>Venue</h5>
+    <p> 
+</p>
+    <h5>Publication Year</h5>
+    <p>2017</p>
+    
+    <h5>Identifiers</h5>
+    <ul>
+      <li>DOI: <a>doi:10.5281/zenodo.1117372</a></li>
+      
+    </ul>
+  </div>
+</div>
+
+<h3>Authors</h3>
+<ul class="list-inline">
+
+
+
+<li class="list-inline-item">Zafar Rafii</li>
+
+
+
+<li class="list-inline-item">Antoine Liutkus</li>
+
+
+
+<li class="list-inline-item">Fabian-Robert Stöter</li>
+
+
+
+<li class="list-inline-item">Stylianos Ioannis Mimilakis</li>
+
+
+
+<li class="list-inline-item">Rachel Bittner</li>
+
+</ul>
+
+
+
+<h3>Abstract</h3>
+<p>
+The sigsep musdb18 data set consists of a total of 150 full-track songs of different styles and includes both the stereo mixtures and the original sources, divided between a training subset and a test subset.
+
+Its purpose is to serve as a reference database for the design and the evaluation of source separation algorithms. The objective of such signal processing methods is to estimate one or more sources from a set of mixtures, e.g. for karaoke applications. It has been used as the official dataset in the professionally-produced music recordings task for SiSEC 2018, which is the international campaign for the evaluation of source separation algorithms.
+
+<em>musdb18</em> contains two folders, a folder with a training set: “train”, composed of 100 songs, and a folder with a test set: “test”, composed of 50 songs. Supervised approaches should be trained on the training set and tested on both sets.
+
+All files from the <em>musdb18</em> dataset are encoded in the Native Instruments stems format (.mp4). It is a multitrack format composed of 5 stereo streams, each one encoded in AAC @256kbps. These signals correspond to:
+
+	0 - The mixture,
+	1 - The drums,
+	2 - The bass,
+	3 - The rest of the accompaniment,
+	4 - The vocals.
+
+For each file, the mixture correspond to the sum of all the signals. All signals are stereophonic and encoded at 44.1kHz.
+
+As the <em>MUSDB18</em> is encoded as STEMS, it relies on ffmpeg to read the multi-stream files. We provide a python wrapper called stempeg that allows to easily parse the dataset and decode the stem tracks on-the-fly.
+</p>
+
+
+
+<h3>Source Materials</h3>
+<ul class="fa-ul">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+
+  <li><a href="http://dx.doi.org/10.5281/zenodo.1117372"><i class="fas fa-li fa-external-link-square-alt"></i>
+      Published Edition</a></li>
+
+  <li><a download="rafiiMusdb18Corpus2017.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@misc%7BrafiiMusdb18Corpus2017,%0A%20%20title%20=%20%7BThe%20%7B%7BMusdb18%20Corpus%20For%20Music%20Separation%7D%7D%7D,%0A%20%20abstract%20=%20%7BThe%20sigsep%20musdb18%20data%20set%20consists%20of%20a%20total%20of%20150%20full-track%20songs%20of%20different%20styles%20and%20includes%20both%20the%20stereo%20mixtures%20and%20the%20original%20sources,%20divided%20between%20a%20training%20subset%20and%20a%20test%20subset.%0A%20%20%0A%20%20Its%20purpose%20is%20to%20serve%20as%20a%20reference%20database%20for%20the%20design%20and%20the%20evaluation%20of%20source%20separation%20algorithms.%20The%20objective%20of%20such%20signal%20processing%20methods%20is%20to%20estimate%20one%20or%20more%20sources%20from%20a%20set%20of%20mixtures,%20e.g.%20for%20karaoke%20applications.%20It%20has%20been%20used%20as%20the%20official%20dataset%20in%20the%20professionally-produced%20music%20recordings%20task%20for%20SiSEC%202018,%20which%20is%20the%20international%20campaign%20for%20the%20evaluation%20of%20source%20separation%20algorithms.%0A%20%20%0A%20%20%7B$%3C$%7Dem%7B$%3E$%7Dmusdb18%7B$%3C$%7D/em%7B$%3E$%7D%20contains%20two%20folders,%20a%20folder%20with%20a%20training%20set:%20%60%60train'',%20composed%20of%20100%20songs,%20and%20a%20folder%20with%20a%20test%20set:%20%60%60test'',%20composed%20of%2050%20songs.%20Supervised%20approaches%20should%20be%20trained%20on%20the%20training%20set%20and%20tested%20on%20both%20sets.%0A%20%20%0A%20%20All%20files%20from%20the%20%7B$%3C$%7Dem%7B$%3E$%7Dmusdb18%7B$%3C$%7D/em%7B$%3E$%7D%20dataset%20are%20encoded%20in%20the%20Native%20Instruments%20stems%20format%20(.mp4).%20It%20is%20a%20multitrack%20format%20composed%20of%205%20stereo%20streams,%20each%20one%20encoded%20in%20AAC%20@256kbps.%20These%20signals%20correspond%20to:%0A%20%20%0A%20%20%090%20-%20The%20mixture,%0A%20%20%091%20-%20The%20drums,%0A%20%20%092%20-%20The%20bass,%0A%20%20%093%20-%20The%20rest%20of%20the%20accompaniment,%0A%20%20%094%20-%20The%20vocals.%0A%20%20%0A%20%20For%20each%20file,%20the%20mixture%20correspond%20to%20the%20sum%20of%20all%20the%20signals.%20All%20signals%20are%20stereophonic%20and%20encoded%20at%2044.1kHz.%0A%20%20%0A%20%20As%20the%20%7B$%3C$%7Dem%7B$%3E$%7DMUSDB18%7B$%3C$%7D/em%7B$%3E$%7D%20is%20encoded%20as%20STEMS,%20it%20relies%20on%20ffmpeg%20to%20read%20the%20multi-stream%20files.%20We%20provide%20a%20python%20wrapper%20called%20stempeg%20that%20allows%20to%20easily%20parse%20the%20dataset%20and%20decode%20the%20stem%20tracks%20on-the-fly.%7D,%0A%20%20publisher%20=%20%7B%7BZenodo%7D%7D,%0A%20%20author%20=%20%7BRafii,%20Zafar%20and%20Liutkus,%20Antoine%20and%20St%7B%5C%22o%7Dter,%20Fabian-Robert%20and%20Mimilakis,%20Stylianos%20Ioannis%20and%20Bittner,%20Rachel%7D,%0A%20%20month%20=%20dec,%0A%20%20year%20=%20%7B2017%7D,%0A%20%20doi%20=%20%7B10.5281/zenodo.1117372%7D%0A%7D%0A%7B%25endraw%25%7D">
+      <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>
+</ul>
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+      <li><strong>Follow:</strong></li>
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2019 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  </body>
+</html>
