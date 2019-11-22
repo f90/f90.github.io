@@ -2,6 +2,7 @@
 permalink: /about/
 ---
 
+[Full academic CV available here](/assets/pdf/CV_Academic_public.pdf)
 
 Hello World!
 
