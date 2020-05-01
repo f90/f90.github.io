@@ -67,7 +67,6 @@
 <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
 
 <!-- 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
  -->
 
@@ -140,7 +139,7 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/" >Blog</a>
+              <a href="https://dans.world/posts/" >Blog</a>
             </li>
           
         </ul>
@@ -168,127 +167,6 @@
 
 <div id="main" role="main">
   
-  <div class="sidebar sticky">
-  
-
-
-<div itemscope itemtype="http://schema.org/Person">
-
-  
-
-  <div class="author__content">
-    
-      <h3 class="author__name" itemprop="name">Daniel Stoller</h3>
-    
-    
-      <p class="author__bio" itemprop="description">
-        Researcher in Machine Learning and Music Information Retrieval.
-      </p>
-    
-  </div>
-
-  <div class="author__urls-wrapper">
-    <button class="btn btn--inverse">Follow</button>
-    <ul class="author__urls social-icons">
-      
-        <li itemprop="homeLocation" itemscope itemtype="http://schema.org/Place">
-          <i class="fas fa-fw fa-map-marker-alt" aria-hidden="true"></i> <span itemprop="name">London, UK</span>
-        </li>
-      
-
-      
-
-      
-        <li>
-          <a href="mailto:business@dstoller.net">
-            <meta itemprop="email" content="business@dstoller.net" />
-            <i class="fas fa-fw fa-envelope-square" aria-hidden="true"></i> Email
-          </a>
-        </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-        <li>
-          <a href="https://www.linkedin.com/in/daniel-stoller" itemprop="sameAs">
-            <i class="fab fa-fw fa-linkedin" aria-hidden="true"></i> LinkedIn
-          </a>
-        </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-        <li>
-          <a href="https://github.com/f90" itemprop="sameAs">
-            <i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub
-          </a>
-        </li>
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-      
-
-        <li>
-    <a href="https://orcid.org/0000-0002-8615-4144" itemprop="sameAs">
-      <i class="ai ai-orcid-square ai-fw"></i> ORCID
-    </a>
-  </li>
-
-  <li>
-    <a href="https://scholar.google.co.uk/citations?user=Ozxm6UsAAAAJ" itemprop="sameAs">
-      <i class="ai ai-google-scholar-square ai-fw"></i> Google Scholar
-    </a>
-</li>
-
-  <li>
-    <a href="https://qmul.academia.edu/DanielStoller" itemprop="sameAs">
-      <i class="ai ai-academia-square ai-fw"></i> Academia.edu
-    </a>
-</li>
-    </ul>
-  </div>
-</div>
-
-  
-  </div>
-
 
   <div class="archive">
     
@@ -298,7 +176,7 @@
   <div>
     <h5>Venue</h5>
     <p> 
-		Proceedings of the International Society for Music Information Retrieval Conference (ISMIR), pp. 334–340
+		Proc. of the International Society for Music Information Retrieval Conference (ISMIR), pp. 334–340
 			
 </p>
     <h5>Publication Year</h5>
@@ -343,9 +221,9 @@ Models for audio source separation usually operate on the magnitude spectrum, wh
   
   <li><a href="
   
-    /repository/stollerWaveUNetMultiScale2018.pdf
+    /repository/stollerWaveUNetMultiScale2018.published.pdf
   
-  "> <i class="fa fa-li fa-file-pdf"></i>Authors' Preprint/Accepted Version </a></li>
+  "> <i class="fa fa-li fa-file-pdf"></i>Article (Published version) </a></li>
   
   
   
@@ -366,7 +244,7 @@ Models for audio source separation usually operate on the magnitude spectrum, wh
   
     /repository/stollerWaveUNetMultiScale2018.slides.pdf
   
-  "> <i class="fa fa-li fa-file-pdf"></i>Slides </a></li>
+  "> <i class="fa fa-li fa-file-pdf"></i>Presentation slides </a></li>
   
   
   
@@ -404,11 +282,10 @@ Models for audio source separation usually operate on the magnitude spectrum, wh
   
   
 
-  
-
-  <li><a download="stollerWaveUNetMultiScale2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BstollerWaveUNetMultiScale2018,%0A%20%20title%20=%20%7BWave-%7B%7BU%7D%7D-%7B%7BNet%7D%7D:%20%7B%7BA%20Multi%7D%7D-%7B%7BScale%20Neural%20Network%7D%7D%20for%20%7B%7BEnd%7D%7D-to-%7B%7BEnd%20Source%20Separation%7D%7D%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%20spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%20dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%20we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%20allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%20Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%20context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%20separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%20this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%20to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%20maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%20introduce%20further%20architectural%20improvements,%20including%20an%20output%20layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%20a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%20Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%20yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%20U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%20with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%20reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D,%0A%20%20booktitle%20=%20%7BProceedings%20of%20the%20%7B%7BInternational%20Society%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%20Conference%7D%7D%20(%7B%7BISMIR%7D%7D)%7D,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20pages%20=%20%7B334--340%7D%0A%7D%0A%7B%25endraw%25%7D">
+  <li><a download="stollerWaveUNetMultiScale2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BstollerWaveUNetMultiScale2018,%0A%20%20title%20=%20%7BWave-%7B%7BU%7D%7D-%7B%7BNet%7D%7D:%20%7B%7BA%20Multi%7D%7D-%7B%7BScale%20Neural%20Network%7D%7D%20for%20%7B%7BEnd%7D%7D-to-%7B%7BEnd%20Source%20Separation%7D%7D%7D,%0A%20%20booktitle%20=%20%7BProc.%20of%20the%20%7B%7BInternational%20Society%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%20Conference%7D%7D%20(%7B%7BISMIR%7D%7D)%7D,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%20spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%20dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%20we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%20allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%20Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%20context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%20separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%20this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%20to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%20maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%20introduce%20further%20architectural%20improvements,%20including%20an%20output%20layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%20a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%20Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%20yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%20U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%20with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%20reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D">
       <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>
 </ul>
+
 
   </div>
 </div>
@@ -429,8 +306,6 @@ Models for audio source separation usually operate on the magnitude spectrum, wh
         <div class="page__footer-follow">
   <ul class="social-icons">
     
-      <li><strong>Follow:</strong></li>
-    
     
     
     
@@ -442,7 +317,7 @@ Models for audio source separation usually operate on the magnitude spectrum, wh
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

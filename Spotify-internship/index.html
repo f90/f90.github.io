@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Spotify Research Internship Report - Dans World</title>
+<!-- begin _includes/seo.html --><title>Spotify Internship Report - Dans World</title>
 <meta name="description" content="From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.">
 
 
@@ -18,7 +18,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_GB">
 <meta property="og:site_name" content="Dans World">
-<meta property="og:title" content="Spotify Research Internship Report">
+<meta property="og:title" content="Spotify Internship Report">
 <meta property="og:url" content="https://dans.world/Spotify-internship/">
 
 
@@ -71,7 +71,6 @@
 <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
 
 <!-- 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
  -->
 
@@ -144,7 +143,7 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/" >Blog</a>
+              <a href="https://dans.world/posts/" >Blog</a>
             </li>
           
         </ul>
@@ -295,7 +294,7 @@
 
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Spotify Research Internship Report">
+    <meta itemprop="headline" content="Spotify Internship Report">
     <meta itemprop="description" content="From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team.Their work is also similar to my PhD, focused on applying machine learning to music signals in an effort to make computers able to understand musical properties, such as classifying whether a music piece has singing voice in it or not, so this was a good match for me to get to know how it’s like to work in industry in my field.">
     <meta itemprop="datePublished" content="February 21, 2019">
     
@@ -303,7 +302,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Spotify Research Internship Report
+          <h1 id="page-title" class="page__title" itemprop="headline">Spotify Internship Report
 </h1>
           
             <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
@@ -354,7 +353,7 @@ Offices there are quite big, and even offer daily catering and in-house music ev
 <p>For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system (missing reference).
 The problem is that those do not necessarily align with how a human listening to, let’s say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
 This means we are not optimising our systems to maximise the actual listening quality!
-Evaluation metrics such as SDR (missing reference) or PEASS (missing reference) share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
+Evaluation metrics such as SDR <a class="citation" href="#vincentPerformanceMeasurement2006">[1]</a> or PEASS <a class="citation" href="#vincentImprovedPerceptual2012">[2]</a> share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
 
 <p>The above losses and metrics also assume that for every music input, there exists <em>exactly one true source output</em> as solution for the separation task (uni-modal).
 But that might not be the case - if music has background vocals for example, there are <em>two</em> solutions for singing voice separation that both make sense: one that puts the background vocals into the accompaniment track, and one that puts them into the vocal track along with the main vocals:</p>
@@ -373,7 +372,7 @@ Maybe we can separate voice better if we know what is being sung.
 And similarly, if we know the isolated voice track, detecting what is being sung should be much easier!</p>
 
 <p>Therefore we looked at <em>multi-task learning</em> to build models that perform separation and lyrics transcription at the same time.
-We chose the <em>Wave-U-Net</em> (missing reference) model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
+We chose the <em>Wave-U-Net</em> <a class="citation" href="#stollerWaveUNetMultiScale2018">[3]</a> model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
 
 <p><img src="https://dans.world/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png" alt="Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here." />
 <em>Branching off a Wave-U-Net upsampling block to predict lyrics characters (<a href="https://arxiv.org/abs/1902.06797">source</a>) . The later upsampling blocks for separation are not depicted here</em></p>
@@ -386,7 +385,7 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <h2 id="lyrics-alignment">Lyrics alignment</h2>
 
-<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models (missing reference).</p>
+<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than state of the art models participating in the MIREX lyrics alignment challenge 2017 <a class="citation" href="#imirselMusicInformation2020">[4]</a>.</p>
 
 <p>In conclusion, we find that <strong>you can train a lyrics transcription system from only line-level aligned lyrics annotations to predict characters directly from raw audio</strong>, and <strong>get excellent alignment accuracy even with mediocre transcription performance - see our ICASSP publication (preprint available <a href="https://arxiv.org/abs/1902.06797">here</a>)!</strong></p>
 
@@ -394,7 +393,91 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <h2 id="references">References</h2>
 
-<ol class="bibliography"></ol>
+<ol class="bibliography"><li><div>
+<a name="vincentPerformanceMeasurement2006" />
+<b>Performance Measurement in Blind Audio Source Separation</b> <span style="font-size:15px"> (2006) </span>
+<br />
+
+
+  IEEE Transactions on Audio, Speech, and Language Processing
+  <br />
+
+<i>Vincent, E. and Gribonval, R. and Fevotte, C.</i>
+</div>
+
+
+    
+
+
+
+
+
+
+<a download="vincentPerformanceMeasurement2006.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@article%7BvincentPerformanceMeasurement2006,%0A%20%20title%20=%20%7BPerformance%20Measurement%20in%20Blind%20Audio%20Source%20Separation%7D,%0A%20%20author%20=%20%7BVincent,%20E.%20and%20Gribonval,%20R.%20and%20Fevotte,%20C.%7D,%0A%20%20year%20=%20%7B2006%7D,%0A%20%20volume%20=%20%7B14%7D,%0A%20%20pages%20=%20%7B1462--1469%7D,%0A%20%20issn%20=%20%7B1558-7916%7D,%0A%20%20doi%20=%20%7B10.1109/TSA.2005.858005%7D,%0A%20%20journal%20=%20%7BIEEE%20Transactions%20on%20Audio,%20Speech,%20and%20Language%20Processing%7D,%0A%20%20keywords%20=%20%7Badditive%20noise,Additive%20noise,algorithmic%20artifacts,audio%20signal%20processing,Audio%20source%20separation,blind%20audio%20source%20separation,blind%20source%20separation,Data%20mining,distortion,Distortion%20measurement,distortions,Energy%20measurement,evaluation,Filters,Image%20analysis,Independent%20component%20analysis,interference,Interference,measure,Microphones,performance,quality,source%20estimation,Source%20separation,time-invariant%20gains,time-varying%20filters%7D,%0A%20%20number%20=%20%7B4%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
+<a class="details" href="/repository/vincentPerformanceMeasurement2006/">Details</a></li>
+<li><div>
+<a name="vincentImprovedPerceptual2012" />
+<b>Improved Perceptual Metrics for the Evaluation of Audio Source Separation</b> <span style="font-size:15px"> (2012) </span>
+<br />
+
+  Latent Variable Analysis and Signal Separation
+  <br />
+
+
+<i>Vincent, Emmanuel</i>
+</div>
+
+
+    
+
+
+
+
+
+
+<a download="vincentImprovedPerceptual2012.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BvincentImprovedPerceptual2012,%0A%20%20title%20=%20%7BImproved%20%7B%7BPerceptual%20Metrics%7D%7D%20for%20the%20%7B%7BEvaluation%7D%7D%20of%20%7B%7BAudio%20Source%20Separation%7D%7D%7D,%0A%20%20booktitle%20=%20%7BLatent%20%7B%7BVariable%20Analysis%7D%7D%20and%20%7B%7BSignal%20Separation%7D%7D%7D,%0A%20%20author%20=%20%7BVincent,%20Emmanuel%7D,%0A%20%20year%20=%20%7B2012%7D,%0A%20%20pages%20=%20%7B430--437%7D,%0A%20%20publisher%20=%20%7B%7BSpringer%7D%7D,%0A%20%20abstract%20=%20%7BWe%20aim%20to%20predict%20the%20perceived%20quality%20of%20estimated%20source%20signals%20in%20the%20context%20of%20audio%20source%20separation.%20Recently,%20we%20proposed%20a%20set%20of%20metrics%20called%20PEASS%20that%20consist%20of%20three%20computation%20steps:%20decomposition%20of%20the%20estimation%20error%20into%20three%20components,%20measurement%20of%20the%20salience%20of%20each%20component%20via%20the%20PEMO-Q%20auditory-motivated%20measure,%20and%20combination%20of%20these%20saliences%20via%20a%20nonlinear%20mapping%20trained%20on%20subjective%20opinion%20scores.%20The%20parameters%20of%20the%20decomposition%20were%20shown%20to%20have%20little%20influence%20on%20the%20prediction%20performance.%20In%20this%20paper,%20we%20evaluate%20the%20impact%20of%20the%20parameters%20of%20PEMO-Q%20and%20the%20nonlinear%20mapping%20on%20the%20prediction%20performance.%20By%20selecting%20the%20optimal%20parameters,%20we%20improve%20the%20average%20correlation%20with%20mean%20opinion%20scores%20(MOS)%20from%200.738%20to%200.909%20in%20a%20cross-validation%20setting.%20The%20resulting%20improved%20metrics%20are%20used%20in%20the%20context%20of%20the%202011%20Signal%20Separation%20Evaluation%20Campaign%20(SiSEC).%7D,%0A%20%20isbn%20=%20%7B978-3-642-28551-6%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
+<a class="details" href="/repository/vincentImprovedPerceptual2012/">Details</a></li>
+<li><div>
+<a name="stollerWaveUNetMultiScale2018" />
+<b>Wave-U-Net: A Multi-Scale Neural Network for End-to-End Source Separation</b> <span style="font-size:15px"> (2018) </span>
+<br />
+
+  Proc. of the International Society for Music Information Retrieval Conference (ISMIR)
+  <br />
+
+
+<i>Stoller, Daniel and Ewert, Sebastian and Dixon, Simon</i>
+</div>
+
+
+    <a target="_blank" rel="noopener noreferrer" href="/repository/stollerWaveUNetMultiScale2018.published.pdf"><input class="button0" type="button" value="PDF" /></a>
+
+
+
+
+
+
+<a download="stollerWaveUNetMultiScale2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BstollerWaveUNetMultiScale2018,%0A%20%20title%20=%20%7BWave-%7B%7BU%7D%7D-%7B%7BNet%7D%7D:%20%7B%7BA%20Multi%7D%7D-%7B%7BScale%20Neural%20Network%7D%7D%20for%20%7B%7BEnd%7D%7D-to-%7B%7BEnd%20Source%20Separation%7D%7D%7D,%0A%20%20booktitle%20=%20%7BProc.%20of%20the%20%7B%7BInternational%20Society%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%20Conference%7D%7D%20(%7B%7BISMIR%7D%7D)%7D,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%20spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%20dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%20we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%20allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%20Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%20context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%20separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%20this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%20to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%20maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%20introduce%20further%20architectural%20improvements,%20including%20an%20output%20layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%20a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%20Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%20yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%20U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%20with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%20reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
+<a class="details" href="/repository/stollerWaveUNetMultiScale2018/">Details</a></li>
+<li><div>
+<a name="imirselMusicInformation2020" />
+<b>Music Information Retrieval Exchange (MIREX)</b> <span style="font-size:15px"> (2020) </span>
+<br />
+
+
+<i>IMIRSEL</i>
+</div>
+
+
+    
+
+
+
+
+
+
+<a download="imirselMusicInformation2020.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@misc%7BimirselMusicInformation2020,%0A%20%20title%20=%20%7BMusic%20%7B%7BInformation%20Retrieval%20Exchange%7D%7D%20(%7B%7BMIREX%7D%7D)%7D,%0A%20%20author%20=%20%7BIMIRSEL%7D,%0A%20%20year%20=%20%7B2020%7D,%0A%20%20month%20=%20mar,%0A%20%20howpublished%20=%20%7Bhttps://www.music-ir.org/mirex/wiki/MIREX%5C_HOME%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
+<a class="details" href="/repository/imirselMusicInformation2020/">Details</a></li></ol>
 
         
       </section>
@@ -402,6 +485,25 @@ This might not be very surprising, since it could be seen as speech recognition,
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#mir" class="page__taxonomy-item" rel="tag">MIR</a>
+    
+    </span>
+  </p>
+
+
 
 
         
@@ -411,14 +513,10 @@ This might not be very surprising, since it could be seen as speech recognition,
 
       <section class="page__share">
   
-    <h4 class="page__share-title">Share on</h4>
-  
 
-  <a href="https://twitter.com/intent/tweet?text=Spotify+Research+Internship+Report%20https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Spotify+Internship+Report%20https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
-
-  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
   <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FSpotify-internship%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
@@ -510,7 +608,7 @@ This might not be very surprising, since it could be seen as speech recognition,
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram Input Normalisation For Neural Networks
+        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram input normalisation for neural networks
 </a>
       
     </h2>
@@ -577,8 +675,6 @@ This might not be very surprising, since it could be seen as speech recognition,
         <div class="page__footer-follow">
   <ul class="social-icons">
     
-      <li><strong>Follow:</strong></li>
-    
     
     
     
@@ -590,7 +686,7 @@ This might not be very surprising, since it could be seen as speech recognition,
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

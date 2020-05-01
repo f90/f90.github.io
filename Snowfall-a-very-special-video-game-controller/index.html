@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <meta charset="utf-8">
 
-<!-- begin _includes/seo.html --><title>Snowfall: A Very Special Video Game Controller - Dans World</title>
+<!-- begin _includes/seo.html --><title>Snowfall - A very special video game controller - Dans World</title>
 <meta name="description" content="Here is a short Youtube video explaining what this post it about. How did I do it? I will try to go through the main steps in the following.">
 
 
@@ -18,7 +18,7 @@
 <meta property="og:type" content="article">
 <meta property="og:locale" content="en_GB">
 <meta property="og:site_name" content="Dans World">
-<meta property="og:title" content="Snowfall: A Very Special Video Game Controller">
+<meta property="og:title" content="Snowfall - A very special video game controller">
 <meta property="og:url" content="https://dans.world/Snowfall-a-very-special-video-game-controller/">
 
 
@@ -71,7 +71,6 @@
 <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
 
 <!-- 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
  -->
 
@@ -144,7 +143,7 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/" >Blog</a>
+              <a href="https://dans.world/posts/" >Blog</a>
             </li>
           
         </ul>
@@ -295,7 +294,7 @@
 
 
   <article class="page" itemscope itemtype="http://schema.org/CreativeWork">
-    <meta itemprop="headline" content="Snowfall: A Very Special Video Game Controller">
+    <meta itemprop="headline" content="Snowfall - A very special video game controller">
     <meta itemprop="description" content="Here is a short Youtube video explaining what this post it about. How did I do it? I will try to go through the main steps in the following.">
     <meta itemprop="datePublished" content="November 20, 2015">
     
@@ -303,7 +302,7 @@
     <div class="page__inner-wrap">
       
         <header>
-          <h1 id="page-title" class="page__title" itemprop="headline">Snowfall: A Very Special Video Game Controller
+          <h1 id="page-title" class="page__title" itemprop="headline">Snowfall - A very special video game controller
 </h1>
           
             <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
@@ -367,17 +366,17 @@
 
 <h2 id="game-logic-with-c-scripts">Game logic with C# scripts</h2>
 
-<p>So now I designed a pretty 3D game world, but nothing is really happening in it and no interaction with the player is taking place - you could hardly call that a game, right? At first, I implemented moving the camera at a certain speed through the terrain, maintaining the same height and orientation, and gradually speeding up as we go through the level. I achieved this with a script attached to the Main Camera object containing the class “CameraController”. It defines a minimum and maximum speed in units per second as well as the acceleration <code class="highlighter-rouge">additionalMinSpeedPerSec</code>. A boolean variable determines if the camera should be moving at the moment - an external script can modify this variable to stop and start camera movement. Every frame, a call to the <code class="highlighter-rouge">Update()</code> function causes the current camera speed to be increased by <code class="highlighter-rouge">Time.deltaTime * additionalMinSpeedPerSec</code>, but limited to the maximum camera speed. Then, the camera is moved according to this <code class="highlighter-rouge">currentCameraSpeed</code> using the following code: <code class="highlighter-rouge">Vector3 camPos = transform.localPosition; camPos.z += Time.deltaTime * currentCameraSpeed; transform.localPosition = camPos;</code> Next, I implemented the desired reaction to detected collisions between skis and the rocky terrain. In the 3D scene, I already added box colliders to the obstacles and the skis and marked them as a trigger. Also, I added rigid bodies to the skis. Afterwards I attached a script to every ski whose class <code class="highlighter-rouge">SkiCollisionDetector</code> overrides the <code class="highlighter-rouge">OnTriggerStay</code> function which is called in regular intervals as long as a collision with the corresponding game object is detected. My implementation for every ski simply counts the total duration of the collisions in a variable <code class="highlighter-rouge">collisionTime</code>:</p>
+<p>So now I designed a pretty 3D game world, but nothing is really happening in it and no interaction with the player is taking place - you could hardly call that a game, right? At first, I implemented moving the camera at a certain speed through the terrain, maintaining the same height and orientation, and gradually speeding up as we go through the level. I achieved this with a script attached to the Main Camera object containing the class “CameraController”. It defines a minimum and maximum speed in units per second as well as the acceleration <code class="language-plaintext highlighter-rouge">additionalMinSpeedPerSec</code>. A boolean variable determines if the camera should be moving at the moment - an external script can modify this variable to stop and start camera movement. Every frame, a call to the <code class="language-plaintext highlighter-rouge">Update()</code> function causes the current camera speed to be increased by <code class="language-plaintext highlighter-rouge">Time.deltaTime * additionalMinSpeedPerSec</code>, but limited to the maximum camera speed. Then, the camera is moved according to this <code class="language-plaintext highlighter-rouge">currentCameraSpeed</code> using the following code: <code class="language-plaintext highlighter-rouge">Vector3 camPos = transform.localPosition; camPos.z += Time.deltaTime * currentCameraSpeed; transform.localPosition = camPos;</code> Next, I implemented the desired reaction to detected collisions between skis and the rocky terrain. In the 3D scene, I already added box colliders to the obstacles and the skis and marked them as a trigger. Also, I added rigid bodies to the skis. Afterwards I attached a script to every ski whose class <code class="language-plaintext highlighter-rouge">SkiCollisionDetector</code> overrides the <code class="language-plaintext highlighter-rouge">OnTriggerStay</code> function which is called in regular intervals as long as a collision with the corresponding game object is detected. My implementation for every ski simply counts the total duration of the collisions in a variable <code class="language-plaintext highlighter-rouge">collisionTime</code>:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void OnTriggerStay(Collider coll)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>void OnTriggerStay(Collider coll)
 {
         collisionTime += Time.deltaTime;
 }
 </code></pre></div></div>
 
-<p>To maintain all ten skis in a comfortable way, I also implemented a <code class="highlighter-rouge">SkiController</code> that keeps a list of all skis, can add up all the <code class="highlighter-rouge">collisionTime</code> values of all skis to retrieve the total amount of damage, reset these variables back to zero in case a new game is started, and also set the visibility and the ability to trigger collision handling depending on the button states. The latter shall be explained in greater detail. The function <code class="highlighter-rouge">setSkiStates(bool[] buttonStates)</code> receives information about which buttons are currently pressed, goes through the <code class="highlighter-rouge">skiList</code> and makes only the skis belonging to those buttons visible and able to trigger the collision handling functions:</p>
+<p>To maintain all ten skis in a comfortable way, I also implemented a <code class="language-plaintext highlighter-rouge">SkiController</code> that keeps a list of all skis, can add up all the <code class="language-plaintext highlighter-rouge">collisionTime</code> values of all skis to retrieve the total amount of damage, reset these variables back to zero in case a new game is started, and also set the visibility and the ability to trigger collision handling depending on the button states. The latter shall be explained in greater detail. The function <code class="language-plaintext highlighter-rouge">setSkiStates(bool[] buttonStates)</code> receives information about which buttons are currently pressed, goes through the <code class="language-plaintext highlighter-rouge">skiList</code> and makes only the skis belonging to those buttons visible and able to trigger the collision handling functions:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void setSkiStates(bool[] buttonStates)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>public void setSkiStates(bool[] buttonStates)
 {
     for (int i = 0; i &lt; skiList.Count; ++i) // Go through the ski list...
     {
@@ -388,13 +387,13 @@
 }
 </code></pre></div></div>
 
-<p>A <code class="highlighter-rouge">HealthBar</code> class uses <code class="highlighter-rouge">GUI.DrawTexture</code> with a black and a green texture to draw the health bar, using the black texture as a background and the green texture for the bar itself. Finally, a <code class="highlighter-rouge">MainLoop</code> class ties everything together and also reacts to pressing the play button and varying the health slider on the start screen. Setting up to have a specific function called when a specific UI element is interacted with is very easy, just select the UI element in the Unity editor and then, in the inspector on the right hand side, select the function you want to call. As an example, this screenshot shows my play button and how I set it up to call the function <code class="highlighter-rouge">startGame</code> of the class <code class="highlighter-rouge">MainLoop</code> contained in the game object GameLogic whenever it is pressed:</p>
+<p>A <code class="language-plaintext highlighter-rouge">HealthBar</code> class uses <code class="language-plaintext highlighter-rouge">GUI.DrawTexture</code> with a black and a green texture to draw the health bar, using the black texture as a background and the green texture for the bar itself. Finally, a <code class="language-plaintext highlighter-rouge">MainLoop</code> class ties everything together and also reacts to pressing the play button and varying the health slider on the start screen. Setting up to have a specific function called when a specific UI element is interacted with is very easy, just select the UI element in the Unity editor and then, in the inspector on the right hand side, select the function you want to call. As an example, this screenshot shows my play button and how I set it up to call the function <code class="language-plaintext highlighter-rouge">startGame</code> of the class <code class="language-plaintext highlighter-rouge">MainLoop</code> contained in the game object GameLogic whenever it is pressed:</p>
 
 <p><img src="https://dans.world/assets/img/2015-11-20-Snowfall:-a-very-special-video-game-controller/event-handling.png" alt="Event handling.png" /></p>
 
 <p>I will conclude this post with the code of the main loop during active gameplay. Hopefully, it is comprehensible with the extensive comments and can further develop your coding skills in Unity.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Update is called once per frame
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>// Update is called once per frame
 void Update()
 {
     parser.readButtonStates(buttonStates); // Read the current button states
@@ -437,6 +436,25 @@ void Update()
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#gaming" class="page__taxonomy-item" rel="tag">Gaming</a>
+    
+    </span>
+  </p>
+
+
 
 
         
@@ -446,14 +464,10 @@ void Update()
 
       <section class="page__share">
   
-    <h4 class="page__share-title">Share on</h4>
-  
 
-  <a href="https://twitter.com/intent/tweet?text=Snowfall%3A+A+Very+Special+Video+Game+Controller%20https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
+  <a href="https://twitter.com/intent/tweet?text=Snowfall+-+A+very+special+video+game+controller%20https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
-
-  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
   <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FSnowfall-a-very-special-video-game-controller%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
@@ -490,7 +504,7 @@ void Update()
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/Spotify-internship/" rel="permalink">Spotify Research Internship Report
+        <a href="/Spotify-internship/" rel="permalink">Spotify Internship Report
 </a>
       
     </h2>
@@ -572,7 +586,7 @@ I was under the supervision of Simon Du...</p>
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram Input Normalisation For Neural Networks
+        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram input normalisation for neural networks
 </a>
       
     </h2>
@@ -594,6 +608,7 @@ I was under the supervision of Simon Du...</p>
       </div>
     </div>
   
+  
 </div>
     </div>
 
@@ -612,8 +627,6 @@ I was under the supervision of Simon Du...</p>
         <div class="page__footer-follow">
   <ul class="social-icons">
     
-      <li><strong>Follow:</strong></li>
-    
     
     
     
@@ -625,7 +638,7 @@ I was under the supervision of Simon Du...</p>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>

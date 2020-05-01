@@ -1,0 +1,323 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Generative Adversarial Networks: An Overview - Dans World</title>
+<meta name="description" content="Machine learning, music information retrieval, and other things">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="Generative Adversarial Networks: An Overview">
+<meta property="og:url" content="https://dans.world/repository/creswellGenerativeAdversarial2018/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://dans.world/repository/creswellGenerativeAdversarial2018/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "https://dans.world",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--archive">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/posts/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Generative Adversarial Networks: An Overview</h1>
+    
+    <div>
+  <div>
+    <h5>Venue</h5>
+    <p> 
+	IEEE Signal Processing Magazine,
+	vol. 35(1), pp. 53–65
+	
+</p>
+    <h5>Publication Year</h5>
+    <p>2018</p>
+    <h5>Keywords</h5>
+    <p>Computer Science - Computer Vision and Pattern Recognition</p>
+    <h5>Identifiers</h5>
+    <ul>
+      <li>DOI: <a href="http://dx.doi.org/10.1109/MSP.2017.2765202"><i class="fas fa-li fa-external-link-square-alt"></i>http://dx.doi.org/10.1109/MSP.2017.2765202</a> </li>
+      
+    </ul>
+  </div>
+</div>
+
+<h3>Authors</h3>
+<ul class="list-inline">
+
+
+
+<li class="list-inline-item">Antonia Creswell</li>
+
+
+
+<li class="list-inline-item">Tom White</li>
+
+
+
+<li class="list-inline-item">Vincent Dumoulin</li>
+
+
+
+<li class="list-inline-item">Kai Arulkumaran</li>
+
+
+
+<li class="list-inline-item">Biswa Sengupta</li>
+
+
+
+<li class="list-inline-item">Anil A. Bharath</li>
+
+</ul>
+
+
+
+<h3>Abstract</h3>
+<p>
+Generative adversarial networks (GANs) provide a way to learn deep representations without extensively annotated training data. They achieve this through deriving backpropagation signals through a competitive process involving a pair of networks. The representations that can be learned by GANs may be used in a variety of applications, including image synthesis, semantic image editing, style transfer, image super-resolution and classification. The aim of this review paper is to provide an overview of GANs for the signal processing community, drawing on familiar analogies and concepts where possible. In addition to identifying different methods for training and constructing GANs, we also point to remaining challenges in their theory and application.
+</p>
+
+
+
+<h3>Source Materials</h3>
+<ul class="fa-ul">
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+
+  <li><a download="creswellGenerativeAdversarial2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@article%7BcreswellGenerativeAdversarial2018,%0A%20%20title%20=%20%7BGenerative%20%7B%7BAdversarial%20Networks%7D%7D:%20%7B%7BAn%20Overview%7D%7D%7D,%0A%20%20shorttitle%20=%20%7BGenerative%20%7B%7BAdversarial%20Networks%7D%7D%7D,%0A%20%20author%20=%20%7BCreswell,%20Antonia%20and%20White,%20Tom%20and%20Dumoulin,%20Vincent%20and%20Arulkumaran,%20Kai%20and%20Sengupta,%20Biswa%20and%20Bharath,%20Anil%20A.%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20month%20=%20jan,%0A%20%20volume%20=%20%7B35%7D,%0A%20%20pages%20=%20%7B53--65%7D,%0A%20%20issn%20=%20%7B1053-5888%7D,%0A%20%20doi%20=%20%7B10.1109/MSP.2017.2765202%7D,%0A%20%20abstract%20=%20%7BGenerative%20adversarial%20networks%20(GANs)%20provide%20a%20way%20to%20learn%20deep%20representations%20without%20extensively%20annotated%20training%20data.%20They%20achieve%20this%20through%20deriving%20backpropagation%20signals%20through%20a%20competitive%20process%20involving%20a%20pair%20of%20networks.%20The%20representations%20that%20can%20be%20learned%20by%20GANs%20may%20be%20used%20in%20a%20variety%20of%20applications,%20including%20image%20synthesis,%20semantic%20image%20editing,%20style%20transfer,%20image%20super-resolution%20and%20classification.%20The%20aim%20of%20this%20review%20paper%20is%20to%20provide%20an%20overview%20of%20GANs%20for%20the%20signal%20processing%20community,%20drawing%20on%20familiar%20analogies%20and%20concepts%20where%20possible.%20In%20addition%20to%20identifying%20different%20methods%20for%20training%20and%20constructing%20GANs,%20we%20also%20point%20to%20remaining%20challenges%20in%20their%20theory%20and%20application.%7D,%0A%20%20archiveprefix%20=%20%7BarXiv%7D,%0A%20%20eprint%20=%20%7B1710.07035%7D,%0A%20%20eprinttype%20=%20%7Barxiv%7D,%0A%20%20journal%20=%20%7BIEEE%20Signal%20Processing%20Magazine%7D,%0A%20%20keywords%20=%20%7BComputer%20Science%20-%20Computer%20Vision%20and%20Pattern%20Recognition%7D,%0A%20%20number%20=%20%7B1%7D%0A%7D%0A%7B%25endraw%25%7D">
+      <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>
+</ul>
+
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  </body>
+</html>

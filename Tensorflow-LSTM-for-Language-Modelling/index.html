@@ -71,7 +71,6 @@
 <link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
 
 <!-- 
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-alpha.2/css/bootstrap.min.css" integrity="sha384-y3tfxAZXuh4HwSYylfB+J125MxIs6mR5FOHamPBG064zB+AFeWH94NdvaCBm8qnd" crossorigin="anonymous">
 
  -->
 
@@ -144,7 +143,7 @@
           
             
             <li class="masthead__menu-item">
-              <a href="https://dans.world/" >Blog</a>
+              <a href="https://dans.world/posts/" >Blog</a>
             </li>
           
         </ul>
@@ -333,21 +332,21 @@
 
 <p>First, we are going to load the dataset. I adapted this a bit to my case, but it should be easy for you to change it to your liking:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data, vocab = Dataset.readLyrics(data_settings["input_csv"], data_settings["input_vocab"])
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>data, vocab = Dataset.readLyrics(data_settings["input_csv"], data_settings["input_vocab"])
 trainIndices, testIndices = Dataset.createPartition(data, train_settings["trainPerc"])
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">Dataset</code> is a helper file that manages dataset-related operations. Here I assume <code class="highlighter-rouge">data</code> has the form of a list of entries, each again a list with two entries: The first entry denotes the artist and the second the lyrics content. The first entry is used to prevent having the same artist in both training and test set. <code class="highlighter-rouge">trainIndices</code> and <code class="highlighter-rouge">testIndices</code> are lists of indices refer to the rows in <code class="highlighter-rouge">data</code> that correspond to the training and test set, respectively. The settings variables are just dictionaries that yield user-defined settings. <code class="highlighter-rouge">vocab</code> is a special Vocabulary object that translates characters into integer indices and vice versa, and we will get to know its functionality better along the way. For creating the batches to train on, we will use <code class="highlighter-rouge">batch_sequences_with_states</code>, as it is very convenient to use. It requires a key, the sequence length, and input and output for a SINGLE sequence in symbolic form. We create these properties here as placeholders, to later feed them with our own input thread. This design makes input processing very fast and ensures it does not reduce overall training speed: Model training and input processing are running simultaneously in different threads.</p>
+<p><code class="language-plaintext highlighter-rouge">Dataset</code> is a helper file that manages dataset-related operations. Here I assume <code class="language-plaintext highlighter-rouge">data</code> has the form of a list of entries, each again a list with two entries: The first entry denotes the artist and the second the lyrics content. The first entry is used to prevent having the same artist in both training and test set. <code class="language-plaintext highlighter-rouge">trainIndices</code> and <code class="language-plaintext highlighter-rouge">testIndices</code> are lists of indices refer to the rows in <code class="language-plaintext highlighter-rouge">data</code> that correspond to the training and test set, respectively. The settings variables are just dictionaries that yield user-defined settings. <code class="language-plaintext highlighter-rouge">vocab</code> is a special Vocabulary object that translates characters into integer indices and vice versa, and we will get to know its functionality better along the way. For creating the batches to train on, we will use <code class="language-plaintext highlighter-rouge">batch_sequences_with_states</code>, as it is very convenient to use. It requires a key, the sequence length, and input and output for a SINGLE sequence in symbolic form. We create these properties here as placeholders, to later feed them with our own input thread. This design makes input processing very fast and ensures it does not reduce overall training speed: Model training and input processing are running simultaneously in different threads.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keyInput = tf.placeholder(tf.string) # To identify each sequence
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>keyInput = tf.placeholder(tf.string) # To identify each sequence
 lengthInput = tf.placeholder(tf.int32) # Length of sequence
 seqInput = tf.placeholder(tf.int32, shape=[None]) # Input sequence
 seqOutput = tf.placeholder(tf.int32, shape=[None]) # Output sequence
 </code></pre></div></div>
 
-<p>Then we create a <code class="highlighter-rouge">RandomShuffleQueue</code> and the enqueue and dequeue operations, which means sequences will be randomly selected from the queue to form batches during training. This presents an effective compromise between completely random sample selection, which is often slow for large datasets as data has to be pulled from very different memory locations, and completely sequential reading. Using the dictionaries ensures compatibility with the Tensorflow sequence format:</p>
+<p>Then we create a <code class="language-plaintext highlighter-rouge">RandomShuffleQueue</code> and the enqueue and dequeue operations, which means sequences will be randomly selected from the queue to form batches during training. This presents an effective compromise between completely random sample selection, which is often slow for large datasets as data has to be pulled from very different memory locations, and completely sequential reading. Using the dictionaries ensures compatibility with the Tensorflow sequence format:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>q = tf.RandomShuffleQueue(input_settings["queue_capacity"], input_settings["min_queue_capacity"],
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>q = tf.RandomShuffleQueue(input_settings["queue_capacity"], input_settings["min_queue_capacity"],
                       [tf.string, tf.int32, tf.int32, tf.int32])
 enqueue_op = q.enqueue([keyInput, lengthInput, seqInput, seqOutput])
 
@@ -358,9 +357,9 @@ with tf.device("/cpu:0"):
                 "outputs" : tf.reshape(sequenceOut, [contextT])}
 </code></pre></div></div>
 
-<p>Instead of using the built-in CSV or TFRecord Readers to enqueue samples, I created my own method that can read directly from the <code class="highlighter-rouge">data</code> in the RAM. It endlessly loops over the samples given by <code class="highlighter-rouge">indices</code> and adds them to the queue. It can easily be adapted to read arbitrary files/parts of datasets and perform further preprocessing:</p>
+<p>Instead of using the built-in CSV or TFRecord Readers to enqueue samples, I created my own method that can read directly from the <code class="language-plaintext highlighter-rouge">data</code> in the RAM. It endlessly loops over the samples given by <code class="language-plaintext highlighter-rouge">indices</code> and adds them to the queue. It can easily be adapted to read arbitrary files/parts of datasets and perform further preprocessing:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
 def load_and_enqueue(indices):
     run = True
     key = 0 # Unique key for every sample, even over multiple epochs (otherwise the queue could be filled up with two same-key examples)
@@ -381,13 +380,13 @@ def load_and_enqueue(indices):
         print "Finished enqueueing all " + str(len(indices)) + " samples!"
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">load_and_enqueue</code> will be started as a separate Thread later. Two important things to note here. One is the <code class="highlighter-rouge">key</code> which is different even for the same samples to avoid errors when incidentally queueing the same samples into the queue, which causes the keys to clash. The other is the timeout, which is the only way I found to be able to stop the training by closing the queue and then catching the resulting <code class="highlighter-rouge">DeadlineExceededError</code>. Lastly, the input and output is delayed by one step to force the model to predict the upcoming character.</p>
+<p><code class="language-plaintext highlighter-rouge">load_and_enqueue</code> will be started as a separate Thread later. Two important things to note here. One is the <code class="language-plaintext highlighter-rouge">key</code> which is different even for the same samples to avoid errors when incidentally queueing the same samples into the queue, which causes the keys to clash. The other is the timeout, which is the only way I found to be able to stop the training by closing the queue and then catching the resulting <code class="language-plaintext highlighter-rouge">DeadlineExceededError</code>. Lastly, the input and output is delayed by one step to force the model to predict the upcoming character.</p>
 
 <h1 id="the-lstm-model">The LSTM model</h1>
 
-<p>Our model is an LSTM with a variable number of layers and configurable dropout, whose hidden states will be maintained separately for each sequence. I created a new class <code class="highlighter-rouge">LyricsPredictor</code> with an inference method that builds the computational graph. The beginning looks like this and sets up the RNN cells:</p>
+<p>Our model is an LSTM with a variable number of layers and configurable dropout, whose hidden states will be maintained separately for each sequence. I created a new class <code class="language-plaintext highlighter-rouge">LyricsPredictor</code> with an inference method that builds the computational graph. The beginning looks like this and sets up the RNN cells:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def inference(self, key, context, sequences, num_enqueue_threads):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def inference(self, key, context, sequences, num_enqueue_threads):
     # RNN cells and states
     cells = list()
     initial_states = dict()
@@ -401,9 +400,9 @@ def load_and_enqueue(indices):
     [...]
 </code></pre></div></div>
 
-<p>It receives the key, context, and content of a sequence, and how many threads should be used to fetch the <code class="highlighter-rouge">RandomShuffleQueue</code> to provide input to the model. I found that <code class="highlighter-rouge">LSTMBlockCell</code> works slightly faster than the normal <code class="highlighter-rouge">LSTMCell</code> class. Now comes the neat bit. We can use the following code to let Tensorflow form batches from these sequences after splitting them up into chunks according to the unroll length. These batches also come with a context that ensures the hidden state is carried over from the last chunk of a sequence to the next, sparing us from a lot of hassle trying to implement and optimise that on our own.</p>
+<p>It receives the key, context, and content of a sequence, and how many threads should be used to fetch the <code class="language-plaintext highlighter-rouge">RandomShuffleQueue</code> to provide input to the model. I found that <code class="language-plaintext highlighter-rouge">LSTMBlockCell</code> works slightly faster than the normal <code class="language-plaintext highlighter-rouge">LSTMCell</code> class. Now comes the neat bit. We can use the following code to let Tensorflow form batches from these sequences after splitting them up into chunks according to the unroll length. These batches also come with a context that ensures the hidden state is carried over from the last chunk of a sequence to the next, sparing us from a lot of hassle trying to implement and optimise that on our own.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># BATCH INPUT
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># BATCH INPUT
 self.batch = tf.contrib.training.batch_sequences_with_states(
     input_key=key,
     input_sequences=sequences,
@@ -418,9 +417,9 @@ inputs = self.batch.sequences["inputs"]
 targets = self.batch.sequences["outputs"]
 </code></pre></div></div>
 
-<p><code class="highlighter-rouge">inputs</code> and <code class="highlighter-rouge">targets</code> are part of the resulting batch and are formed during runtime. New sequences get pulled as soon as some in the batch are finished. In the following, the inputs are transformed from one-dimensional indices into one-hot vectors. Then, they are reshaped from an [batch_size,unroll_length,vocab_size] tensor to a list of [batch_size,vocab_size] tensors with length unroll_length, to conform with the RNN interface. Finally, we can use the state_saving_rnn with the state-saving batch we created beforehand, to get our outputs.</p>
+<p><code class="language-plaintext highlighter-rouge">inputs</code> and <code class="language-plaintext highlighter-rouge">targets</code> are part of the resulting batch and are formed during runtime. New sequences get pulled as soon as some in the batch are finished. In the following, the inputs are transformed from one-dimensional indices into one-hot vectors. Then, they are reshaped from an [batch_size,unroll_length,vocab_size] tensor to a list of [batch_size,vocab_size] tensors with length unroll_length, to conform with the RNN interface. Finally, we can use the state_saving_rnn with the state-saving batch we created beforehand, to get our outputs.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Convert input into one-hot representation (from single integers indicating character)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Convert input into one-hot representation (from single integers indicating character)
 print(self.vocab_size)
 embedding = tf.constant(np.eye(self.vocab_size), dtype=tf.float32)
 inputs = tf.nn.embedding_lookup(embedding, inputs)
@@ -439,9 +438,9 @@ self.seq_lengths = self.batch.context["length"]
                                           sequence_length=self.seq_lengths, state_name=state_name, scope='SSRNN')
 </code></pre></div></div>
 
-<p>Here we have to be careful: If we have N characters, a special end-of-sequence token at the end of every sequence is appended while loading the data so the network learns when to stop generating lyrics, and I do not use zero as an index for any character as we need the zero entry to mask the output later to correctly compute the loss. So here, <code class="highlighter-rouge">self.vocab_size</code> would be N+2. Finally, we put a softmax on top of the outputs by iterating through the list of length num_unroll in which each entry represents one timestep, and return logits and probabilities:</p>
+<p>Here we have to be careful: If we have N characters, a special end-of-sequence token at the end of every sequence is appended while loading the data so the network learns when to stop generating lyrics, and I do not use zero as an index for any character as we need the zero entry to mask the output later to correctly compute the loss. So here, <code class="language-plaintext highlighter-rouge">self.vocab_size</code> would be N+2. Finally, we put a softmax on top of the outputs by iterating through the list of length num_unroll in which each entry represents one timestep, and return logits and probabilities:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create softmax parameters, weights and bias, and apply to RNN outputs at each timestep
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Create softmax parameters, weights and bias, and apply to RNN outputs at each timestep
 with tf.variable_scope('softmax'):
     softmax_w = tf.get_variable("softmax_w", [self.lstm_size, self.vocab_size])
     softmax_b = tf.get_variable("softmax_b", [self.vocab_size])
@@ -456,7 +455,7 @@ return (self.logit, self.probs)
 
 <p>To train the model, we also need a loss function. Here we use the fact that we do not use the 0-index as a target, so we know that such an entry in the target list must come from the zero-padding and indicates that the sequence is already over. This is used in the following code to mask the loss by only considering non-zero targets. We also add L2 regularisation.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def loss(self, l2_regularisation):
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>def loss(self, l2_regularisation):
     with tf.name_scope('loss'):
         # Compute mean cross entropy loss for each output.
         self.cross_loss = tf.nn.sparse_softmax_cross_entropy_with_logits(self.logit, self.targets_by_time_packed) # (num_unroll, batchsize)
@@ -488,7 +487,7 @@ return (self.logit, self.probs)
 
 <p>First we need the necessary symbolic operations. We set up a step counter and a learning rate variable that decays exponentially depending on the current step:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>global_step = tf.get_variable('global_step', [],
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>global_step = tf.get_variable('global_step', [],
                               initializer=tf.constant_initializer(0.0))
 # Learning rate
 initial_learning_rate = tf.constant(train_settings["learning_rate"])
@@ -498,7 +497,7 @@ tf.summary.scalar("learning_rate", learning_rate
 
 <p>Then we calculate the gradients and prepare them for visualisation for Tensorboard, as you might run into the vanishing gradient problem for deeper RNNs:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Gradient calculation
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Gradient calculation
 tvars = tf.trainable_variables()
 grads, _ = tf.clip_by_global_norm(tf.gradients(loss, tvars, aggregation_method=2), # Use experimental aggregation to reduce memory usage
                                   5.0)
@@ -511,7 +510,7 @@ for g in vis_grads:
 
 <p>We have to replace None entries with 0 for visualisation. We choose a gradient descent method (ADAM in this case) and define the training operations.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>optimizer = tf.train.AdamOptimizer(learning_rate)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>optimizer = tf.train.AdamOptimizer(learning_rate)
 
 train_op = optimizer.apply_gradients(zip(grads, tvars),
                                     global_step=global_step)
@@ -526,7 +525,7 @@ trainOps = [loss, train_op,
 
 <p>Start up a session and the QueueRunners associated with it. In our case, these are associated with the RNN input queue (NOT our own RandomShuffleQueue).</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start session
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start session
 sess = tf.Session()
 coord = tf.train.Coordinator()
 init_op = tf.global_variables_initializer()
@@ -536,7 +535,7 @@ tf_threads = tf.train.start_queue_runners(sess=sess, coord=coord)
 
 <p>In case we crashed or want to import a (partly) trained model for other reasons such as fine-tuning, we check for previous model checkpoints to load the model parameters:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CHECKPOINTING
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CHECKPOINTING
 #TODO save model directly after every epoch, so that we can safely refill the queues after loading a model (uniform sampling of dataset is still ensured)
 # Load pretrained model to continue training, if it exists
 latestCheckpoint = tf.train.latest_checkpoint(train_settings["checkpoint_dir"])
@@ -548,9 +547,9 @@ if latestCheckpoint is not None:
 saver = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
 </code></pre></div></div>
 
-<p>Now we start a thread to run our custom <code class="highlighter-rouge">load_and_enqueue</code> method from earlier which reads from <code class="highlighter-rouge">data</code> and enqueues the sequences into the <code class="highlighter-rouge">RandomShuffleQueue</code>. Preprocessing and data loading is better done on the CPU.</p>
+<p>Now we start a thread to run our custom <code class="language-plaintext highlighter-rouge">load_and_enqueue</code> method from earlier which reads from <code class="language-plaintext highlighter-rouge">data</code> and enqueues the sequences into the <code class="language-plaintext highlighter-rouge">RandomShuffleQueue</code>. Preprocessing and data loading is better done on the CPU.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start a thread to enqueue data asynchronously to decouple data I/O from training
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Start a thread to enqueue data asynchronously to decouple data I/O from training
 with tf.device("/cpu:0"):
     t = threading.Thread(target=load_and_enqueue, args=[trainIndices])
     t.start()
@@ -558,7 +557,7 @@ with tf.device("/cpu:0"):
 
 <p>We can set up some logging functions so we can nicely visualise statistics with Tensorboard:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># LOGGING
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># LOGGING
 # Add histograms for trainable variables.
 histograms = [tf.summary.histogram(var.op.name, var) for var in tf.trainable_variables()]
 summary_op = tf.summary.merge_all()
@@ -568,7 +567,7 @@ summary_writer = tf.summary.FileWriter(train_settings["log_dir"], sess.graph.as_
 
 <p>Now the training loop runs the training and summary operations, and writes summaries and periodically also model checkpoints to save progress:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>loops = 0
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>loops = 0
 while loops &lt; train_settings["max_iterations"]:
     loops += 1
     [res_loss, _, res_global_step, res_learning_rate, summary] = sess.run(trainOps + [summary_op])
@@ -586,7 +585,7 @@ while loops &lt; train_settings["max_iterations"]:
 
 <p>After the maximum desired number of iterations has been reached (or some other criterion), we stop:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Stop our custom input thread
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Stop our custom input thread
 print("Stopping custom input thread")
 sess.run(q.close())  # Then close the input queue
 t.join(timeout=1)
@@ -600,7 +599,7 @@ tf.reset_default_graph()
 
 <p>After training, we want to evaluate the performance on the test set. The code for this looks similar, so I will only show the differences here. We load the trained model:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CHECKPOINTING
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># CHECKPOINTING
 # Load pretrained model to test
 latestCheckpoint = tf.train.latest_checkpoint(train_settings["checkpoint_dir"])
 restorer = tf.train.Saver(tf.global_variables(), write_version=tf.train.SaverDef.V2)
@@ -609,7 +608,7 @@ restorer.restore(sess, latestCheckpoint)
 
 <p>In our custom input queue thread, we close the queue after enqueueing all test samples so the process is stopped after seeing each example exactly once:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Enqueueing method in different thread, loading sequence examples and feeding into FIFO Queue
 def load_and_enqueue(indices):
     for index in indices:
         current_seq = data[index][1]
@@ -623,7 +622,7 @@ def load_and_enqueue(indices):
 
 <p>The test loop now uses the total cross-entropy returned from our model class along with the number of valid output positions to compute a bit-per-character metric:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inferenceOps = [loss, mean_cross_loss, sum_cross_loss, output_num]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inferenceOps = [loss, mean_cross_loss, sum_cross_loss, output_num]
 
 current_time = time.time()
 logprob_sum = 0.0
@@ -651,7 +650,7 @@ while True:
     print("Bit-per-character: " + str(logprob_sum / character_sum))
 </code></pre></div></div>
 
-<p>Note here that we catch an <code class="highlighter-rouge">OutOfRangeError</code> that is thrown as soon as our input queue is empty after the input thread finishes and closes it.</p>
+<p>Note here that we catch an <code class="language-plaintext highlighter-rouge">OutOfRangeError</code> that is thrown as soon as our input queue is empty after the input thread finishes and closes it.</p>
 
 <h1 id="sampling">Sampling</h1>
 
@@ -665,7 +664,7 @@ while True:
 
 <p>Therefore, I did it the hard way and maintained the RNN states myself. This requires setting up placeholders for the states manually to be able to feed values in during sampling, and defining the initial zero states to use for the prediction of the first character:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Load vocab
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Load vocab
 vocab = Vocabulary.load(data_settings["input_vocab"])
 
 # INPUT PIPELINE
@@ -684,15 +683,15 @@ initial_states = tuple(initial_states)
 
 <p>The states are represented as tuples in tensorflow. The model itself also has to be adapted accordingly. We use a batch size and unroll length of 1, so we only predict exactly one character at a time, and feed in the input along with the state placeholders:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code><span class="p">#</span> <span class="k">MODEL</span>
-<span class="n">inference_settings</span> <span class="p">=</span> <span class="n">model_settings</span>
-<span class="n">inference_settings</span><span class="p">[</span><span class="s2">"batch_size"</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span> <span class="p">#</span> <span class="n">Only</span> <span class="n">sample</span> <span class="k">from</span> <span class="n">one</span> <span class="n">example</span> <span class="n">simultaneously</span>
-<span class="n">inference_settings</span><span class="p">[</span><span class="s2">"num_unroll"</span><span class="p">]</span> <span class="p">=</span> <span class="m">1</span> <span class="p">#</span> <span class="n">Only</span> <span class="n">sample</span> <span class="n">one</span> <span class="n">character</span> <span class="n">at</span> <span class="n">a</span> <span class="n">time</span>
-<span class="k">model</span> <span class="p">=</span> <span class="n">LyricsPredictor</span><span class="p">(</span><span class="n">inference_settings</span><span class="p">,</span> <span class="n">vocab</span><span class="p">.</span><span class="n">size</span> <span class="p">+</span> <span class="m">1</span><span class="p">)</span>  <span class="p">#</span> <span class="k">Include</span> <span class="n">EOS</span> <span class="n">token</span>
-<span class="n">probs</span><span class="p">,</span> <span class="n">state</span> <span class="p">=</span> <span class="k">model</span><span class="p">.</span><span class="n">sample</span><span class="p">(</span><span class="n">input</span><span class="p">,</span> <span class="n">state_placeholders</span><span class="p">)</span>
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># MODEL
+inference_settings = model_settings
+inference_settings["batch_size"] = 1 # Only sample from one example simultaneously
+inference_settings["num_unroll"] = 1 # Only sample one character at a time
+model = LyricsPredictor(inference_settings, vocab.size + 1)  # Include EOS token
+probs, state = model.sample(input, state_placeholders)
 </code></pre></div></div>
 
-<p>This time, we use the <code class="highlighter-rouge">sample</code> method from the <code class="highlighter-rouge">LyricsPredictor</code> class to build the required computational graph:</p>
+<p>This time, we use the <code class="language-plaintext highlighter-rouge">sample</code> method from the <code class="language-plaintext highlighter-rouge">LyricsPredictor</code> class to build the required computational graph:</p>
 
 <p>def sample(self, input, current_state):
     # RNN cells and states
@@ -704,7 +703,7 @@ initial_states = tuple(initial_states)
     cell = tf.nn.rnn_cell.MultiRNNCell(cells)
     self.initial_states = cell.zero_state(batch_size=1,dtype=tf.float32)</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Convert input into one-hot representation (from single integers indicating character)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Convert input into one-hot representation (from single integers indicating character)
 embedding = tf.constant(np.eye(self.vocab_size), dtype=tf.float32)
 input = tf.nn.embedding_lookup(embedding, input) # 1 x Vocab-size
 inputs\_by\_time = \[input\] # List of 1 x Vocab-size tensors (with just one tensor in it, because we just use sequence length 1
@@ -714,7 +713,7 @@ self.outputs, state = tf.nn.rnn(cell, inputs\_by\_time, initial\_state=current\_
 
 <p>Crucially, we set the scope when setting up the RNN to the same that was used when building the model during training and testing, so that when we load the checkpoint, the RNN variables are set up correctly. Afterwards, the softmax is applied as shown earlier. The function returns the probabilities and the resulting LSTM state after processing the input character, which we store in the following.</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inference = [probs, state]
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>inference = [probs, state]
 
 current_seq = "never" # This can be any alphanumeric text
 current_seq_ind = vocab.char2index(current_seq)
@@ -733,9 +732,9 @@ for ind in current_seq_ind:
     [p, s] = sess.run(inference, feed_dict=feed)
 </code></pre></div></div>
 
-<p>In the above code, we set an initial sequence (“never”) and prepare the LSTM to continue the lyrics (e.g. “never gonna give you up”) by feeding in one character after another and carrying over the states. These are nested tuples, organised according to layers, each with a cell and a hidden state (this is due to the LSTM structure). The hidden state now hopefully captures meaningful information about the input text <code class="highlighter-rouge">current_seq</code>, so we can take the current prediction probabilities and sample from them to generate the next character, feed it into the network, and repeat that process until we receive the special end token signalling that the LSTM is finished with the “creative process”:</p>
+<p>In the above code, we set an initial sequence (“never”) and prepare the LSTM to continue the lyrics (e.g. “never gonna give you up”) by feeding in one character after another and carrying over the states. These are nested tuples, organised according to layers, each with a cell and a hidden state (this is due to the LSTM structure). The hidden state now hopefully captures meaningful information about the input text <code class="language-plaintext highlighter-rouge">current_seq</code>, so we can take the current prediction probabilities and sample from them to generate the next character, feed it into the network, and repeat that process until we receive the special end token signalling that the LSTM is finished with the “creative process”:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Sample until we receive an end-of-lyrics token
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code># Sample until we receive an end-of-lyrics token
 iteration = 0
 while iteration &lt; 100000: # Just a safety measure in case the model does not stop
     # Now p contains probability of upcoming char, as estimated by model, and s the last RNN state
@@ -761,7 +760,7 @@ while iteration &lt; 100000: # Just a safety measure in case the model does not 
 
 <p>Finally, we convert the generated list of integer indices to their character representation, and print out the result:</p>
 
-<div class="highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c_sample = vocab.index2char(current_seq_ind)
+<div class="language-plaintext highlighter-rouge"><div class="highlight"><pre class="highlight"><code>c_sample = vocab.index2char(current_seq_ind)
 print("".join(c_sample))
 
 sess.close()
@@ -791,6 +790,29 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
       <footer class="page__meta">
         
         
+  
+
+
+  
+  
+  
+
+  <p class="page__taxonomy">
+    <strong><i class="fas fa-fw fa-tags" aria-hidden="true"></i> Tags: </strong>
+    <span itemprop="keywords">
+    
+      
+      
+      <a href="/tags/#mir" class="page__taxonomy-item" rel="tag">MIR</a><span class="sep">, </span>
+    
+      
+      
+      <a href="/tags/#nlp" class="page__taxonomy-item" rel="tag">NLP</a>
+    
+    </span>
+  </p>
+
+
 
 
         
@@ -800,14 +822,10 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
 
       <section class="page__share">
   
-    <h4 class="page__share-title">Share on</h4>
-  
 
   <a href="https://twitter.com/intent/tweet?text=Tensorflow+LSTM+for+Language+Modelling%20https%3A%2F%2Fdans.world%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--twitter" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Twitter"><i class="fab fa-fw fa-twitter" aria-hidden="true"></i><span> Twitter</span></a>
 
   <a href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fdans.world%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--facebook" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Facebook"><i class="fab fa-fw fa-facebook" aria-hidden="true"></i><span> Facebook</span></a>
-
-  <a href="https://plus.google.com/share?url=https%3A%2F%2Fdans.world%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--google-plus" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on Google Plus"><i class="fab fa-fw fa-google-plus" aria-hidden="true"></i><span> Google+</span></a>
 
   <a href="https://www.linkedin.com/shareArticle?mini=true&url=https%3A%2F%2Fdans.world%2FTensorflow-LSTM-for-Language-Modelling%2F" class="btn btn--linkedin" onclick="window.open(this.href, 'window', 'left=20,top=20,width=500,height=500,toolbar=1,resizable=0'); return false;" title="Share on LinkedIn"><i class="fab fa-fw fa-linkedin" aria-hidden="true"></i><span> LinkedIn</span></a>
 </section>
@@ -816,11 +834,11 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
       
   <nav class="pagination">
     
-      <a href="/Snowfall-a-very-special-video-game-controller/" class="pagination--pager" title="Snowfall: A Very Special Video Game Controller
+      <a href="/Snowfall-a-very-special-video-game-controller/" class="pagination--pager" title="Snowfall - A very special video game controller
 ">Previous</a>
     
     
-      <a href="/Spectrogram-input-normalisation-for-neural-networks/" class="pagination--pager" title="Spectrogram Input Normalisation For Neural Networks
+      <a href="/Spectrogram-input-normalisation-for-neural-networks/" class="pagination--pager" title="Spectrogram input normalisation for neural networks
 ">Next</a>
     
   </nav>
@@ -845,7 +863,7 @@ pour it like like a record beautiful man i do you on the kid punk its when im at
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/Spotify-internship/" rel="permalink">Spotify Research Internship Report
+        <a href="/Spotify-internship/" rel="permalink">Spotify Internship Report
 </a>
       
     </h2>
@@ -927,7 +945,7 @@ I was under the supervision of Simon Du...</p>
     
     <h2 class="archive__item-title" itemprop="headline">
       
-        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram Input Normalisation For Neural Networks
+        <a href="/Spectrogram-input-normalisation-for-neural-networks/" rel="permalink">Spectrogram input normalisation for neural networks
 </a>
       
     </h2>
@@ -949,6 +967,7 @@ I was under the supervision of Simon Du...</p>
       </div>
     </div>
   
+  
 </div>
     </div>
 
@@ -967,8 +986,6 @@ I was under the supervision of Simon Du...</p>
         <div class="page__footer-follow">
   <ul class="social-icons">
     
-      <li><strong>Follow:</strong></li>
-    
     
     
     
@@ -980,7 +997,7 @@ I was under the supervision of Simon Du...</p>
   </ul>
 </div>
 
-<div class="page__footer-copyright">&copy; 2019 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+<div class="page__footer-copyright">&copy; 2020 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
 
       </footer>
     </div>
