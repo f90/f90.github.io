@@ -1,5 +1,8 @@
-﻿---
-title: Spotify Research Internship Report
+---
+title: Spotify Internship Report
+date: 2019-02-21
+tags:
+  - MIR
 ---
 
 From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London.
@@ -35,7 +38,7 @@ During my stay, I investigated methods for
 For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system {% cite Huang2014 Stoller2018a %}.
 The problem is that those do not necessarily align with how a human listening to, let's say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
 This means we are not optimising our systems to maximise the actual listening quality!
-Evaluation metrics such as SDR {% cite Vincent2006 %} or PEASS {% cite Vincent2012 %} share similar issues, and are also more complicated to compute or possibly unstable to use for training.
+Evaluation metrics such as SDR {% cite vincentPerformanceMeasurement2006 %} or PEASS {% cite vincentImprovedPerceptual2012 %} share similar issues, and are also more complicated to compute or possibly unstable to use for training.
 
 The above losses and metrics also assume that for every music input, there exists *exactly one true source output* as solution for the separation task (uni-modal).
 But that might not be the case - if music has background vocals for example, there are *two* solutions for singing voice separation that both make sense: one that puts the background vocals into the accompaniment track, and one that puts them into the vocal track along with the main vocals:
@@ -54,7 +57,7 @@ Maybe we can separate voice better if we know what is being sung.
 And similarly, if we know the isolated voice track, detecting what is being sung should be much easier!
 
 Therefore we looked at *multi-task learning* to build models that perform separation and lyrics transcription at the same time.
-We chose the *Wave-U-Net* {% cite Stoller2018a %} model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our [publication on lyrics transcription and alignment](https://arxiv.org/abs/1902.06797) for details).
+We chose the *Wave-U-Net* {% cite stollerWaveUNetMultiScale2018 %} model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our [publication on lyrics transcription and alignment](https://arxiv.org/abs/1902.06797) for details).
 
 ![Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here.]({{ site.url }}/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png)
 *Branching off a Wave-U-Net upsampling block to predict lyrics characters ([source](https://arxiv.org/abs/1902.06797)) . The later upsampling blocks for separation are not depicted here*
@@ -67,7 +70,7 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 ## Lyrics alignment
 
-Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than the current state of the art models {% cite MIREX2017Alignment %}.
+Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than state of the art models participating in the MIREX lyrics alignment challenge 2017 {% cite imirselMusicInformation2020 %}.
 
 In conclusion, we find that **you can train a lyrics transcription system from only line-level aligned lyrics annotations to predict characters directly from raw audio**, and **get excellent alignment accuracy even with mediocre transcription performance - see our ICASSP publication (preprint available [here](https://arxiv.org/abs/1902.06797))!**
 

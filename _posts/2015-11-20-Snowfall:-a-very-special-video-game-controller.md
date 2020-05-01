@@ -1,3 +1,10 @@
+---
+title: Snowfall - A very special video game controller
+date: 2015-11-20
+tags:
+  - Gaming
+---
+
  Here is a short [Youtube video](https://www.youtube.com/watch?v=TRiBA4o_pBs ) explaining what this post it about. How did I do it? I will try to go through the main steps in the following.
 
 Understanding the wiring and connecting the Arduino

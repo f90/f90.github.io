@@ -1,5 +1,9 @@
 ---
 title: Bounded output regression with neural networks
+date: 2019-01-23
+tags:
+  - Theory
+  - MIR
 use_math: true
 ---
 

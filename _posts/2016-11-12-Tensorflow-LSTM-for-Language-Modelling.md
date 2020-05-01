@@ -1,5 +1,9 @@
 ---
 title: Tensorflow LSTM for Language Modelling
+date: 2016-11-12
+tags:
+  - NLP
+  - MIR
 ---
 
 In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previous ones), and apply it to generate lyrics. In general, the model allows you to generate new text as well as auto-complete your own sentences based on any given text database.

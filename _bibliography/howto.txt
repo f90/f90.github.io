@@ -1,0 +1,11 @@
+For each article, put following as files into repository folder:
+
+*.published.pdf - Main article (published version)
+*.preprint.pdf - Main article (preprint/arxiv/accepted version that was submitted)
+*.slides.pdf - Presentation slides
+*.poster.pdf - Poster
+*.external.link - Link to article/main website for this paper
+*.repo.link
+*.supplementary.link
+
+Also put repo link in BibTex entry  under "code" key

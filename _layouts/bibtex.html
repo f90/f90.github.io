@@ -11,7 +11,7 @@ layout: archive
     <p>{{ page.entry.keywords }}</p>{% endif %}
     {% if page.entry.doi or page.entry.isbn %}<h5>Identifiers</h5>
     <ul>
-      {% if page.entry.doi %}<li>DOI: <a>doi:{{ page.entry.doi }}</a></li>{% endif %}
+      {% if page.entry.doi %}<li>DOI: <a href="http://dx.doi.org/{{ page.entry.doi }}"><i class="fas fa-li fa-external-link-square-alt"></i>http://dx.doi.org/{{ page.entry.doi }}</a> </li>{% endif %}
       {% if page.entry.isbn %}<li>ISBN: {{ page.entry.isbn }}</li>{% endif %}
     </ul>{% endif %}
   </div>
@@ -53,9 +53,6 @@ layout: archive
       {{ link[0] }} File</a></li>
   {% endunless %}
   {% endfor %}
-
-  {% if page.entry.doi %}<li><a href="http://dx.doi.org/{{ page.entry.doi }}"><i class="fas fa-li fa-external-link-square-alt"></i>
-      Published Edition</a></li>{% endif %}
 
   <li><a download="{{page.entry.key}}.bib" href="data:application/x-bibtex,{{ page.entry.bibtex | uri_escape }}">
       <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>

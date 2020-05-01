@@ -16,32 +16,20 @@
 <i>{{entry.author}}</i>
 </div>
 
-<!--
-{% if entry.doi %}
-    <a href="{{ entry.doi | prepend: 'http://doi.org/' }}"><input class="button1" type="button" value="doi" /></a>
-{% endif %}
--->
-
 {% if links['published.pdf'] %}
-    <a href="{{ links['published.pdf'] }}"><input class="button0" type="button" value="PDF" /></a>
+    <a target="_blank" rel="noopener noreferrer" href="{{ links['published.pdf'] }}"><input class="button0" type="button" value="PDF" /></a>
+{% else %}
+    {% if links['preprint.pdf'] %}
+        <a target="_blank" rel="noopener noreferrer" href="{{ links['preprint.pdf'] }}"><input class="button0" type="button" value="Preprint PDF" /></a>
+    {% endif %}
 {% endif %}
-
-{% if entry.preprint %}
-    <a href="{{ entry.preprint }}"><input class="button0" type="button" value="Preprint" /></a>
-{% endif %}
-
-<!--
-{% if entry.url %}
-    <a href="{{ entry.url }}"><input class="button" type="button" value="Link" /></a>
-{% endif %}
--->
 
 {% if entry.code %}
-    <a href="{{ entry.code }}"><input class="button0" type="button" value="Code" /></a>
+    <a target="_blank" rel="noopener noreferrer" href="{{ entry.code }}"><input class="button0" type="button" value="Code" /></a>
 {% endif %}
 
 {% if entry.url %}
-    <a href="{{ entry.url }}"><input class="button0" type="button" value="Link" /></a>
+    <a target="_blank" rel="noopener noreferrer" href="{{ entry.url }}"><input class="button0" type="button" value="Link" /></a>
 {% endif %}
 
 <a download="{{entry.key}}.bib" href="data:application/x-bibtex,{{entry.bibtex | uri_escape }}"><input class="button0" type="button" value="Bibtex" /></a>

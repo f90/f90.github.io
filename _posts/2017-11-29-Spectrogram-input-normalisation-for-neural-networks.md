@@ -1,4 +1,9 @@
 ---
+title: Spectrogram input normalisation for neural networks
+date: 2017-11-29
+tags:
+  - Theory
+  - MIR
 use_math: true
 ---
 

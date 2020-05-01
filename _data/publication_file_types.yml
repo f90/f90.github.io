@@ -6,12 +6,12 @@
 #   icon: fontawesome identifier names (see http://fontawesome.io/icons/)
 #   text: descriptive text for type of file
 #   include: set to true to use the *contents* of the file as the URL to link to
-- ext: pdf
-  icon: fa-file-pdf
-  text: "Authors' Preprint/Accepted Version"
 - ext: published.pdf
   icon: fa-file-pdf
-  text: "Published Version"
+  text: "Article (Published version)"
+- ext: preprint.pdf
+  icon: fa-file-pdf
+  text: "Article (Authors' Preprint/Accepted Version)"
 - ext: abstract.pdf
   icon: fa-file-pdf
   text: "Extended Abstract"
@@ -31,7 +31,7 @@
   include: true
 - ext: slides.pdf
   icon: fa-file-pdf
-  text: "Slides"
+  text: "Presentation slides"
 - ext: poster.pdf
   icon: fa-file-pdf
   text: "Poster"

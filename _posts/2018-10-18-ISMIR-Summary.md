@@ -1,5 +1,9 @@
 ---
 title: ISMIR 2018 - Paper Overviews
+date: 2018-10-18
+tags:
+  - ISMIR
+  - MIR
 ---
  
  This year's ISMIR was great as ever, this time featuring
