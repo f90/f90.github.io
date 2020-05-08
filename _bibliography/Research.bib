@@ -273,7 +273,6 @@
   title = {Learning Long-Term Dependencies with Gradient Descent Is Difficult},
   author = {Bengio, Y. and Simard, P. and Frasconi, P.},
   year = {1994},
-  month = mar,
   volume = {5},
   pages = {157--166},
   issn = {1045-9227},
@@ -561,7 +560,6 @@
   shorttitle = {Skip {{RNN}}},
   author = {Campos, Victor and Jou, Brendan and {Giro-i-Nieto}, Xavier and Torres, Jordi and Chang, Shih-Fu},
   year = {2017},
-  month = aug,
   volume = {abs/1708.06834},
   abstract = {Recurrent Neural Networks (RNNs) continue to show outstanding performance in sequence modeling tasks. However, training RNNs on long sequences often face challenges like slow inference, vanishing gradients and difficulty in capturing long term dependencies. In backpropagation through time settings, these issues are tightly coupled with the large, sequential computational graph resulting from unfolding the RNN in time. We introduce the Skip RNN model which extends existing RNN models by learning to skip state updates and shortens the effective size of the computational graph. This model can also be encouraged to perform fewer state updates through a budget constraint. We evaluate the proposed model on various tasks and show how it can reduce the number of required RNN updates while preserving, and sometimes even improving, the performance of the baseline RNN models. Source code is publicly available at https://imatge-upc.github.io/skiprnn-2017-telecombcn/ .},
   archivePrefix = {arXiv},
@@ -650,7 +648,7 @@
   primaryClass = {cs, eess}
 }
 
-@incollection{changDilatedRecurrent2017,
+@inproceedings{changDilatedRecurrent2017,
   ids = {changDilatedRecurrent2017a},
   title = {Dilated {{Recurrent Neural Networks}}},
   booktitle = {Advances in {{Neural Information Processing Systems}} 30},
@@ -770,7 +768,6 @@
   title = {Generating {{Long Sequences}} with {{Sparse Transformers}}},
   author = {Child, Rewon and Gray, Scott and Radford, Alec and Sutskever, Ilya},
   year = {2019},
-  month = apr,
   volume = {abs/1904.10509},
   abstract = {Transformers are powerful sequence models, but require time and memory that grows quadratically with the sequence length. In this paper we introduce sparse factorizations of the attention matrix which reduce this to \$O(n \textbackslash{}sqrt\{n\})\$. We also introduce a) a variation on architecture and initialization to train deeper networks, b) the recomputation of attention matrices to save memory, and c) fast attention kernels for training. We call networks with these changes Sparse Transformers, and show they can model sequences tens of thousands of timesteps long using hundreds of layers. We use the same architecture to model images, audio, and text from raw bytes, setting a new state of the art for density modeling of Enwik8, CIFAR-10, and ImageNet-64. We generate unconditional samples that demonstrate global coherence and great diversity, and show it is possible in principle to use self-attention to model sequences of length one million or more.},
   archivePrefix = {arXiv},
@@ -2536,8 +2533,7 @@
   title = {{{FFTNet}}: A {{Real}}-{{Time Speaker}}-{{Dependent Neural Vocoder}}},
   booktitle = {Proc. of the {{IEEE International Conference}} on {{Acoustics}}, {{Speech}} and {{Signal Processing}} ({{ICASSP}})},
   author = {Jin, Zeyu and Finkelstein, Adam and Mysore, Gautham J. and Lu, Jingwan},
-  year = {2018},
-  month = apr
+  year = {2018}
 }
 
 @inproceedings{johnsonComposingGraphical2016,
@@ -2595,7 +2591,6 @@
   author = {Kalchbrenner, Nal and Elsen, Erich and Simonyan, Karen and Noury, Seb and Casagrande, Norman and Lockhart, Edward and Stimberg, Florian and {van den Oord}, Aaron and Dieleman, Sander and Kavukcuoglu, Koray},
   editor = {Dy, Jennifer and Krause, Andreas},
   year = {2018},
-  month = jul,
   volume = {80},
   pages = {2410--2419},
   publisher = {{PMLR}},
@@ -2607,7 +2602,6 @@
   title = {Neural {{Machine Translation}} in {{Linear Time}}},
   author = {Kalchbrenner, Nal and Espeholt, Lasse and Simonyan, Karen and van den Oord, Aaron and Graves, Alex and Kavukcuoglu, Koray},
   year = {2016},
-  month = oct,
   volume = {abs/1610.10099},
   abstract = {We present a novel neural network for processing sequences. The ByteNet is a one-dimensional convolutional neural network that is composed of two parts, one to encode the source sequence and the other to decode the target sequence. The two network parts are connected by stacking the decoder on top of the encoder and preserving the temporal resolution of the sequences. To address the differing lengths of the source and the target, we introduce an efficient mechanism by which the decoder is dynamically unfolded over the representation of the encoder. The ByteNet uses dilation in the convolutional layers to increase its receptive field. The resulting network has two core properties: it runs in time that is linear in the length of the sequences and it sidesteps the need for excessive memorization. The ByteNet decoder attains state-of-the-art performance on character-level language modelling and outperforms the previous best results obtained with recurrent networks. The ByteNet also achieves state-of-the-art performance on character-to-character machine translation on the English-to-German WMT translation task, surpassing comparable neural translation models that are based on recurrent networks with attentional pooling and run in quadratic time. We find that the latent alignment structure contained in the representations reflects the expected alignment between the tokens.},
   archivePrefix = {arXiv},
@@ -3961,7 +3955,6 @@
   shorttitle = {Phased {{LSTM}}},
   author = {Neil, Daniel and Pfeiffer, Michael and Liu, Shih-Chii},
   year = {2016},
-  month = oct,
   volume = {abs/1610.09513},
   abstract = {Recurrent Neural Networks (RNNs) have become the state-of-the-art choice for extracting patterns from temporal sequences. However, current RNN models are ill-suited to process irregularly sampled data triggered by events generated in continuous time by sensors or other neurons. Such data can occur, for example, when the input comes from novel event-driven artificial sensors that generate sparse, asynchronous streams of events or from multiple conventional sensors with different update intervals. In this work, we introduce the Phased LSTM model, which extends the LSTM unit by adding a new time gate. This gate is controlled by a parametrized oscillation with a frequency range that produces updates of the memory cell only during a small percentage of the cycle. Even with the sparse updates imposed by the oscillation, the Phased LSTM network achieves faster convergence than regular LSTMs on tasks which require learning of long sequences. The model naturally integrates inputs from sensors of arbitrary sampling rates, thereby opening new areas of investigation for processing asynchronous sensory events that carry timing information. It also greatly improves the performance of LSTMs in standard RNN applications, and does so with an order-of-magnitude fewer computes at runtime.},
   archivePrefix = {arXiv},
@@ -4098,7 +4091,6 @@
   shorttitle = {Parallel {{WaveNet}}},
   author = {van den Oord, Aaron and Li, Yazhe and Babuschkin, Igor and Simonyan, Karen and Vinyals, Oriol and Kavukcuoglu, Koray and van den Driessche, George and Lockhart, Edward and Cobo, Luis C. and Stimberg, Florian and Casagrande, Norman and Grewe, Dominik and Noury, Seb and Dieleman, Sander and Elsen, Erich and Kalchbrenner, Nal and Zen, Heiga and Graves, Alex and King, Helen and Walters, Tom and Belov, Dan and Hassabis, Demis},
   year = {2017},
-  month = nov,
   volume = {abs/1711.10433},
   abstract = {The recently-developed WaveNet architecture is the current state of the art in realistic speech synthesis, consistently rated as more natural sounding for many different languages than any previous system. However, because WaveNet relies on sequential generation of one audio sample at a time, it is poorly suited to today's massively parallel computers, and therefore hard to deploy in a real-time production setting. This paper introduces Probability Density Distillation, a new method for training a parallel feed-forward network from a trained WaveNet with no significant difference in quality. The resulting system is capable of generating high-fidelity speech samples at more than 20 times faster than real-time, and is deployed online by Google Assistant, including serving multiple English and Japanese voices.},
   archivePrefix = {arXiv},
@@ -5542,7 +5534,6 @@ As the {$<$}em{$>$}MUSDB18{$<$}/em{$>$} is encoded as STEMS, it relies on ffmpeg
   shorttitle = {{{MelNet}}},
   author = {Vasquez, Sean and Lewis, Mike},
   year = {2019},
-  month = jun,
   volume = {abs/1906.01083},
   abstract = {Capturing high-level structure in audio waveforms is challenging because a single second of audio spans tens of thousands of timesteps. While long-range dependencies are difficult to model directly in the time domain, we show that they can be more tractably modelled in two-dimensional time-frequency representations such as spectrograms. By leveraging this representational advantage, in conjunction with a highly expressive probabilistic model and a multiscale generation procedure, we design a model capable of generating high-fidelity audio samples which capture structure at timescales that time-domain models have yet to achieve. We apply our model to a variety of audio generation tasks, including unconditional speech generation, music generation, and text-to-speech synthesis---showing improvements over previous approaches in both density estimates and human judgments.},
   archivePrefix = {arXiv},
@@ -5557,7 +5548,6 @@ As the {$<$}em{$>$}MUSDB18{$<$}/em{$>$} is encoded as STEMS, it relies on ffmpeg
   title = {Attention {{Is All You Need}}},
   author = {Vaswani, Ashish and Shazeer, Noam and Parmar, Niki and Uszkoreit, Jakob and Jones, Llion and Gomez, Aidan N. and Kaiser, Lukasz and Polosukhin, Illia},
   year = {2017},
-  month = jun,
   volume = {abs/1706.03762},
   abstract = {The dominant sequence transduction models are based on complex recurrent or convolutional neural networks in an encoder-decoder configuration. The best performing models also connect the encoder and decoder through an attention mechanism. We propose a new simple network architecture, the Transformer, based solely on attention mechanisms, dispensing with recurrence and convolutions entirely. Experiments on two machine translation tasks show these models to be superior in quality while being more parallelizable and requiring significantly less time to train. Our model achieves 28.4 BLEU on the WMT 2014 English-to-German translation task, improving over the existing best results, including ensembles by over 2 BLEU. On the WMT 2014 English-to-French translation task, our model establishes a new single-model state-of-the-art BLEU score of 41.8 after training for 3.5 days on eight GPUs, a small fraction of the training costs of the best models from the literature. We show that the Transformer generalizes well to other tasks by applying it successfully to English constituency parsing both with large and limited training data.},
   archivePrefix = {arXiv},
@@ -5842,7 +5832,6 @@ As the {$<$}em{$>$}MUSDB18{$<$}/em{$>$} is encoded as STEMS, it relies on ffmpeg
   shorttitle = {Slow {{Feature Analysis}}},
   author = {Wiskott, Laurenz and Sejnowski, Terrence J.},
   year = {2002},
-  month = apr,
   volume = {14},
   pages = {715--770},
   issn = {0899-7667, 1530-888X},

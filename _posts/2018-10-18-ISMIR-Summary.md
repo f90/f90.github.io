@@ -4,6 +4,7 @@ date: 2018-10-18
 tags:
   - ISMIR
   - MIR
+  - Conference
 ---
  
  This year's ISMIR was great as ever, this time featuring

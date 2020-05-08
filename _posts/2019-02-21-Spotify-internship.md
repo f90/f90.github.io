@@ -35,7 +35,7 @@ During my stay, I investigated methods for
 
 ## Better objectives for singing voice separation
 
-For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system {% cite Huang2014 Stoller2018a %}.
+For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system {% cite huangSingingVoiceSeparation2014 stollerWaveUNetMultiScale2018 %}.
 The problem is that those do not necessarily align with how a human listening to, let's say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
 This means we are not optimising our systems to maximise the actual listening quality!
 Evaluation metrics such as SDR {% cite vincentPerformanceMeasurement2006 %} or PEASS {% cite vincentImprovedPerceptual2012 %} share similar issues, and are also more complicated to compute or possibly unstable to use for training.
