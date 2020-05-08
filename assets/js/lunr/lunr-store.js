@@ -19,7 +19,7 @@ var store = [{
       },{
         "title": "ISMIR 2018 - Paper Overviews",
         "excerpt":"This year’s ISMIR was great as ever, this time featuring lots of deep learning - I suspect since it became much more easy to use with recently developed libraries lots of new, and surprisingly large, datasets (suited for the new deep learning era) and a fantastic boat tour through Paris!...","categories": [],
-        "tags": ["ISMIR","MIR"],
+        "tags": ["ISMIR","MIR","Conference"],
         "url": "https://dans.world/ISMIR-Summary/",
         "teaser": null
       },{
@@ -33,5 +33,11 @@ var store = [{
         "excerpt":"From June to September 2019, I took a break from my ongoing PhD and worked as a Research Intern at Spotify in London. I was under the supervision of Simon Durand and Tristan Jehan as part of the music intelligence (MIQ) team. Their work is also similar to my PhD,...","categories": [],
         "tags": ["MIR"],
         "url": "https://dans.world/Spotify-internship/",
+        "teaser": null
+      },{
+        "title": "ICLR 2020 impressions and paper highlights",
+        "excerpt":"Having just “visited” my first virtual conference, ICLR 2020, I wanted to talk about my general impression and highlight some papers that stuck out to me from a variety of subfields. General impressions I presented our FactorGAN paper at the conference. Like every other paper, we have a quick explainer...","categories": [],
+        "tags": ["Machine learning","Theory","Conference","ICLR"],
+        "url": "https://dans.world/ICLR-2020/",
         "teaser": null
       }]

@@ -25,6 +25,10 @@
 <lastmod>2019-02-21T00:00:00+00:00</lastmod>
 </url>
 <url>
+<loc>https://dans.world/ICLR-2020/</loc>
+<lastmod>2019-02-21T00:00:00+00:00</lastmod>
+</url>
+<url>
 <loc>https://dans.world/about/</loc>
 </url>
 <url>
@@ -112,9 +116,6 @@
 <loc>https://dans.world/repository/trinhSelfieSelfsupervised2019/</loc>
 </url>
 <url>
-<loc>https://dans.world/repository/vasquezMelNetGenerative2019/</loc>
-</url>
-<url>
 <loc>https://dans.world/repository/devlinBERTPretraining2019/</loc>
 </url>
 <url>
@@ -140,9 +141,6 @@
 </url>
 <url>
 <loc>https://dans.world/repository/wagerIntonationDataset2019/</loc>
-</url>
-<url>
-<loc>https://dans.world/repository/childGeneratingLong2019/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/kimAreNearby2019/</loc>
@@ -193,6 +191,9 @@
 <loc>https://dans.world/repository/chettriEnsembleModels2019/</loc>
 </url>
 <url>
+<loc>https://dans.world/repository/childGeneratingLong2019/</loc>
+</url>
+<url>
 <loc>https://dans.world/repository/cramerLookListen2019/</loc>
 </url>
 <url>
@@ -224,6 +225,9 @@
 </url>
 <url>
 <loc>https://dans.world/repository/stollerEndtoendLyrics2019/</loc>
+</url>
+<url>
+<loc>https://dans.world/repository/vasquezMelNetGenerative2019/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/vatolkinEvolutionaryMultiobjective2019/</loc>
@@ -265,9 +269,6 @@
 <loc>https://dans.world/repository/jakubikSimilarityBasedSummarization2018/</loc>
 </url>
 <url>
-<loc>https://dans.world/repository/kalchbrennerEfficientNeural2018/</loc>
-</url>
-<url>
 <loc>https://dans.world/repository/meschederWhichTraining2018/</loc>
 </url>
 <url>
@@ -302,9 +303,6 @@
 </url>
 <url>
 <loc>https://dans.world/repository/wuUnsupervisedFeature2018/</loc>
-</url>
-<url>
-<loc>https://dans.world/repository/jinFFTNetRealTime2018/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/ycartPolyphonicMusic2018/</loc>
@@ -361,6 +359,12 @@
 <loc>https://dans.world/repository/imQuantitativelyEvaluating2018/</loc>
 </url>
 <url>
+<loc>https://dans.world/repository/jinFFTNetRealTime2018/</loc>
+</url>
+<url>
+<loc>https://dans.world/repository/kalchbrennerEfficientNeural2018/</loc>
+</url>
+<url>
 <loc>https://dans.world/repository/karrasProgressiveGrowing2018/</loc>
 </url>
 <url>
@@ -415,9 +419,6 @@
 <loc>https://dans.world/repository/rafiiMusdb18Corpus2017/</loc>
 </url>
 <url>
-<loc>https://dans.world/repository/oordParallelWaveNet2017/</loc>
-</url>
-<url>
 <loc>https://dans.world/repository/brakelLearningIndependent2017/</loc>
 </url>
 <url>
@@ -427,9 +428,6 @@
 <loc>https://dans.world/repository/ganTriangleGenerative2017/</loc>
 </url>
 <url>
-<loc>https://dans.world/repository/camposSkipRNN2017/</loc>
-</url>
-<url>
 <loc>https://dans.world/repository/finnModelAgnosticMetaLearning2017/</loc>
 </url>
 <url>
@@ -437,9 +435,6 @@
 </url>
 <url>
 <loc>https://dans.world/repository/zhangLearningAudio2017/</loc>
-</url>
-<url>
-<loc>https://dans.world/repository/vaswaniAttentionAll2017/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/leeSamplelevelDeep2017/</loc>
@@ -461,6 +456,9 @@
 </url>
 <url>
 <loc>https://dans.world/repository/blaauwNeuralParametric2017/</loc>
+</url>
+<url>
+<loc>https://dans.world/repository/camposSkipRNN2017/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/changDilatedRecurrent2017/</loc>
@@ -541,6 +539,9 @@
 <loc>https://dans.world/repository/nguyenDualDiscriminator2017/</loc>
 </url>
 <url>
+<loc>https://dans.world/repository/oordParallelWaveNet2017/</loc>
+</url>
+<url>
 <loc>https://dans.world/repository/pascualSEGANSpeech2017/</loc>
 </url>
 <url>
@@ -571,6 +572,9 @@
 <loc>https://dans.world/repository/tranDeepHierarchical2017/</loc>
 </url>
 <url>
+<loc>https://dans.world/repository/vaswaniAttentionAll2017/</loc>
+</url>
+<url>
 <loc>https://dans.world/repository/venkataramaniEndtoendSource2017/</loc>
 </url>
 <url>
@@ -599,12 +603,6 @@
 </url>
 <url>
 <loc>https://dans.world/repository/isolaImagetoImageTranslation2016/</loc>
-</url>
-<url>
-<loc>https://dans.world/repository/kalchbrennerNeuralMachine2016/</loc>
-</url>
-<url>
-<loc>https://dans.world/repository/neilPhasedLSTM2016/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/canoEvaluationQuality2016/</loc>
@@ -727,6 +725,9 @@
 <loc>https://dans.world/repository/juWhenVariational2016/</loc>
 </url>
 <url>
+<loc>https://dans.world/repository/kalchbrennerNeuralMachine2016/</loc>
+</url>
+<url>
 <loc>https://dans.world/repository/kimDeepDirected2016/</loc>
 </url>
 <url>
@@ -779,6 +780,9 @@
 </url>
 <url>
 <loc>https://dans.world/repository/muellerSiameseRecurrent2016/</loc>
+</url>
+<url>
+<loc>https://dans.world/repository/neilPhasedLSTM2016/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/nowozinFGANTraining2016/</loc>
@@ -1645,9 +1649,6 @@
 <loc>https://dans.world/repository/footeMediaSegmentation2003/</loc>
 </url>
 <url>
-<loc>https://dans.world/repository/wiskottSlowFeature2002/</loc>
-</url>
-<url>
 <loc>https://dans.world/repository/alkuNormalizedAmplitude2002/</loc>
 </url>
 <url>
@@ -1661,6 +1662,9 @@
 </url>
 <url>
 <loc>https://dans.world/repository/tzanetakisMusicalGenre2002/</loc>
+</url>
+<url>
+<loc>https://dans.world/repository/wiskottSlowFeature2002/</loc>
 </url>
 <url>
 <loc>https://dans.world/repository/elkanFoundationsCostsensitive2001/</loc>
@@ -1943,6 +1947,10 @@
 <url>
 <loc>https://dans.world/repository/chettriEnsembleModels2019.published.pdf</loc>
 <lastmod>2020-05-01T12:37:07+01:00</lastmod>
+</url>
+<url>
+<loc>https://dans.world/repository/mishraGANbasedGeneration2019.poster.pdf</loc>
+<lastmod>2020-05-02T09:35:19+01:00</lastmod>
 </url>
 <url>
 <loc>https://dans.world/repository/mishraGANbasedGeneration2019.preprint.pdf</loc>

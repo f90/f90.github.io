@@ -350,10 +350,10 @@ Offices there are quite big, and even offer daily catering and in-house music ev
 
 <h2 id="better-objectives-for-singing-voice-separation">Better objectives for singing voice separation</h2>
 
-<p>For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system (missing reference).
+<p>For separation, people often use very simple loss functions (e.g. an L2 norm between the predicted output and the real one) to measure the error, which they then minimise to train the system <a class="citation" href="#huangSingingVoiceSeparation2014">[1], [2]</a>.
 The problem is that those do not necessarily align with how a human listening to, let’s say, a separated vocal track, would rate the output quality. In other words, the simple loss function can be low, while output quality is rated as bad, and vice versa.
 This means we are not optimising our systems to maximise the actual listening quality!
-Evaluation metrics such as SDR <a class="citation" href="#vincentPerformanceMeasurement2006">[1]</a> or PEASS <a class="citation" href="#vincentImprovedPerceptual2012">[2]</a> share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
+Evaluation metrics such as SDR <a class="citation" href="#vincentPerformanceMeasurement2006">[3]</a> or PEASS <a class="citation" href="#vincentImprovedPerceptual2012">[4]</a> share similar issues, and are also more complicated to compute or possibly unstable to use for training.</p>
 
 <p>The above losses and metrics also assume that for every music input, there exists <em>exactly one true source output</em> as solution for the separation task (uni-modal).
 But that might not be the case - if music has background vocals for example, there are <em>two</em> solutions for singing voice separation that both make sense: one that puts the background vocals into the accompaniment track, and one that puts them into the vocal track along with the main vocals:</p>
@@ -372,7 +372,7 @@ Maybe we can separate voice better if we know what is being sung.
 And similarly, if we know the isolated voice track, detecting what is being sung should be much easier!</p>
 
 <p>Therefore we looked at <em>multi-task learning</em> to build models that perform separation and lyrics transcription at the same time.
-We chose the <em>Wave-U-Net</em> <a class="citation" href="#stollerWaveUNetMultiScale2018">[3]</a> model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
+We chose the <em>Wave-U-Net</em> <a class="citation" href="#stollerWaveUNetMultiScale2018">[2]</a> model since it already performs separation, and since we hypothesised that its generic architecture allows capturing many time-varying features on different time-scales, including those useful for transcription. We simply take the output of one of the upsampling blocks whose features have an appropriate time resolution (23 feature vectors per second in our case) to directly predict the lyrics characters over time (at most 23 characters per second). To learn from the start and end times for each lyrical line given in our dataset, we apply the CTC loss in these time intervals (see our <a href="https://arxiv.org/abs/1902.06797">publication on lyrics transcription and alignment</a> for details).</p>
 
 <p><img src="https://dans.world/assets/img/2019-02-21-Spotify-internship/lyrics_waveunet.png" alt="Branching off a Wave-U-Net upsampling block to predict lyrics characters. The later upsampling blocks for separation are not depicted here." />
 <em>Branching off a Wave-U-Net upsampling block to predict lyrics characters (<a href="https://arxiv.org/abs/1902.06797">source</a>) . The later upsampling blocks for separation are not depicted here</em></p>
@@ -385,7 +385,7 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <h2 id="lyrics-alignment">Lyrics alignment</h2>
 
-<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than state of the art models participating in the MIREX lyrics alignment challenge 2017 <a class="citation" href="#imirselMusicInformation2020">[4]</a>.</p>
+<p>Since very good lyrics transcription seemed still out of reach, I also tried to use the transcription models for aligning already given lyrics across time according to when they are sung in the music piece. This turned out to be much more successful, and much better than state of the art models participating in the MIREX lyrics alignment challenge 2017 <a class="citation" href="#imirselMusicInformation2020">[5]</a>.</p>
 
 <p>In conclusion, we find that <strong>you can train a lyrics transcription system from only line-level aligned lyrics annotations to predict characters directly from raw audio</strong>, and <strong>get excellent alignment accuracy even with mediocre transcription performance - see our ICASSP publication (preprint available <a href="https://arxiv.org/abs/1902.06797">here</a>)!</strong></p>
 
@@ -394,6 +394,50 @@ This might not be very surprising, since it could be seen as speech recognition,
 <h2 id="references">References</h2>
 
 <ol class="bibliography"><li><div>
+<a name="huangSingingVoiceSeparation2014" />
+<b>Singing-Voice Separation from Monaural Recordings Using Deep Recurrent Neural Networks.</b> <span style="font-size:15px"> (2014) </span>
+<br />
+
+  Proc. of the International Society for Music Information Retrieval Conference (ISMIR)
+  <br />
+
+
+<i>Huang, Po-Sen and Kim, Minje and Hasegawa-Johnson, Mark and Smaragdis, Paris</i>
+</div>
+
+
+    
+
+
+
+
+
+
+<a download="huangSingingVoiceSeparation2014.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BhuangSingingVoiceSeparation2014,%0A%20%20title%20=%20%7BSinging-%7B%7BVoice%20Separation%7D%7D%20from%20%7B%7BMonaural%20Recordings%7D%7D%20Using%20%7B%7BDeep%20Recurrent%20Neural%20Networks%7D%7D.%7D,%0A%20%20booktitle%20=%20%7BProc.%20of%20the%20%7B%7BInternational%20Society%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%20Conference%7D%7D%20(%7B%7BISMIR%7D%7D)%7D,%0A%20%20author%20=%20%7BHuang,%20Po-Sen%20and%20Kim,%20Minje%20and%20%7BHasegawa-Johnson%7D,%20Mark%20and%20Smaragdis,%20Paris%7D,%0A%20%20year%20=%20%7B2014%7D,%0A%20%20pages%20=%20%7B477--482%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
+<a class="details" href="/repository/huangSingingVoiceSeparation2014/">Details</a></li>
+<li><div>
+<a name="stollerWaveUNetMultiScale2018" />
+<b>Wave-U-Net: A Multi-Scale Neural Network for End-to-End Source Separation</b> <span style="font-size:15px"> (2018) </span>
+<br />
+
+  Proc. of the International Society for Music Information Retrieval Conference (ISMIR)
+  <br />
+
+
+<i>Stoller, Daniel and Ewert, Sebastian and Dixon, Simon</i>
+</div>
+
+
+    <a target="_blank" rel="noopener noreferrer" href="/repository/stollerWaveUNetMultiScale2018.published.pdf"><input class="button0" type="button" value="PDF" /></a>
+
+
+
+
+
+
+<a download="stollerWaveUNetMultiScale2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BstollerWaveUNetMultiScale2018,%0A%20%20title%20=%20%7BWave-%7B%7BU%7D%7D-%7B%7BNet%7D%7D:%20%7B%7BA%20Multi%7D%7D-%7B%7BScale%20Neural%20Network%7D%7D%20for%20%7B%7BEnd%7D%7D-to-%7B%7BEnd%20Source%20Separation%7D%7D%7D,%0A%20%20booktitle%20=%20%7BProc.%20of%20the%20%7B%7BInternational%20Society%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%20Conference%7D%7D%20(%7B%7BISMIR%7D%7D)%7D,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%20spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%20dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%20we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%20allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%20Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%20context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%20separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%20this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%20to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%20maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%20introduce%20further%20architectural%20improvements,%20including%20an%20output%20layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%20a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%20Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%20yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%20U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%20with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%20reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
+<a class="details" href="/repository/stollerWaveUNetMultiScale2018/">Details</a></li>
+<li><div>
 <a name="vincentPerformanceMeasurement2006" />
 <b>Performance Measurement in Blind Audio Source Separation</b> <span style="font-size:15px"> (2006) </span>
 <br />
@@ -437,28 +481,6 @@ This might not be very surprising, since it could be seen as speech recognition,
 
 <a download="vincentImprovedPerceptual2012.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BvincentImprovedPerceptual2012,%0A%20%20title%20=%20%7BImproved%20%7B%7BPerceptual%20Metrics%7D%7D%20for%20the%20%7B%7BEvaluation%7D%7D%20of%20%7B%7BAudio%20Source%20Separation%7D%7D%7D,%0A%20%20booktitle%20=%20%7BLatent%20%7B%7BVariable%20Analysis%7D%7D%20and%20%7B%7BSignal%20Separation%7D%7D%7D,%0A%20%20author%20=%20%7BVincent,%20Emmanuel%7D,%0A%20%20year%20=%20%7B2012%7D,%0A%20%20pages%20=%20%7B430--437%7D,%0A%20%20publisher%20=%20%7B%7BSpringer%7D%7D,%0A%20%20abstract%20=%20%7BWe%20aim%20to%20predict%20the%20perceived%20quality%20of%20estimated%20source%20signals%20in%20the%20context%20of%20audio%20source%20separation.%20Recently,%20we%20proposed%20a%20set%20of%20metrics%20called%20PEASS%20that%20consist%20of%20three%20computation%20steps:%20decomposition%20of%20the%20estimation%20error%20into%20three%20components,%20measurement%20of%20the%20salience%20of%20each%20component%20via%20the%20PEMO-Q%20auditory-motivated%20measure,%20and%20combination%20of%20these%20saliences%20via%20a%20nonlinear%20mapping%20trained%20on%20subjective%20opinion%20scores.%20The%20parameters%20of%20the%20decomposition%20were%20shown%20to%20have%20little%20influence%20on%20the%20prediction%20performance.%20In%20this%20paper,%20we%20evaluate%20the%20impact%20of%20the%20parameters%20of%20PEMO-Q%20and%20the%20nonlinear%20mapping%20on%20the%20prediction%20performance.%20By%20selecting%20the%20optimal%20parameters,%20we%20improve%20the%20average%20correlation%20with%20mean%20opinion%20scores%20(MOS)%20from%200.738%20to%200.909%20in%20a%20cross-validation%20setting.%20The%20resulting%20improved%20metrics%20are%20used%20in%20the%20context%20of%20the%202011%20Signal%20Separation%20Evaluation%20Campaign%20(SiSEC).%7D,%0A%20%20isbn%20=%20%7B978-3-642-28551-6%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
 <a class="details" href="/repository/vincentImprovedPerceptual2012/">Details</a></li>
-<li><div>
-<a name="stollerWaveUNetMultiScale2018" />
-<b>Wave-U-Net: A Multi-Scale Neural Network for End-to-End Source Separation</b> <span style="font-size:15px"> (2018) </span>
-<br />
-
-  Proc. of the International Society for Music Information Retrieval Conference (ISMIR)
-  <br />
-
-
-<i>Stoller, Daniel and Ewert, Sebastian and Dixon, Simon</i>
-</div>
-
-
-    <a target="_blank" rel="noopener noreferrer" href="/repository/stollerWaveUNetMultiScale2018.published.pdf"><input class="button0" type="button" value="PDF" /></a>
-
-
-
-
-
-
-<a download="stollerWaveUNetMultiScale2018.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@inproceedings%7BstollerWaveUNetMultiScale2018,%0A%20%20title%20=%20%7BWave-%7B%7BU%7D%7D-%7B%7BNet%7D%7D:%20%7B%7BA%20Multi%7D%7D-%7B%7BScale%20Neural%20Network%7D%7D%20for%20%7B%7BEnd%7D%7D-to-%7B%7BEnd%20Source%20Separation%7D%7D%7D,%0A%20%20booktitle%20=%20%7BProc.%20of%20the%20%7B%7BInternational%20Society%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%20Conference%7D%7D%20(%7B%7BISMIR%7D%7D)%7D,%0A%20%20author%20=%20%7BStoller,%20Daniel%20and%20Ewert,%20Sebastian%20and%20Dixon,%20Simon%7D,%0A%20%20year%20=%20%7B2018%7D,%0A%20%20volume%20=%20%7B19%7D,%0A%20%20pages%20=%20%7B334--340%7D,%0A%20%20abstract%20=%20%7BModels%20for%20audio%20source%20separation%20usually%20operate%20on%20the%20magnitude%20spectrum,%20which%20ignores%20phase%20information%20and%20makes%20separation%20performance%20dependant%20on%20hyper-parameters%20for%20the%20spectral%20front-end.%20Therefore,%20we%20investigate%20end-to-end%20source%20separation%20in%20the%20time-domain,%20which%20allows%20modelling%20phase%20information%20and%20avoids%20fixed%20spectral%20transformations.%20Due%20to%20high%20sampling%20rates%20for%20audio,%20employing%20a%20long%20temporal%20input%20context%20on%20the%20sample%20level%20is%20difficult,%20but%20required%20for%20high%20quality%20separation%20results%20because%20of%20long-range%20temporal%20correlations.%20In%20this%20context,%20we%20propose%20the%20Wave-U-Net,%20an%20adaptation%20of%20the%20U-Net%20to%20the%20one-dimensional%20time%20domain,%20which%20repeatedly%20resamples%20feature%20maps%20to%20compute%20and%20combine%20features%20at%20different%20time%20scales.%20We%20introduce%20further%20architectural%20improvements,%20including%20an%20output%20layer%20that%20enforces%20source%20additivity,%20an%20upsampling%20technique%20and%20a%20context-aware%20prediction%20framework%20to%20reduce%20output%20artifacts.%20Experiments%20for%20singing%20voice%20separation%20indicate%20that%20our%20architecture%20yields%20a%20performance%20comparable%20to%20a%20state-of-the-art%20spectrogram-based%20U-Net%20architecture,%20given%20the%20same%20data.%20Finally,%20we%20reveal%20a%20problem%20with%20outliers%20in%20the%20currently%20used%20SDR%20evaluation%20metrics%20and%20suggest%20reporting%20rank-based%20statistics%20to%20alleviate%20this%20problem.%7D%0A%7D%0A%7B%25endraw%25%7D"><input class="button0" type="button" value="Bibtex" /></a>
-<a class="details" href="/repository/stollerWaveUNetMultiScale2018/">Details</a></li>
 <li><div>
 <a name="imirselMusicInformation2020" />
 <b>Music Information Retrieval Exchange (MIREX)</b> <span style="font-size:15px"> (2020) </span>
@@ -529,7 +551,8 @@ This might not be very surprising, since it could be seen as speech recognition,
 ">Previous</a>
     
     
-      <a href="#" class="pagination--pager disabled">Next</a>
+      <a href="/ICLR-2020/" class="pagination--pager" title="ICLR 2020 impressions and paper highlights
+">Next</a>
     
   </nav>
 
@@ -543,6 +566,32 @@ This might not be very surprising, since it could be seen as speech recognition,
     <div class="page__related">
       <h4 class="page__related-title">You May Also Enjoy</h4>
       <div class="grid__wrapper">
+        
+          
+
+
+
+<div class="grid__item">
+  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
+    
+    <h2 class="archive__item-title" itemprop="headline">
+      
+        <a href="/ICLR-2020/" rel="permalink">ICLR 2020 impressions and paper highlights
+</a>
+      
+    </h2>
+    
+      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
+
+
+
+
+  10 minute read
+</p>
+    
+    <p class="archive__item-excerpt" itemprop="description">Having just “visited” my first virtual conference, ICLR 2020, I wanted to talk about my general impression and highlight some papers that stuck out to me fro...</p>
+  </article>
+</div>
         
           
 
@@ -624,32 +673,6 @@ This might not be very surprising, since it could be seen as speech recognition,
     <p class="archive__item-excerpt" itemprop="description">In this post, I want to talk about magnitude spectrograms as inputs and outputs of neural networks, and how to normalise them to help the training process.
 
 </p>
-  </article>
-</div>
-        
-          
-
-
-
-<div class="grid__item">
-  <article class="archive__item" itemscope itemtype="http://schema.org/CreativeWork">
-    
-    <h2 class="archive__item-title" itemprop="headline">
-      
-        <a href="/Tensorflow-LSTM-for-Language-Modelling/" rel="permalink">Tensorflow LSTM for Language Modelling
-</a>
-      
-    </h2>
-    
-      <p class="page__meta"><i class="far fa-clock" aria-hidden="true"></i> 
-
-
-
-
-  18 minute read
-</p>
-    
-    <p class="archive__item-excerpt" itemprop="description">In this post, I will show you how to build an LSTM network for the task of character-based language modelling (predict the next character based on the previo...</p>
   </article>
 </div>
         
