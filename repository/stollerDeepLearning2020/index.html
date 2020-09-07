@@ -1,0 +1,313 @@
+<!doctype html>
+<!--
+  Minimal Mistakes Jekyll Theme 4.12.0 by Michael Rose
+  Copyright 2013-2018 Michael Rose - mademistakes.com | @mmistakes
+  Free for personal and commercial use under the MIT license
+  https://github.com/mmistakes/minimal-mistakes/blob/master/LICENSE.txt
+-->
+<html lang="en" class="no-js">
+  <head>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <meta charset="utf-8">
+
+<!-- begin _includes/seo.html --><title>Deep Learning for Music Information Retrieval in Limited Data Scenarios - Dans World</title>
+<meta name="description" content="Machine learning, music information retrieval, and other things">
+
+
+
+<meta property="og:type" content="website">
+<meta property="og:locale" content="en_GB">
+<meta property="og:site_name" content="Dans World">
+<meta property="og:title" content="Deep Learning for Music Information Retrieval in Limited Data Scenarios">
+<meta property="og:url" content="https://dans.world/repository/stollerDeepLearning2020/">
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+  
+
+
+<link rel="canonical" href="https://dans.world/repository/stollerDeepLearning2020/">
+
+
+
+
+
+
+
+  <script type="application/ld+json">
+    {
+      "@context": "http://schema.org",
+      "@type": "Person",
+      "name": "Daniel Stoller",
+      "url": "https://dans.world",
+      "sameAs": null
+    }
+  </script>
+
+
+
+
+
+
+
+<!-- end _includes/seo.html -->
+
+
+<link href="/feed.xml" type="application/atom+xml" rel="alternate" title="Dans World Feed">
+
+<!-- 
+
+ -->
+
+<!-- http://t.co/dKP3o1e -->
+<meta name="HandheldFriendly" content="True">
+<meta name="MobileOptimized" content="320">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<link rel="stylesheet" href="/assets/css/academicons.css">
+
+<script>
+  document.documentElement.className = document.documentElement.className.replace(/\bno-js\b/g, '') + ' js ';
+</script>
+
+<!-- For all browsers -->
+<link rel="stylesheet" href="/assets/css/main.css">
+
+<!--[if lte IE 9]>
+  <style>
+    /* old IE unsupported flexbox fixes */
+    .greedy-nav .site-title {
+      padding-right: 3em;
+    }
+    .greedy-nav button {
+      position: absolute;
+      top: 0;
+      right: 0;
+      height: 100%;
+    }
+  </style>
+<![endif]-->
+
+
+    <!-- start custom head snippets -->
+
+<!-- insert favicons. use https://realfavicongenerator.net/ -->
+
+<!-- end custom head snippets -->
+
+    
+  </head>
+
+  <body class="layout--archive">
+
+    <!--[if lt IE 9]>
+<div class="notice--danger align-center" style="margin: 0;">You are using an <strong>outdated</strong> browser. Please <a href="https://browsehappy.com/">upgrade your browser</a> to improve your experience.</div>
+<![endif]-->
+
+    <div class="masthead">
+  <div class="masthead__inner-wrap">
+    <div class="masthead__menu">
+      <nav id="site-nav" class="greedy-nav">
+        <a class="site-title" href="/">Dans World</a>
+        <ul class="visible-links">
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/research/" >Research</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/publications/" >Publications</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/about/" >About</a>
+            </li>
+          
+            
+            <li class="masthead__menu-item">
+              <a href="https://dans.world/posts/" >Blog</a>
+            </li>
+          
+        </ul>
+        
+        <button class="search__toggle" type="button">
+          <svg class="icon" width="16" height="16" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 15.99 16">
+            <path d="M15.5,13.12L13.19,10.8a1.69,1.69,0,0,0-1.28-.55l-0.06-.06A6.5,6.5,0,0,0,5.77,0,6.5,6.5,0,0,0,2.46,11.59a6.47,6.47,0,0,0,7.74.26l0.05,0.05a1.65,1.65,0,0,0,.5,1.24l2.38,2.38A1.68,1.68,0,0,0,15.5,13.12ZM6.4,2A4.41,4.41,0,1,1,2,6.4,4.43,4.43,0,0,1,6.4,2Z" transform="translate(-.01)"></path>
+          </svg>
+        </button>
+        
+        <button class="greedy-nav__toggle hidden" type="button">
+          <span class="visually-hidden">Toggle Menu</span>
+          <div class="navicon"></div>
+        </button>
+        <ul class="hidden-links hidden"></ul>
+      </nav>
+    </div>
+  </div>
+</div>
+
+    <div class="initial-content">
+      
+
+
+
+<div id="main" role="main">
+  
+
+  <div class="archive">
+    
+      <h1 id="page-title" class="page__title">Deep Learning for Music Information Retrieval in Limited Data Scenarios</h1>
+    
+    <div>
+  <div>
+    <h5>Venue</h5>
+    <p> 
+</p>
+    <h5>Publication Year</h5>
+    <p></p>
+    
+    
+  </div>
+</div>
+
+<h3>Authors</h3>
+<ul class="list-inline">
+
+
+
+<li class="list-inline-item">Daniel Stoller</li>
+
+</ul>
+
+
+
+<h3>Abstract</h3>
+<p>
+While deep learning (DL) models have achieved impressive results in settings
+where large amounts of annotated training data are available, overfitting often
+degrades performance when data is more limited. To improve the generalisation
+of DL models, we investigate "data-driven priors" that exploit additional unlabelled data or labelled data from related tasks. Unlike techniques such as data
+augmentation, these priors are applicable across a range of machine listening
+tasks, since their design does not rely on problem-specific knowledge. We first consider scenarios in which parts of samples can be missing, aiming to make more datasets available for model training. In an initial study focusing on audio source separation (ASS), we exploit additionally available unlabelled music and solo source recordings by using generative adversarial networks (GANs), resulting in higher separation quality. We then present a fully adversarial framework for learning generative models with missing data. Our discriminator consists of separately trainable components that can be combined to train the generator with the same objective as in the original GAN framework. We apply our framework to image generation, image segmentation and ASS, demonstrating superior performance compared to the original GAN. To improve performance on any given MIR task, we also aim to leverage datasets which are annotated for similar tasks. We use multi-task learning (MTL) to perform singing voice detection and singing voice separation with one model, improving performance on both tasks. Furthermore, we employ meta-learning on a diverse collection of ten MIR tasks to find a weight initialisation for a “universal MIR model” so that training the model on any MIR task with this initialisation quickly leads to good performance. Since our data-driven priors encode knowledge shared across tasks and
+datasets, they are suited for high-dimensional, end-to-end models, instead of small models relying on task-specific feature engineering, such as fixed spectrogram representations of audio commonly used in machine listening. To this end, we propose “Wave-U-Net”, an adaptation of the U-Net, which can perform ASS directly on the raw waveform while performing favourably to its spectrogram-
+based counterpart. Finally, we derive “Seq-U-Net” as a causal variant of Wave-U-Net, which performs comparably to Wavenet and Temporal Convolutional
+Network (TCN) on a variety of sequence modelling tasks, while being more
+computationally efficient.
+</p>
+
+
+
+<h3>Source Materials</h3>
+<ul class="fa-ul">
+  
+  
+  
+  
+  
+  <li><a href="
+  
+    /repository/stollerDeepLearning2020.published.pdf
+  
+  "> <i class="fa fa-li fa-file-pdf"></i>Article (Published version) </a></li>
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+
+  
+  
+  
+  
+  
+
+  <li><a download="stollerDeepLearning2020.bib" href="data:application/x-bibtex,%7B%25raw%25%7D@thesis%7BstollerDeepLearning2020,%0A%20%20title%20=%20%7BDeep%20%7B%7BLearning%7D%7D%20for%20%7B%7BMusic%20Information%20Retrieval%7D%7D%20in%20%7B%7BLimited%20Data%20Scenarios%7D%7D%7D,%0A%20%20author%20=%20%7BStoller,%20Daniel%7D,%0A%20%20date%20=%20%7B2020%7D,%0A%20%20institution%20=%20%7B%7BQueen%20Mary%20University%20of%20London%7D%7D,%0A%20%20location%20=%20%7B%7BLondon%7D%7D,%0A%20%20abstract%20=%20%7BWhile%20deep%20learning%20(DL)%20models%20have%20achieved%20impressive%20results%20in%20settings%0A%20%20where%20large%20amounts%20of%20annotated%20training%20data%20are%20available,%20overfitting%20often%0A%20%20degrades%20performance%20when%20data%20is%20more%20limited.%20To%20improve%20the%20generalisation%0A%20%20of%20DL%20models,%20we%20investigate%20%22data-driven%20priors%22%20that%20exploit%20additional%20unlabelled%20data%20or%20labelled%20data%20from%20related%20tasks.%20Unlike%20techniques%20such%20as%20data%0A%20%20augmentation,%20these%20priors%20are%20applicable%20across%20a%20range%20of%20machine%20listening%0A%20%20tasks,%20since%20their%20design%20does%20not%20rely%20on%20problem-specific%20knowledge.%20We%20first%20consider%20scenarios%20in%20which%20parts%20of%20samples%20can%20be%20missing,%20aiming%20to%20make%20more%20datasets%20available%20for%20model%20training.%20In%20an%20initial%20study%20focusing%20on%20audio%20source%20separation%20(ASS),%20we%20exploit%20additionally%20available%20unlabelled%20music%20and%20solo%20source%20recordings%20by%20using%20generative%20adversarial%20networks%20(GANs),%20resulting%20in%20higher%20separation%20quality.%20We%20then%20present%20a%20fully%20adversarial%20framework%20for%20learning%20generative%20models%20with%20missing%20data.%20Our%20discriminator%20consists%20of%20separately%20trainable%20components%20that%20can%20be%20combined%20to%20train%20the%20generator%20with%20the%20same%20objective%20as%20in%20the%20original%20GAN%20framework.%20We%20apply%20our%20framework%20to%20image%20generation,%20image%20segmentation%20and%20ASS,%20demonstrating%20superior%20performance%20compared%20to%20the%20original%20GAN.%20To%20improve%20performance%20on%20any%20given%20MIR%20task,%20we%20also%20aim%20to%20leverage%20datasets%20which%20are%20annotated%20for%20similar%20tasks.%20We%20use%20multi-task%20learning%20(MTL)%20to%20perform%20singing%20voice%20detection%20and%20singing%20voice%20separation%20with%20one%20model,%20improving%20performance%20on%20both%20tasks.%20Furthermore,%20we%20employ%20meta-learning%20on%20a%20diverse%20collection%20of%20ten%20MIR%20tasks%20to%20find%20a%20weight%20initialisation%20for%20a%20%E2%80%9Cuniversal%20MIR%20model%E2%80%9D%20so%20that%20training%20the%20model%20on%20any%20MIR%20task%20with%20this%20initialisation%20quickly%20leads%20to%20good%20performance.%20Since%20our%20data-driven%20priors%20encode%20knowledge%20shared%20across%20tasks%20and%0A%20%20datasets,%20they%20are%20suited%20for%20high-dimensional,%20end-to-end%20models,%20instead%20of%20small%20models%20relying%20on%20task-specific%20feature%20engineering,%20such%20as%20fixed%20spectrogram%20representations%20of%20audio%20commonly%20used%20in%20machine%20listening.%20To%20this%20end,%20we%20propose%20%E2%80%9CWave-U-Net%E2%80%9D,%20an%20adaptation%20of%20the%20U-Net,%20which%20can%20perform%20ASS%20directly%20on%20the%20raw%20waveform%20while%20performing%20favourably%20to%20its%20spectrogram-%0A%20%20based%20counterpart.%20Finally,%20we%20derive%20%E2%80%9CSeq-U-Net%E2%80%9D%20as%20a%20causal%20variant%20of%20Wave-U-Net,%20which%20performs%20comparably%20to%20Wavenet%20and%20Temporal%20Convolutional%0A%20%20Network%20(TCN)%20on%20a%20variety%20of%20sequence%20modelling%20tasks,%20while%20being%20more%0A%20%20computationally%20efficient.%7D%0A%7D%0A%7B%25endraw%25%7D">
+      <i class="fa fa-li fa-at"></i>BibTeX Citation</a></li>
+</ul>
+
+
+  </div>
+</div>
+    </div>
+
+    
+      <div class="search-content">
+        <div class="search-content__inner-wrap"><input type="text" id="search" class="search-input" tabindex="-1" placeholder="Enter your search term..." />
+    <div id="results" class="results"></div></div>
+      </div>
+    
+
+    <div class="page__footer">
+      <footer>
+        <!-- start custom footer snippets -->
+
+<!-- end custom footer snippets -->
+        <div class="page__footer-follow">
+  <ul class="social-icons">
+    
+    
+    
+    
+      <li><a href="https://github.com/f90"><i class="fab fa-fw fa-github" aria-hidden="true"></i> GitHub</a></li>
+    
+    
+    
+    <li><a href="/feed.xml"><i class="fas fa-fw fa-rss-square" aria-hidden="true"></i> Feed</a></li>
+  </ul>
+</div>
+
+<div class="page__footer-copyright">&copy; 2020 Daniel Stoller. Powered by <a href="https://jekyllrb.com" rel="nofollow">Jekyll</a> &amp; <a href="https://mademistakes.com/work/minimal-mistakes-jekyll-theme/" rel="nofollow">Minimal Mistakes</a>.</div>
+
+      </footer>
+    </div>
+
+    
+  <script src="/assets/js/main.min.js"></script>
+  <script src="https://use.fontawesome.com/releases/v5.1.0/js/all.js"></script>
+
+
+
+
+<script src="/assets/js/lunr/lunr.min.js"></script>
+<script src="/assets/js/lunr/lunr-store.js"></script>
+<script src="/assets/js/lunr/lunr-en.js"></script>
+
+
+
+
+
+  </body>
+</html>
